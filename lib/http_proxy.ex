@@ -2,15 +2,15 @@ defmodule HttpProxy do
   use Plug.Builder
   import Plug.Conn
 
-  @target "http://google.com"
+  @to_url Application.get_env :http_proxy, :to_url || "http://google.com"
+  @proxy_port Application.get_env :http_proxy, :proxy_port || 8080
 
   plug Plug.Logger
   plug :dispatch
 
   def start(_argv) do
-    port = 4001
-    IO.puts "Running Proxy with Cowboy on http://localhost:#{port}"
-    Plug.Adapters.Cowboy.http __MODULE__, [], port: port
+    IO.puts "Running Proxy with Cowboy on http://localhost:#{@proxy_port}"
+    Plug.Adapters.Cowboy.http __MODULE__, [], port: @proxy_port
     :timer.sleep(:infinity)
   end
 
@@ -44,7 +44,7 @@ defmodule HttpProxy do
   end
 
   defp uri(conn) do
-    base = @target <> "/" <> Enum.join(conn.path_info, "/")
+    base = @to_url <> "/" <> Enum.join(conn.path_info, "/")
     case conn.query_string do
       "" -> base
       qs -> base <> "?" <> qs
