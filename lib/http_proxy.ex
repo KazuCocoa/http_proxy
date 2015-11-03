@@ -2,15 +2,15 @@ defmodule HttpProxy do
   use Plug.Builder
   import Plug.Conn
 
-  @proxy Application.get_env :http_proxy, :proxy || 8080
+  @proxy Application.get_env :http_proxy, :proxy
 
   plug Plug.Logger
   plug :dispatch
 
 
-  def start_link(current_proxy) do
-    IO.puts "Running Proxy with Cowboy on http://localhost:#{current_proxy.port}"
-    Plug.Adapters.Cowboy.http __MODULE__, [], port: current_proxy.port
+  def start_link(proxy) do
+    IO.puts "Running Proxy with Cowboy on http://localhost:#{proxy.port}"
+    Plug.Adapters.Cowboy.http __MODULE__, [], port: proxy.port
     :timer.sleep(:infinity)
   end
 
@@ -44,11 +44,21 @@ defmodule HttpProxy do
   end
 
   defp uri(conn) do
-    current_proxy = @proxy
-                    |> Enum.find(nil, fn conf ->
-                      conn.port == conf.port
-                    end)
-    base = current_proxy.to <> "/" <> Enum.join(conn.path_info, "/")
+    # p = Enum.find(@proxy.path, fn x ->
+    #   IO.inspect x
+    #   IO.inspect conn.path_info
+    #   x.from == conn.path_info
+    # end)
+
+    # base = case p do
+    #   a ->
+    #     IO.inspect a
+    #     @proxy.path.to <> "/" <> Enum.join(a, "/")
+    #   _ ->
+    #     @proxy.path.to <> "/" <> Enum.join(conn.path_info, "/")
+    # end
+    path = hd(@proxy.path)
+    base = path.to <> "/" <> Enum.join(conn.path_info, "/")
     case conn.query_string do
       "" -> base
       qs -> base <> "?" <> qs
