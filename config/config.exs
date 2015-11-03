@@ -1,5 +1,7 @@
 use Mix.Config
 
 config :http_proxy,
-  proxy_port: 4000,
-  to_url: "http://yahoo.com"
+  proxy: [
+    %{port: 4000, to: "http://yahoo.com"},
+    %{port: 4001, to: "http://cookpad.com"}
+  ]

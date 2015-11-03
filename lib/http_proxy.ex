@@ -2,20 +2,28 @@ defmodule HttpProxy do
   use Plug.Builder
   import Plug.Conn
 
-  @to_url Application.get_env :http_proxy, :to_url || "http://google.com"
-  @proxy_port Application.get_env :http_proxy, :proxy_port || 8080
+  use Supervisor
+
+  @proxy Application.get_env :http_proxy, :proxy || 8080
 
   plug Plug.Logger
   plug :dispatch
 
   def start(_argv) do
-    IO.puts "Running Proxy with Cowboy on http://localhost:#{@proxy_port}"
-    Plug.Adapters.Cowboy.http __MODULE__, [], port: @proxy_port
+    # Should work with supervisor
+    Enum.each @proxy, fn conf ->
+      IO.puts "Running Proxy with Cowboy on http://localhost:#{conf.port}"
+      Plug.Adapters.Cowboy.http __MODULE__, [], port: conf.port
+    end
     :timer.sleep(:infinity)
   end
 
   def dispatch(conn, _opts) do
-    {:ok, client} = :hackney.request :get, uri(conn), conn.req_headers, :stream, []
+    current_proxy = @proxy
+                    |> Enum.find(nil, fn conf ->
+                      conn.port == conf.port
+                    end)
+    {:ok, client} = :hackney.request :get, uri(conn, current_proxy), conn.req_headers, :stream, []
 
     conn
     |> write_proxy(client)
@@ -43,8 +51,8 @@ defmodule HttpProxy do
     |> send_resp(status, body)
   end
 
-  defp uri(conn) do
-    base = @to_url <> "/" <> Enum.join(conn.path_info, "/")
+  defp uri(conn, proxy_config) do
+    base = proxy_config.to <> "/" <> Enum.join(conn.path_info, "/")
     case conn.query_string do
       "" -> base
       qs -> base <> "?" <> qs
