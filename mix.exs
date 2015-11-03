@@ -16,7 +16,7 @@ defmodule HttpProxy.Mixfile do
   end
 
   defp aliases do
-    [proxy: ["run", &HttpProxy.start/1]]
+    [proxy: ["run", &HttpProxy.Supervisor.start_link/1]]
   end
 
   defp deps do
