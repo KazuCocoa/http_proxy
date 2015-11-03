@@ -44,24 +44,30 @@ defmodule HttpProxy do
   end
 
   defp uri(conn) do
-    # p = Enum.find(@proxy.path, fn x ->
-    #   IO.inspect x
-    #   IO.inspect conn.path_info
-    #   x.from == conn.path_info
-    # end)
-
-    # base = case p do
-    #   a ->
-    #     IO.inspect a
-    #     @proxy.path.to <> "/" <> Enum.join(a, "/")
-    #   _ ->
-    #     @proxy.path.to <> "/" <> Enum.join(conn.path_info, "/")
-    # end
-    path = hd(@proxy.path)
-    base = path.to <> "/" <> Enum.join(conn.path_info, "/")
+    base = generate_path conn, matched_path(conn)
     case conn.query_string do
       "" -> base
       qs -> base <> "?" <> qs
+    end
+  end
+
+  defp matched_path(conn) do
+    Enum.find(@proxy.path, fn path ->
+      case Enum.at(conn.path_info, 0) do
+        nil ->
+          "" == path.from
+        other ->
+          other == path.from
+      end
+    end)
+  end
+
+  defp generate_path(conn, config_path) do
+    case config_path do
+      nil ->
+        @proxy.default_to <> "/" <> Enum.join(conn.path_info, "/")
+      _ ->
+        config_path.to <> "/" <> Enum.join(conn.path_info, "/")
     end
   end
 end
