@@ -44,7 +44,7 @@ defmodule HttpProxy do
   end
 
   defp uri(conn) do
-    base = generate_path conn, matched_path(conn)
+    base = gen_path conn, matched_path(conn)
     case conn.query_string do
       "" -> base
       qs -> base <> "?" <> qs
@@ -62,12 +62,6 @@ defmodule HttpProxy do
     end)
   end
 
-  defp generate_path(conn, config_path) do
-    case config_path do
-      nil ->
-        @proxy.default_to <> "/" <> Enum.join(conn.path_info, "/")
-      _ ->
-        config_path.to <> "/" <> Enum.join(conn.path_info, "/")
-    end
-  end
+  defp gen_path(conn, path) when path == nil, do: @proxy.default_to <> "/" <> Enum.join(conn.path_info, "/")
+  defp gen_path(conn, path), do: path.to <> "/" <> Enum.join(conn.path_info, "/")
 end
