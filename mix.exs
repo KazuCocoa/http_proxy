@@ -12,11 +12,14 @@ defmodule HttpProxy.Mixfile do
   end
 
   def application do
-    [applications: [:logger, :cowboy, :plug, :hackney]]
+    [
+      applications: [:logger, :cowboy, :plug, :hackney],
+      mod: {HttpProxy, []}
+    ]
   end
 
   defp aliases do
-    [proxy: ["run", &HttpProxy.Supervisor.start_link/1]]
+    [proxy: ["run --no-halt"]]
   end
 
   defp deps do
