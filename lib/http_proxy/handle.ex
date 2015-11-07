@@ -4,6 +4,7 @@ defmodule HttpProxy.Handle do
   require Logger
 
   @proxies Application.get_env :http_proxy, :proxies
+  @scheme %{http: "http://", https: "https://"}
 
   plug Plug.Logger
   plug :dispatch
@@ -19,6 +20,14 @@ defmodule HttpProxy.Handle do
     conn
     |> write_proxy(client)
     |> read_proxy(client)
+  end
+
+  def uri(conn) do
+    base = gen_path conn, target_proxy(conn)
+    case conn.query_string do
+      ""           -> base
+      query_string -> base <> "?" <> query_string
+    end
   end
 
   defp write_proxy(conn, client) do
@@ -42,27 +51,25 @@ defmodule HttpProxy.Handle do
     |> send_resp(status, body)
   end
 
-  defp uri(conn) do
-    base = gen_path conn, matched_path(conn)
-    case conn.query_string do
-      "" -> base
-      qs -> base <> "?" <> qs
+  defp gen_path(conn, proxy) when proxy == nil do
+    case @scheme[conn.scheme] do
+      s ->
+        s <> conn.host <> "/" <> Enum.join(conn.path_info, "/")
+      _ ->
+        raise ArgumentError, "no scheme"
     end
   end
+  defp gen_path(conn, proxy), do: proxy.to <> "/" <> Enum.join(conn.path_info, "/")
 
-  defp matched_path(conn) do
-    Enum.find(target_proxy(conn).path, fn path ->
-      case Enum.at(conn.path_info, 0) do
-        nil ->
-          "" == path.from
-        other ->
-          other == path.from
+  defp target_proxy(conn) do
+    Enum.reduce(@proxies, [], fn proxy, acc ->
+      cond do
+        proxy.port == conn.port ->
+          [proxy | acc]
+        true ->
+          acc
       end
     end)
+    |> Enum.at(0)
   end
-
-  defp gen_path(conn, path) when path == nil, do: target_proxy(conn).default_to <> "/" <> Enum.join(conn.path_info, "/")
-  defp gen_path(conn, path), do: path.to <> "/" <> Enum.join(conn.path_info, "/")
-
-  defp target_proxy(conn), do: Enum.find @proxies, fn proxy -> proxy.port == conn.port end
 end

@@ -21,10 +21,11 @@ defmodule HttpProxyTest do
       assert HttpProxy.Handle.uri(conn) == proxied_url
     end do
       [
-        "root": {"http://localhost:8080/", "http://yahoo.com/" },
-        "path": {"http://localhost:8081/neko", "http://yahoo.co.jp"},
-        "1": {"http://localhost:8081/neko?hoge=1", "http://yahoo.co.jp/neko?hoge=1"},
-        "2": {"http://localhost:8081/neko?hoge=1", "http://yahoo.co.jp/neko?hoge=1"}
+        "root":  {"http://localhost:8080/", "http://google.com/" },
+        "path":  {"https://localhost:8081/neko", "http://neko.com/neko"},
+        "query": {"http://localhost:8081/neko?hoge=1", "http://neko.com/neko?hoge=1"},
+        "no proxy":  {"http://localhost:8082/", "http://localhost/" },
+        "no proxy":  {"https://localhost:8082/", "https://localhost/" },
       ]
     end
 
