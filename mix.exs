@@ -26,7 +26,8 @@ defmodule HttpProxy.Mixfile do
     [
       {:cowboy, "~> 1.0.0" },
       {:plug, "~> 1.0.0"},
-      {:hackney, "~> 1.3.2"}
+      {:hackney, "~> 1.3.2"},
+      {:ex_parametarized, "~> 1.0.0", only: :test}
     ]
 
   end

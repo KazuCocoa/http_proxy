@@ -1,5 +1,6 @@
 %{"cowboy": {:hex, :cowboy, "1.0.3"},
   "cowlib": {:hex, :cowlib, "1.0.1"},
+  "ex_parametarized": {:hex, :ex_parametarized, "1.0.0"},
   "hackney": {:hex, :hackney, "1.3.2"},
   "idna": {:hex, :idna, "1.0.2"},
   "plug": {:hex, :plug, "1.0.2"},
