@@ -2,12 +2,13 @@
 
 Simple HTTP Proxy. Forward to other URL via each port.
 
-# How to work
+# How to use
 
 ```
 $ mix deps.get
 $ mix proxy # start proxy server
 ```
+
 # Configuration
 
 ```
@@ -21,6 +22,10 @@ config :http_proxy,
                to:   "http://yahoo.com"}
             ]
 ```
+
+# TODO
+- [ ] record/play request
+    - integrate https://github.com/parroty/exvcr
 
 # LICENSE
 MIT. Please read LICENSE.

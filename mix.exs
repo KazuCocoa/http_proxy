@@ -5,6 +5,9 @@ defmodule HttpProxy.Mixfile do
     [app: :http_proxy,
      version: "0.1.0",
      elixir: "~> 1.0",
+     name: "ExHttpProxy",
+     source_url: "https://github.com/KazuCocoa/http_proxy",
+     description: "Multi port HTTP Proxy"
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      deps: deps,
@@ -29,6 +32,14 @@ defmodule HttpProxy.Mixfile do
       {:hackney, "~> 1.3.2"},
       {:ex_parametarized, "~> 1.0.0", only: :test}
     ]
+  end
 
+  defp package do
+    [
+      files: ~w(lib mix.exs README.md LICENSE),
+      maintainers: ["Kazuaki Matsuo"],
+      licenses: ["MIT"],
+      links: %{"GitHub" => "https://github.com/KazuCocoa/http_proxy"}
+    ]
   end
 end
