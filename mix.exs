@@ -7,7 +7,7 @@ defmodule HttpProxy.Mixfile do
      elixir: "~> 1.0",
      name: "ExHttpProxy",
      source_url: "https://github.com/KazuCocoa/http_proxy",
-     description: "Multi port HTTP Proxy"
+     description: "Multi port HTTP Proxy",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      deps: deps,
