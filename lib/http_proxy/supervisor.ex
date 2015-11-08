@@ -1,4 +1,6 @@
 defmodule HttpProxy.Supervisor do
+  @moduledoc false
+
   use Supervisor
 
   @proxies Application.get_env :http_proxy, :proxies

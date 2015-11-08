@@ -1,4 +1,6 @@
 defmodule HttpProxy.Handle do
+  @moduledoc false
+
   use Plug.Builder
   import Plug.Conn
   require Logger

@@ -1,6 +1,7 @@
 # HttpProxy
 
-Simple HTTP Proxy. Forward to other URL via each port.
+Simple multi HTTP Proxy using Plug.
+Base implementation is inspired by https://github.com/josevalim/proxy.
 
 # How to use
 
