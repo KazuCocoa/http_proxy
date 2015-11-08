@@ -24,8 +24,8 @@ defmodule HttpProxyTest do
         "root":  {"http://localhost:8080/", "http://google.com/" },
         "path":  {"https://localhost:8081/neko", "http://neko.com/neko"},
         "query": {"http://localhost:8081/neko?hoge=1", "http://neko.com/neko?hoge=1"},
-        "no proxy":  {"http://localhost:8082/", "http://localhost/" },
-        "no proxy":  {"https://localhost:8082/", "https://localhost/" },
+        "no proxy with http":  {"http://localhost:8082/", "http://localhost/" }a,
+        "no proxy with https":  {"https://localhost:8082/", "https://localhost/" },
       ]
     end
 
