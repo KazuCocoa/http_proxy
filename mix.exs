@@ -12,7 +12,11 @@ defmodule HttpProxy.Mixfile do
      start_permanent: Mix.env == :prod,
      deps: deps,
      package: package,
-     aliases: aliases]
+     aliases: aliases,
+     preferred_cli_env: [
+          vcr: :test, "vcr.delete": :test, "vcr.check": :test, "vcr.show": :test
+        ]
+    ]
   end
 
   def application do
@@ -33,7 +37,8 @@ defmodule HttpProxy.Mixfile do
       {:hackney, "~> 1.3.2"},
       {:ex_parametarized, "~> 1.0.0", only: :test},
       {:earmark, "~> 0.1", only: :dev},
-      {:ex_doc, "~> 0.10", only: :dev}
+      {:ex_doc, "~> 0.10", only: :dev},
+      {:exvcr, "~> 0.6", only: :test}
     ]
   end
 

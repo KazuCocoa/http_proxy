@@ -25,6 +25,7 @@ config :http_proxy,
 ```
 
 # TODO
+- [ ] Use HTTPoison
 - [ ] record/play request
     - integrate https://github.com/parroty/exvcr
 
