@@ -27,6 +27,12 @@ defmodule HttpProxyTest do
         "no proxy with http":  {"http://localhost:8082/", "http://localhost/" },
         "no proxy with https":  {"https://localhost:8082/", "https://localhost/" },
       ]
-    end
+  end
+
+
+  test "send request and response" do
+    con = conn(:get, "http://localhost:8080/hoge/inu?email=neko&pass=123")
+    HttpProxy.Handle.dispatch(con, "")
+  end
 
 end

@@ -1,3 +1,12 @@
+defmodule HttpProxy.Data do
+  @derive [Poison.Encoder]
+  defstruct [
+    request: [:host, :port, :remote, :method, :scheme, :request_path, :req_headers, :query_string, :query_body, :cookies, :query_params, :req_cookies],
+    response: [:resp_body, :resp_cookies, :scheme, :status]
+  ]
+end
+
+
 defmodule HttpProxy.Handle do
   @moduledoc false
 
@@ -51,6 +60,59 @@ defmodule HttpProxy.Handle do
 
     %{conn | resp_headers: headers}
     |> send_resp(status, body)
+    |> record
+  end
+
+  # TODO: output connection
+  defp record(conn) do
+    {a, b, c, d} = conn.remote_ip
+    headers =  conn.resp_headers
+               |> Enum.reduce(Map.new, fn {key, value}, acc ->
+                 Map.put acc, key, value
+               end)
+
+    %HttpProxy.Data{
+      request: %{
+        host: conn.host,
+        port: conn.port,
+        remote: "#{a}.#{b}.#{c}.#{d}",
+        method: conn.method,
+        scheme: conn.scheme,
+        request_path: conn.request_path,
+        req_headers: conn.req_headers,
+        query_string: conn.query_string,
+        query_body: readbody(conn),
+        cookies: conn.cookies,
+        query_params: conn.query_params,
+        req_cookies: conn.req_cookies
+      },
+      response: %{
+        resp_body: conn.resp_body,
+        resp_cookies: conn.resp_cookies,
+        scheme: conn.scheme,
+        status: conn.status,
+        cach_control: headers["Cache-Control"] || "",
+        content_type: headers["Content-Type"] || "",
+        date: headers["Date"] || "",
+        expire: headers["Expires"] || "",
+        location: headers["Location"] || "",
+        server: headers["Server"] || "",
+        x_content_type_option: headers["X-Content-Type-Options"] || "",
+        x_xss_protection: headers["X-XSS-Protection"] || ""
+      }
+    } # |> Poison.encode!
+      # |> IO.inspect
+
+    conn
+  end
+
+  defp readbody(conn) do
+    case read_body(conn, []) do
+      {:ok, body, conn} ->
+        body
+      {:more, body, conn} ->
+        readbody conn
+    end
   end
 
   defp gen_path(conn, proxy) when proxy == nil do
