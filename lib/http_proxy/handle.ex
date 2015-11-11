@@ -60,11 +60,11 @@ defmodule HttpProxy.Handle do
 
     %{conn | resp_headers: headers}
     |> send_resp(status, body)
-    |> record
+    |> record_conn(false) # should `true` if yu would like to turn record on.
   end
 
   # TODO: output connection
-  defp record(conn) do
+  defp record_conn(conn, record) when record == true do
     {a, b, c, d} = conn.remote_ip
     headers =  conn.resp_headers
                |> Enum.reduce(Map.new, fn {key, value}, acc ->
@@ -101,10 +101,11 @@ defmodule HttpProxy.Handle do
         x_xss_protection: headers["X-XSS-Protection"] || ""
       }
     } # |> Poison.encode!
-      # |> IO.inspect
+      |> IO.inspect
 
     conn
   end
+  defp record_conn(conn, record) when record == false, do: conn
 
   defp readbody(conn) do
     case read_body(conn, []) do

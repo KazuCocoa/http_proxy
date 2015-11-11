@@ -25,7 +25,7 @@ config :http_proxy,
 ```
 
 # TODO
-- [ ] record/play request
+- [ ] record/play request <= a bit...
     - the following format is a sample.
 ```
 [
