@@ -3,7 +3,7 @@ defmodule HttpProxy.Mixfile do
 
   def project do
     [app: :http_proxy,
-     version: "0.1.0",
+     version: "0.2.0",
      elixir: "~> 1.0",
      name: "ExHttpProxy",
      source_url: "https://github.com/KazuCocoa/http_proxy",
