@@ -6,4 +6,6 @@ config :http_proxy,
                to:   "http://google.com"},
              %{port: 8081,
                to:   "http://neko.com"}
-            ]
+            ],
+  record: true,
+  export_path: "example"

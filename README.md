@@ -22,38 +22,14 @@ config :http_proxy,
              %{port: 4001,
                to:   "http://yahoo.com"}
             ]
+  record: true, # true: record requests. false: don't record.
+  export_path: "test_example" #
 ```
 
 # TODO
-- [ ] record/play request <= a bit...
+- [x] record request
     - the following format is a sample.
-```
-[
-  {
-    "request": {
-      "body": "",
-      "headers": [],
-      "method": "get",
-      "options": [],
-      "request_body": "",
-      "url": "http://google.com/"
-    },
-    "response": {
-      "body": "#Reference<0.0.4.17>",
-      "headers": {
-        "Cache-Control": "private",
-        "Content-Type": "text/html; charset=UTF-8",
-        "Location": "http://www.google.co.jp/?gfe_rd=cr&ei=EhhCVoy_Gsf98weenYHgCQ",
-        "Content-Length": "261",
-        "Date": "Tue, 10 Nov 2015 16:15:14 GMT",
-        "Server": "GFE/2.0"
-      },
-      "status_code": 302,
-      "type": "ok"
-    }
-  }
-]
-```
+- [ ] play request
 - [ ] use vcr <= a bit...
     - integrate https://github.com/parroty/exvcr
 

@@ -6,4 +6,5 @@ config :http_proxy,
                to:   "http://google.com"},
              %{port: 4001,
                to:   "http://yahoo.com"}
-            ]
+            ],
+  record: true
