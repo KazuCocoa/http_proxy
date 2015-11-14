@@ -5,7 +5,7 @@ defmodule HttpProxy.File do
   @mapping_path Application.get_env(:http_proxy, :mapping_path) || "default/mappings"
 
   def filename(conn) do
-    random_st = Integer.to_string(:random.uniform 100_00_00_00)
+    random_st = Integer.to_string(:random.uniform 100_000_000)
     Enum.join(conn.path_info, "-") <> "-" <> random_st <> ".json"
   end
 
