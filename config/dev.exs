@@ -7,4 +7,5 @@ config :http_proxy,
              %{port: 4001,
                to:   "http://yahoo.com"}
             ],
-  record: true
+  record: true,
+  export_path: "my_example"

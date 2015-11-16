@@ -60,7 +60,7 @@ defmodule HttpProxy.Handle do
   defp record_conn(conn, record) when record == true do
     filename = HttpProxy.File.filename conn
     Format.pretty_json(conn, true)
-    |> HttpProxy.File.export(filename)
+    |> HttpProxy.File.export(filename, conn)
 
     conn
   end

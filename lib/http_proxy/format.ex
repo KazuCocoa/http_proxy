@@ -1,8 +1,10 @@
 defmodule HttpProxy.Data do
   @derive [Poison.Encoder]
   defstruct [
-    request: [:host, :port, :remote, :method, :scheme, :request_path, :req_headers, :query_string, :query_body, :cookies, :query_params, :req_cookies],
-    response: [:resp_body, :resp_cookies, :scheme, :status]
+    # request: [:host, :port, :remote, :method, :scheme, :request_path, :req_headers, :query_string, :query_body, :cookies, :query_params, :req_cookies],
+    request: [:host, :port, :remote, :method, :scheme, :request_path, :req_headers, :query_string, :query_body, :query_params],
+    # response: [:resp_body, :resp_cookies, :scheme, :status]
+    response: [:resp_body, :scheme, :status]
   ]
 end
 
@@ -24,7 +26,7 @@ defmodule HttpProxy.Format do
         method: conn.method,
         scheme: conn.scheme,
         request_path: conn.request_path,
-        req_headers: conn.req_headers,
+        # req_headers: conn.req_headers, # fail to encord "cookies".
         query_string: conn.query_string,
         query_body: readbody(conn),
         cookies: conn.cookies,
