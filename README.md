@@ -28,7 +28,7 @@ config :http_proxy,
 
 # TODO
 - [x] record request
-    - the following format is a sample.
+    - should able to encode cookies
 - [ ] play request
 - [ ] use vcr <= a bit...
     - integrate https://github.com/parroty/exvcr

@@ -31,8 +31,13 @@ defmodule HttpProxyTest do
 
 
   test "send request and response" do
+    # move to setup
+    File.rm_rf!(Application.get_env(:http_proxy, :export_path))
+
     con = conn(:get, "http://localhost:8080/hoge/inu?email=neko&pass=123")
     HttpProxy.Handle.dispatch(con, "")
+
+    assert File.exists?(HttpProxy.File.gen_export_path(con)) == true
   end
 
 end
