@@ -8,6 +8,7 @@ defmodule HttpProxy.Data do
   ]
 end
 
+# TODO: update formats
 defmodule HttpProxy.Format do
   @moduledoc false
 
