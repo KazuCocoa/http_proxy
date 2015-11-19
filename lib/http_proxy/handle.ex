@@ -20,8 +20,9 @@ defmodule HttpProxy.Handle do
   end
 
   def dispatch(conn, _opts) do
-    {:ok, client} = :hackney.request :get, uri(conn), conn.req_headers, :stream, []
-
+    {:ok, client} = String.downcase(conn.method)
+                    |> String.to_atom
+                    |> :hackney.request(uri(conn), conn.req_headers, :stream, [])
     conn
     |> write_proxy(client)
     |> read_proxy(client)
