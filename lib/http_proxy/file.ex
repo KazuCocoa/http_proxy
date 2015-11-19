@@ -24,7 +24,7 @@ defmodule HttpProxy.File do
 
   # TODO: read recorded files
   def read_from(file) do
-    unless File.exists?(gen_export_path), do: raise ArgumentError, "no mapping files"
+    unless File.exists?(gen_export_path), do: raise(ArgumentError, "no mapping files")
     case File.read (gen_export_path <> "/" <> file) do
       {:ok, body} ->
         Poison.decode body
