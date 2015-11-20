@@ -27,7 +27,7 @@ defmodule HttpProxy.File do
     unless File.exists?(gen_export_path), do: raise(ArgumentError, "no mapping files")
     case File.read (gen_export_path <> "/" <> file) do
       {:ok, body} ->
-        Poison.decode body
+        JSX.decode body
       {:error, message} ->
         {:error, message}
     end

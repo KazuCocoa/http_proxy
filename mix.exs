@@ -35,7 +35,7 @@ defmodule HttpProxy.Mixfile do
       {:cowboy, "~> 1.0.0" },
       {:plug, "~> 1.0.0"},
       {:hackney, "~> 1.4.4"},
-      {:poison, "~> 1.5"},
+      {:exjsx, "~> 3.2"},
       {:ex_parametarized, "~> 1.0.0", only: :test},
       {:earmark, "~> 0.1", only: :dev},
       {:ex_doc, "~> 0.10", only: :dev},

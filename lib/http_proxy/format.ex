@@ -1,5 +1,5 @@
 defmodule HttpProxy.Data do
-  @derive [Poison.Encoder]
+  @derive [JSX.Encoder]
   defstruct [
     # request: [:host, :port, :remote, :method, :scheme, :request_path, :req_headers, :query_string, :query_body, :cookies, :query_params, :req_cookies],
     request: [:host, :port, :remote, :method, :scheme, :request_path, :req_headers, :query_string, :query_body, :query_params],
@@ -19,36 +19,35 @@ defmodule HttpProxy.Format do
                  Map.put acc, key, value
                end)
 
+    request_url = "#{conn.scheme}://#{conn.host}:#{Integer.to_string(conn.port)}#{conn.request_path}?#{conn.query_string}"
+
     %HttpProxy.Data{
       request: %{
-        host: conn.host,
-        port: conn.port,
+        url: request_url,
         remote: "#{a}.#{b}.#{c}.#{d}",
         method: conn.method,
-        scheme: conn.scheme,
-        request_path: conn.request_path,
-        # req_headers: conn.req_headers, # fail to encord "cookies".
-        query_string: conn.query_string,
-        query_body: readbody(conn),
-        cookies: conn.cookies,
-        query_params: conn.query_params,
-        req_cookies: conn.req_cookies
+        headers: conn.req_headers, # Maybe failed to convert
+        request_body: readbody(conn),
+        options: conn.query_params
       },
       response: %{
-        resp_body: conn.resp_body,
-        resp_cookies: conn.resp_cookies,
-        scheme: conn.scheme,
-        status: conn.status,
-        cach_control: headers["Cache-Control"] || "",
-        content_type: headers["Content-Type"] || "",
-        date: headers["Date"] || "",
-        expire: headers["Expires"] || "",
-        location: headers["Location"] || "",
-        server: headers["Server"] || "",
-        x_content_type_option: headers["X-Content-Type-Options"] || "",
-        x_xss_protection: headers["X-XSS-Protection"] || ""
+        body: conn.resp_body,
+        cookies: conn.resp_cookies,
+        status_code: conn.status,
+        headers: %{
+          "Cache-Control": headers["Cache-Control"] || "",
+          "Content-Type": headers["Content-Type"] || "",
+          "Date": headers["Date"] || "",
+          "Expires": headers["Expires"] || "",
+          "Location": headers["Location"] || "",
+          "Server": headers["Server"] || "",
+          "X-Content-Type-Options": headers["X-Content-Type-Options"] || "",
+          "X-XSS-Protection": headers["X-XSS-Protection"] || ""
+        }
       }
-    } |> Poison.encode!([pretty: true])
+    }
+    |> JSX.encode!
+    |> JSX.prettify!
   end
 
   defp readbody(conn) do
