@@ -31,12 +31,46 @@ config :http_proxy,
   export_path: "test_example" #
 ```
 
+## Example
+
+```
+{
+  "request": {
+    "headers": [],
+    "method": "GET",
+    "options": {
+      "aspect": "query_params"
+    },
+    "remote": "127.0.0.1",
+    "request_body": "",
+    "url": "http://localhost:8080/hoge/inu?email=neko&pass=123"
+  },
+  "response": {
+    "body": "<HTML><HEAD><meta http-equiv=\"content-type\" content=\"text/html;charset=utf-8\">\n<TITLE>301 Moved</TITLE></HEAD><BODY>\n<H1>301 Moved</H1>\nThe document has moved\n<A HREF=\"http://www.google.com/hoge/inu?email=neko&amp;pass=123\">here</A>.\r\n</BODY></HTML>\r\n",
+    "cookies": {},
+    "headers": {
+      "Cache-Control": "public, max-age=2592000",
+      "Content-Length": "251",
+      "Content-Type": "text/html; charset=UTF-8",
+      "Date": "Sat, 21 Nov 2015 00:37:38 GMT",
+      "Expires": "Mon, 21 Dec 2015 00:37:38 GMT",
+      "Location": "http://www.google.com/hoge/inu?email=neko&pass=123",
+      "Server": "sffe",
+      "X-Content-Type-Options": "nosniff",
+      "X-XSS-Protection": "1; mode=block"
+    },
+    "status_code": 301
+  }
+}
+```
+
 # TODO
-- [x] record request
-    - should able to encode cookies
+- [ ] record request
+    - [x] should able to encode cookies: Use JSX to decode into jsons.
+    - [x] format to like vrc
     - update TODOs
 - [ ] refactor
-    - file structures
+    - [x] file structures
     - test cases
 - [ ] play request
 - [ ] use vcr <= a bit...
