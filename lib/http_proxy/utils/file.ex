@@ -1,14 +1,16 @@
-defmodule HttpProxy.File do
+defmodule HttpProxy.Utils.File do
   @moduledoc false
 
   defstruct export_path: Application.get_env(:http_proxy, :export_path) || "default",
             response_files: "__files",
             mapping_files: "mappings"
+            
+  alias HttpProxy.Utils.File, as: HttpProxyFile
 
-  def gen_export_path, do: %HttpProxy.File{}.export_path
-  def gen_export_path(conn), do: %HttpProxy.File{}.export_path <> "/" <> Integer.to_string(conn.port)
-  def response_path, do: %HttpProxy.File{}.response_files
-  def mapping_path, do: %HttpProxy.File{}.mapping_files
+  def gen_export_path, do: %HttpProxyFile{}.export_path
+  def gen_export_path(conn), do: %HttpProxyFile{}.export_path <> "/" <> Integer.to_string(conn.port)
+  def response_path, do: %HttpProxyFile{}.response_files
+  def mapping_path, do: %HttpProxyFile{}.mapping_files
 
   def filename(conn) do
     :random.seed(:erlang.now)

@@ -3,11 +3,11 @@ defmodule HttpProxy.Data do
             response: [:body, :cookies, :status_code, :headers]
 end
 
-# TODO: update formats
 defmodule HttpProxy.Format do
   @moduledoc false
 
-  def pretty_json(conn, pretty) when pretty == true do
+  def pretty_json(conn, pretty) when pretty == true, do: pretty_json(conn, false) |> JSX.prettify!
+  def pretty_json(conn, pretty) do
     {a, b, c, d} = conn.remote_ip
 
     %HttpProxy.Data{
@@ -27,7 +27,6 @@ defmodule HttpProxy.Format do
       }
     }
     |> JSX.encode!
-    |> JSX.prettify!
   end
 
   defp readbody(conn) do
