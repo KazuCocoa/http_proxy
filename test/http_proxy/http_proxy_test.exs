@@ -1,4 +1,4 @@
-defmodule HttpProxyTest do
+defmodule HttpProxy.Test do
   use ExUnit.Case, async: true
   use ExUnit.Parametarized
   use Plug.Test
@@ -29,12 +29,15 @@ defmodule HttpProxyTest do
       ]
   end
 
-  test "send request and response" do
-    # move to setup
+  test "send request and get response" do
     File.rm_rf!(Application.get_env(:http_proxy, :export_path))
 
-    con = conn(:get, "http://localhost:8080/hoge/inu?email=neko&pass=123")
-    HttpProxy.Handle.dispatch(con, "")
+    conn(:get, "http://localhost:8080/hoge/inu?email=neko&pass=123")
+    |> HttpProxy.Handle.dispatch("")
+
+    conn(:post, "http://localhost:8080/hoge/inu", "nekoneko")
+    |> put_req_header("content-type", "application/json")
+    |> HttpProxy.Handle.dispatch("")
 
     assert File.exists?("example/8080") == true
   end
