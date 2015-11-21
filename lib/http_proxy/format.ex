@@ -1,11 +1,6 @@
 defmodule HttpProxy.Data do
-  @derive [JSX.Encoder]
-  defstruct [
-    # request: [:host, :port, :remote, :method, :scheme, :request_path, :req_headers, :query_string, :query_body, :cookies, :query_params, :req_cookies],
-    request: [:host, :port, :remote, :method, :scheme, :request_path, :req_headers, :query_string, :query_body, :query_params],
-    # response: [:resp_body, :resp_cookies, :scheme, :status]
-    response: [:resp_body, :scheme, :status]
-  ]
+  defstruct request: [:url, :remote, :method, :headers, :request_body, :options],
+            response: [:body, :cookies, :status_code, :headers]
 end
 
 # TODO: update formats
@@ -14,16 +9,10 @@ defmodule HttpProxy.Format do
 
   def pretty_json(conn, pretty) when pretty == true do
     {a, b, c, d} = conn.remote_ip
-    headers =  conn.resp_headers
-               |> Enum.reduce(Map.new, fn {key, value}, acc ->
-                 Map.put acc, key, value
-               end)
-
-    request_url = "#{conn.scheme}://#{conn.host}:#{Integer.to_string(conn.port)}#{conn.request_path}?#{conn.query_string}"
 
     %HttpProxy.Data{
       request: %{
-        url: request_url,
+        url: url(conn),
         remote: "#{a}.#{b}.#{c}.#{d}",
         method: conn.method,
         headers: conn.req_headers, # Maybe failed to convert
@@ -34,16 +23,7 @@ defmodule HttpProxy.Format do
         body: conn.resp_body,
         cookies: conn.resp_cookies,
         status_code: conn.status,
-        headers: %{
-          "Cache-Control": headers["Cache-Control"] || "",
-          "Content-Type": headers["Content-Type"] || "",
-          "Date": headers["Date"] || "",
-          "Expires": headers["Expires"] || "",
-          "Location": headers["Location"] || "",
-          "Server": headers["Server"] || "",
-          "X-Content-Type-Options": headers["X-Content-Type-Options"] || "",
-          "X-XSS-Protection": headers["X-XSS-Protection"] || ""
-        }
+        headers: resp_headers(conn)
       }
     }
     |> JSX.encode!
@@ -57,5 +37,16 @@ defmodule HttpProxy.Format do
       {:more, body, conn} ->
         readbody conn
     end
+  end
+  
+  defp url(conn) do
+    "#{conn.scheme}://#{conn.host}:#{Integer.to_string(conn.port)}#{conn.request_path}?#{conn.query_string}"
+  end
+  
+  defp resp_headers(conn) do
+    conn.resp_headers
+    |> Enum.reduce(Map.new, fn {key, value}, acc ->
+      Map.put acc, key, value
+    end)
   end
 end
