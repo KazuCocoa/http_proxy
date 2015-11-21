@@ -33,7 +33,7 @@ config :http_proxy,
 
 ## Example
 
-```
+```json
 {
   "request": {
     "headers": [],
