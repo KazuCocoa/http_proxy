@@ -1,16 +1,13 @@
-defmodule HttpProxy.Data do
-  defstruct request: [:url, :remote, :method, :headers, :request_body, :options],
-            response: [:body, :cookies, :status_code, :headers]
-end
-
 defmodule HttpProxy.Format do
   @moduledoc false
+  
+  alias HttpProxy.Data, as: Data
 
   def pretty_json(conn, pretty) when pretty == true, do: pretty_json(conn, false) |> JSX.prettify!
   def pretty_json(conn, pretty) do
     {a, b, c, d} = conn.remote_ip
 
-    %HttpProxy.Data{
+    %Data{
       request: %{
         url: url(conn),
         remote: "#{a}.#{b}.#{c}.#{d}",
