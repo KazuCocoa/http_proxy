@@ -36,10 +36,15 @@ defmodule HttpProxy.Test do
     |> HttpProxy.Handle.dispatch("")
 
     conn(:post, "http://localhost:8080/hoge/inu", "nekoneko")
-    |> put_req_header("content-type", "application/json")
     |> HttpProxy.Handle.dispatch("")
 
-    assert File.exists?("example/8080") == true
+    conn(:put, "http://localhost:8080/hoge/inu", "nekoneko")
+    |> HttpProxy.Handle.dispatch("")
+
+    conn(:delete, "http://localhost:8080/hoge/inu", "nekoneko")
+    |> HttpProxy.Handle.dispatch("")
+
+    assert Enum.count(File.ls!("example/8080")) == 4
   end
 
 end
