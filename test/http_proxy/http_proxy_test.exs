@@ -1,6 +1,6 @@
 defmodule HttpProxy.Test do
   use ExUnit.Case, async: true
-  use ExUnit.Parametarized
+  use ExUnit.Parameterized
   use Plug.Test
 
   test "check subversion tree" do
