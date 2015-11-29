@@ -58,23 +58,24 @@ defmodule HttpProxy.Handle do
       @record && @play ->
         raise ArgumentError, "should set record or play."
       @play ->
-        p_conn = play_conn(%{conn | resp_headers: headers})
-        send_resp p_conn, p_conn.status, p_conn.resp_body
+        %{conn | resp_headers: headers}
+        |> play_conn
       @record ->
         %{conn | resp_headers: headers}
         |> send_resp(status, body)
-        |> record_conn(@record)
+        |> record_conn
+      true ->
+        conn
     end
   end
 
-  defp record_conn(conn, record) when record == true do
+  defp record_conn(conn) do
     filename = HttpProxy.Utils.File.filename conn
     Format.pretty_json(conn, true)
     |> HttpProxy.Utils.File.export(filename, conn)
 
     conn
   end
-  defp record_conn(conn, record), do: conn
 
   # TODO: Brush up
   defp play_conn(conn) do
@@ -94,7 +95,8 @@ defmodule HttpProxy.Handle do
     conn = %{conn | resp_cookies: response[:cookies] }
     conn = %{conn | status: response[:status_code] }
     conn = %{conn | resp_headers: response[:headers] }
-    conn
+
+    send_resp conn, conn.status, conn.resp_body
   end
 
   defp gen_path(conn, proxy) when proxy == nil do
