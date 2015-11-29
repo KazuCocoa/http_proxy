@@ -10,6 +10,7 @@ defmodule HttpProxy.Handle do
   @proxies Application.get_env :http_proxy, :proxies
   @scheme %{http: "http://", https: "https://"}
   @record Application.get_env :http_proxy, :record || false
+  @play Application.get_env :http_proxy, :play || false
 
   plug Plug.Logger
   plug :dispatch
@@ -53,9 +54,17 @@ defmodule HttpProxy.Handle do
 
     headers = List.keydelete headers, "Transfer-Encoding", 0
 
-    %{conn | resp_headers: headers}
-    |> send_resp(status, body)
-    |> record_conn(@record)
+    cond do
+      @record && @play ->
+        raise ArgumentError, "should set record or play."
+      @play ->
+        p_conn = play_conn(%{conn | resp_headers: headers})
+        send_resp p_conn, p_conn.status, p_conn.resp_body
+      @record ->
+        %{conn | resp_headers: headers}
+        |> send_resp(status, body)
+        |> record_conn(@record)
+    end
   end
 
   defp record_conn(conn, record) when record == true do
@@ -66,6 +75,27 @@ defmodule HttpProxy.Handle do
     conn
   end
   defp record_conn(conn, record), do: conn
+
+  # TODO: Brush up
+  defp play_conn(conn) do
+    body = "<html>hello world</html>"
+    response = [
+      "body": body,
+      "cookies": [],
+      "headers": [
+        {"Content-Type", "text/html; charset=UTF-8"},
+        {"Date", conn.resp_headers["Date"]},
+        {"Server", "GFE/2.0"}
+      ],
+      "status_code": 200
+    ]
+
+    conn = %{conn | resp_body: response[:body] }
+    conn = %{conn | resp_cookies: response[:cookies] }
+    conn = %{conn | status: response[:status_code] }
+    conn = %{conn | resp_headers: response[:headers] }
+    conn
+  end
 
   defp gen_path(conn, proxy) when proxy == nil do
     case @scheme[conn.scheme] do

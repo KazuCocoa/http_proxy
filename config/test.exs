@@ -8,4 +8,5 @@ config :http_proxy,
                to:   "http://neko.com"}
             ],
   record: true,
+  play: false,
   export_path: "example"
