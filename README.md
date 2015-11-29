@@ -73,6 +73,9 @@ config :http_proxy,
     - [x] file structures
     - test cases
 - [ ] play request
+    - [x] implement simple case
+    - [ ] refactor
+    - [ ] expand them
 - [ ] use vcr <= a bit...
     - integrate https://github.com/parroty/exvcr
 
