@@ -76,6 +76,7 @@ config :http_proxy,
     - [x] implement simple case
     - [ ] refactor
     - [ ] expand them
+    - [ ] verify template json format
 - [ ] use vcr <= a bit...
     - integrate https://github.com/parroty/exvcr
 
