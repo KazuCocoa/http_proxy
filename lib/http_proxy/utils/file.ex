@@ -2,15 +2,16 @@ defmodule HttpProxy.Utils.File do
   @moduledoc false
 
   defstruct export_path: Application.get_env(:http_proxy, :export_path) || "default",
+            play_path: Application.get_env(:http_proxy, :play_path) || "default",
             response_files: "__files",
             mapping_files: "mappings"
-            
+
   alias HttpProxy.Utils.File, as: HttpProxyFile
 
-  def gen_export_path, do: %HttpProxyFile{}.export_path
-  def gen_export_path(conn), do: %HttpProxyFile{}.export_path <> "/" <> Integer.to_string(conn.port)
-  def response_path, do: %HttpProxyFile{}.response_files
-  def mapping_path, do: %HttpProxyFile{}.mapping_files
+  def get_export_path, do: %HttpProxyFile{}.export_path
+  def get_export_path(conn), do: %HttpProxyFile{}.export_path <> "/" <> Integer.to_string(conn.port)
+  def get_response_path, do: %HttpProxyFile{}.play_path <> "/" <> %HttpProxyFile{}.response_files
+  def get_mapping_path, do: %HttpProxyFile{}.play_path <> "/" <> %HttpProxyFile{}.mapping_files
 
   def filename(conn) do
     :random.seed(:erlang.now)
@@ -20,14 +21,14 @@ defmodule HttpProxy.Utils.File do
 
   # TODO: reduce `conn`
   def export(json, file, conn) do
-    unless File.exists?(gen_export_path(conn)), do: File.mkdir_p gen_export_path(conn)
-    File.write((gen_export_path(conn) <> "/" <> file), json)
+    unless File.exists?(get_export_path(conn)), do: File.mkdir_p get_export_path(conn)
+    File.write((get_export_path(conn) <> "/" <> file), json)
   end
 
   # TODO: read recorded files
   def read_from(file) do
-    unless File.exists?(gen_export_path), do: raise(ArgumentError, "no mapping files")
-    case File.read (gen_export_path <> "/" <> file) do
+    unless File.exists?(get_export_path), do: raise(ArgumentError, "no mapping files")
+    case File.read (get_export_path <> "/" <> file) do
       {:ok, body} ->
         JSX.decode body
       {:error, message} ->
