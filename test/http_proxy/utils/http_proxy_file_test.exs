@@ -9,7 +9,7 @@ defmodule HttpProxy.Utils.File.Test do
 
     assert HttpProxyFile.get_export_path == "example"
     assert HttpProxyFile.get_export_path(conn) == "example/8080"
-    assert HttpProxyFile.get_response_path == "test/data/play_samples/__files"
-    assert HttpProxyFile.get_mapping_path == "test/data/play_samples/mappings"
+    assert HttpProxyFile.get_response_path == "test/data/__files"
+    assert HttpProxyFile.get_mapping_path == "test/data/mappings"
   end
 end

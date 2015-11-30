@@ -10,4 +10,4 @@ config :http_proxy,
   record: true,
   play: false,
   export_path: "example",
-  play_path: "test/data/play_samples"
+  play_path: "test/data"

@@ -6,6 +6,7 @@ defmodule HttpProxy.Handle do
   require Logger
 
   alias HttpProxy.Format
+  alias HttpProxy.Utils.File, as: HttpProxyFile
 
   @proxies Application.get_env :http_proxy, :proxies
   @scheme %{http: "http://", https: "https://"}
@@ -79,16 +80,16 @@ defmodule HttpProxy.Handle do
 
   # TODO: Brush up
   defp play_conn(conn) do
-    body = "<html>hello world</html>"
+    res_json = File.read!(HttpProxyFile.get_mapping_path <> "/sample.json")
+               |> JSX.decode!
+               |> Map.fetch!("response")
+
     response = [
-      "body": body,
-      "cookies": [],
-      "headers": [
-        {"Content-Type", "text/html; charset=UTF-8"},
-        {"Date", conn.resp_headers["Date"]},
-        {"Server", "GFE/2.0"}
-      ],
-      "status_code": 200
+      "body": Map.fetch!(res_json, "body"),
+      "cookies": Map.to_list(Map.fetch!(res_json, "cookies")),
+      "headers": Map.to_list(Map.fetch!(res_json, "headers"))
+                 |> List.insert_at(0, {"Date", conn.resp_headers["Date"]}),
+       "status_code": Map.fetch!(res_json, "status_code")
     ]
 
     conn = %{conn | resp_body: response[:body] }
