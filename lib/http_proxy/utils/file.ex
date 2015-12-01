@@ -14,8 +14,7 @@ defmodule HttpProxy.Utils.File do
   def get_mapping_path, do: %HttpProxyFile{}.play_path <> "/" <> %HttpProxyFile{}.mapping_files
 
   def filename(conn) do
-    :random.seed(:erlang.now)
-    random_st = Integer.to_string(:random.uniform 100_000_000)
+    random_st = Integer.to_string(:rand.uniform 100_000_000)
     Enum.join(conn.path_info, "-") <> "-" <> random_st <> ".json"
   end
 
