@@ -1,7 +1,8 @@
 language: elixir
 
-opt_release:
-  - 18
+otp_release:
+  - 18.0
+  - 18.1
 
 elixir:
   - 1.0.0
