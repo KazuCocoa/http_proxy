@@ -23,4 +23,12 @@ defmodule HttpProxy.Utils.File.Test do
     assert {:ok, [^json_file_path]} = HttpProxyFile.json_files(json_test_dir)
     assert {:ok, expected_json} == HttpProxyFile.read_json_file(json_file_path)
   end
+
+  test "failed to read json files" do
+    json_test_dir = "test/data/map"
+    json_file_path = "test/data/mappings/sample"
+
+    assert {:error, :enoent} == HttpProxyFile.json_files(json_test_dir)
+    assert {:error, :enoent} == HttpProxyFile.read_json_file(json_file_path)
+  end
 end
