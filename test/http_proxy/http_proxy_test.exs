@@ -47,4 +47,19 @@ defmodule HttpProxy.Test do
     assert Enum.count(File.ls!("example/8080")) == 4
   end
 
+  # TODO: move to other file
+  test "format of play_response" do
+    expected = ["8080/request/path": %{"request" => %{"path" => "request/path",
+                     "port" => 8080},
+                   "response" => %{"body" => "<html>hello world</html>", "cookies" => %{},
+                     "headers" => %{"Content-Type" => "text/html; charset=UTF-8",
+                       "Server" => "GFE/2.0"}, "status_code" => 200}},
+                 "8080/request/path2": %{"request" => %{"path" => "request/path2",
+                     "port" => 8080},
+                   "response" => %{"body" => "<html>hello world2</html>", "cookies" => %{},
+                     "headers" => %{"Content-Type" => "text/html; charset=UTF-8",
+                       "Server" => "GFE/2.0"}, "status_code" => 200}}]
+    assert ^expected = HttpProxy.Handle.play_responses
+  end
+
 end

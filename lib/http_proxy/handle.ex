@@ -100,11 +100,16 @@ defmodule HttpProxy.Handle do
     send_resp conn, conn.status, conn.resp_body
   end
 
+  # TODO: should remove `json_test_dir`
   def play_responses() do
-    HttpProxyFile
+    json_test_dir = "test/data/mappings"
+    HttpProxyFile.json_files!(json_test_dir)
+    |> Enum.reduce([], fn path, acc ->
+      json = HttpProxyFile.read_json_file!(path)
+      key = Integer.to_string(json["request"]["port"]) <> "/" <> json["request"]["path"]
+      List.keystore(acc, :"#{key}", 0, {:"#{key}", json})
+    end)
   end
-
-
 
   defp gen_path(conn, proxy) when proxy == nil do
     case @scheme[conn.scheme] do
