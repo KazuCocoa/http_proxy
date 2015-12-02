@@ -113,7 +113,7 @@ defmodule HttpProxy.Handle do
 
   defp gen_path(conn, proxy) when proxy == nil do
     case @scheme[conn.scheme] do
-      s ->
+      s when s != nil ->
         s <> conn.host <> "/" <> Enum.join(conn.path_info, "/")
       _ ->
         raise ArgumentError, "no scheme"

@@ -1,10 +1,10 @@
 defmodule HttpProxy.Format do
   @moduledoc false
-  
+
   alias HttpProxy.Data, as: Data
 
   def pretty_json(conn, pretty) when pretty == true, do: pretty_json(conn, false) |> JSX.prettify!
-  def pretty_json(conn, pretty) do
+  def pretty_json(conn, _) do
     {a, b, c, d} = conn.remote_ip
 
     %Data{
@@ -28,17 +28,17 @@ defmodule HttpProxy.Format do
 
   defp readbody(conn) do
     case Plug.Conn.read_body(conn, []) do
-      {:ok, body, conn} ->
+      {:ok, body, _} ->
         body
-      {:more, body, conn} ->
+      {:more, _, conn} ->
         readbody conn
     end
   end
-  
+
   defp url(conn) do
     "#{conn.scheme}://#{conn.host}:#{Integer.to_string(conn.port)}#{conn.request_path}?#{conn.query_string}"
   end
-  
+
   defp resp_headers(conn) do
     conn.resp_headers
     |> Enum.reduce(Map.new, fn {key, value}, acc ->
