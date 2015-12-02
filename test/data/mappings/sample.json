@@ -1,4 +1,8 @@
 {
+  "request": {
+    "path": "request/path",
+    "port": 8080
+  },
   "response": {
     "body": "<html>hello world</html>",
     "cookies": {},

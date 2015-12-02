@@ -100,6 +100,12 @@ defmodule HttpProxy.Handle do
     send_resp conn, conn.status, conn.resp_body
   end
 
+  def play_responses() do
+    HttpProxyFile
+  end
+
+
+
   defp gen_path(conn, proxy) when proxy == nil do
     case @scheme[conn.scheme] do
       s ->
