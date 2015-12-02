@@ -59,7 +59,7 @@ defmodule HttpProxy.Test do
                    "response" => %{"body" => "<html>hello world2</html>", "cookies" => %{},
                      "headers" => %{"Content-Type" => "text/html; charset=UTF-8",
                        "Server" => "GFE/2.0"}, "status_code" => 200}}]
-    assert ^expected = HttpProxy.Handle.play_responses
+    assert ^expected = %HttpProxy.Play.Response{}.responses
   end
 
 end
