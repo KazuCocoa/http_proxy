@@ -9,7 +9,7 @@ defmodule HttpProxy.Play.Response do
     |> HttpProxyFile.json_files!
     |> Enum.reduce([], fn path, acc ->
       json = HttpProxyFile.read_json_file!(path)
-      key = Integer.to_string(json["request"]["port"]) <> "/" <> json["request"]["path"]
+      key = String.downcase(json["request"]["method"]) <> "_" <> Integer.to_string(json["request"]["port"]) <> "/" <> json["request"]["path"]
       List.keystore(acc, :"#{key}", 0, {:"#{key}", json})
     end)
   end

@@ -49,17 +49,17 @@ defmodule HttpProxy.Test do
 
   # TODO: move to other file
   test "format of play_response" do
-    expected = ["8080/request/path": %{"request" => %{"path" => "request/path",
-                     "port" => 8080},
+    expected = ["get_8080/request/path": %{"request" => %{"method" => "GET",
+                     "path" => "request/path", "port" => 8080},
                    "response" => %{"body" => "<html>hello world</html>", "cookies" => %{},
                      "headers" => %{"Content-Type" => "text/html; charset=UTF-8",
                        "Server" => "GFE/2.0"}, "status_code" => 200}},
-                 "8080/request/path2": %{"request" => %{"path" => "request/path2",
-                     "port" => 8080},
+                 "post_8080/request/path2": %{"request" => %{"method" => "POST",
+                     "path" => "request/path2", "port" => 8080},
                    "response" => %{"body" => "<html>hello world2</html>", "cookies" => %{},
                      "headers" => %{"Content-Type" => "text/html; charset=UTF-8",
                        "Server" => "GFE/2.0"}, "status_code" => 200}}]
-    assert ^expected = %HttpProxy.Play.Data{}.responses
+    assert expected == %HttpProxy.Play.Data{}.responses
   end
 
 end
