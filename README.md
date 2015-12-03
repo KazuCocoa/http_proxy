@@ -65,13 +65,12 @@ config :http_proxy,
 ```
 
 # TODO
-- [ ] record request
+- [x] record request
     - [x] should able to encode cookies: Use JSX to decode into jsons.
     - [x] format to like vrc
-    - update TODOs
 - [ ] refactor
-    - [x] file structures
-    - test cases
+    - [ ] file structures
+    - [ ] append test cases
 - [ ] play request
     - [x] implement simple case
     - [ ] refactor
