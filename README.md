@@ -22,13 +22,15 @@ use Mix.Config
 
 config :http_proxy,
   proxies: [
-             %{port: 4000,
+             %{port: 8080,
                to:   "http://google.com"},
-             %{port: 4001,
+             %{port: 8081,
                to:   "http://yahoo.com"}
             ]
-  record: true, # true: record requests. false: don't record.
-  export_path: "test_example" #
+  record: false, # true: record requests. false: don't record.
+  play: true,    # true: play stored requests. false: don't play.
+  export_path: "example",
+  play_path: "test/data"
 ```
 
 ## Example
@@ -68,14 +70,14 @@ config :http_proxy,
 - [x] record request
     - [x] should able to encode cookies: Use JSX to decode into jsons.
     - [x] format to like vrc
+- [ ] play request
+    - [x] implement simple case
+    - [x] expand them
+    - [ ] verify template json format
 - [ ] refactor
     - [ ] file structures
     - [ ] append test cases
-- [ ] play request
-    - [x] implement simple case
-    - [ ] refactor
-    - [ ] expand them
-    - [ ] verify template json format
+    - [ ] prepare document
 - [ ] use vcr <= a bit...
     - integrate https://github.com/parroty/exvcr
 
