@@ -1,0 +1,16 @@
+{
+  "request": {
+    "path": "request/path",
+    "port": 8081,
+    "method": "GET"
+  },
+  "response": {
+    "body": "<html>hello world 3</html>",
+    "cookies": {},
+    "headers": {
+      "Content-Type": "text/html; charset=UTF-8",
+      "Server": "GFE/2.0"
+    },
+    "status_code": 200
+  }
+}

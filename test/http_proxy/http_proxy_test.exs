@@ -58,6 +58,11 @@ defmodule HttpProxy.Test do
                      "path" => "request/path2", "port" => 8080},
                    "response" => %{"body" => "<html>hello world2</html>", "cookies" => %{},
                      "headers" => %{"Content-Type" => "text/html; charset=UTF-8",
+                       "Server" => "GFE/2.0"}, "status_code" => 200}},
+                 "get_8081/request/path": %{"request" => %{"method" => "GET",
+                     "path" => "request/path", "port" => 8081},
+                   "response" => %{"body" => "<html>hello world 3</html>", "cookies" => %{},
+                     "headers" => %{"Content-Type" => "text/html; charset=UTF-8",
                        "Server" => "GFE/2.0"}, "status_code" => 200}}]
     assert expected == %HttpProxy.Play.Data{}.responses
   end

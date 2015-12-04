@@ -70,11 +70,10 @@ defmodule HttpProxy.Handle do
     end
   end
 
-  # TODO: Brush up
   defp play_conn(conn) do
-    res_json = File.read!(HttpProxyFile.get_mapping_path <> "/sample.json")
-               |> JSX.decode!
-               |> Map.fetch!("response")
+    key = String.downcase(conn.method) <> "_" <> Integer.to_string(conn.port) <> conn.request_path
+    {_, resp} = List.keyfind(%HttpProxy.Play.Data{}.responses, String.to_atom(key), 0)
+    res_json = Map.fetch!(resp, "response")
 
     response = [
       "body": Map.fetch!(res_json, "body"),
