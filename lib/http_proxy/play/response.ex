@@ -1,9 +1,22 @@
 defmodule HttpProxy.Play.Response do
   @moduledoc false
 
+  @play Application.get_env :http_proxy, :play || false
+
   alias HttpProxy.Utils.File, as: HttpProxyFile
 
+  def play?, do: @play
+
   def play_responses do
+    case @play do
+      true ->
+        gen_response
+      false ->
+        []
+    end
+  end
+
+  defp gen_response do
     HttpProxyFile.get_mapping_path
     |> HttpProxyFile.json_files!
     |> Enum.reduce([], fn path, acc ->

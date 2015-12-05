@@ -6,12 +6,11 @@ defmodule HttpProxy.Handle do
   require Logger
 
   alias HttpProxy.Play.Data, as: Data
-  alias HttpProxy.Record.Response, as: Response
+  alias HttpProxy.Record.Response, as: Record
+  alias HttpProxy.Play.Response, as: Play
 
   @proxies Application.get_env :http_proxy, :proxies
   @scheme %{http: "http://", https: "https://"}
-  @record Application.get_env :http_proxy, :record || false
-  @play Application.get_env :http_proxy, :play || false
 
   plug Plug.Logger
   plug :dispatch
@@ -56,15 +55,15 @@ defmodule HttpProxy.Handle do
     headers = List.keydelete headers, "Transfer-Encoding", 0
 
     cond do
-      @record && @play ->
+      Record.record? && Play.play? ->
         raise ArgumentError, "Can't set record and play at the same time."
-      @play ->
+      Play.play? ->
         %{conn | resp_headers: headers}
         |> play_conn
-      @record ->
+      Record.record? ->
         %{conn | resp_headers: headers}
         |> send_resp(status, body)
-        |> Response.record
+        |> Record.record
       true ->
         conn
     end

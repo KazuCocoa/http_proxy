@@ -31,6 +31,7 @@ defmodule HttpProxy.Test do
       ]
   end
 
+  # TODO: prepare record = true case
   test "send request and get response" do
     File.rm_rf!(Application.get_env(:http_proxy, :export_path))
 
@@ -50,7 +51,7 @@ defmodule HttpProxy.Test do
       {:ok, files} -> files
       {:error, _}  -> []
     end
-    assert Enum.count(exported_files) == 4
+    assert Enum.count(exported_files) == 0
   end
 
   # TODO: move to other file

@@ -7,7 +7,7 @@ config :http_proxy,
              %{port: 8081,
                to:   "http://neko.com"}
             ],
-  record: true,
-  play: false,
+  record: false,
+  play: true,
   export_path: "test/example",
   play_path: "test/data"
