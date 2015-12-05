@@ -70,10 +70,10 @@ config :http_proxy,
 - [x] record request
     - [x] should able to encode cookies: Use JSX to decode into jsons.
     - [x] format to like vrc
-- [ ] play request
+- [x] play request
     - [x] implement simple case
     - [x] expand them
-    - [ ] verify template json format
+    - [x] verify template json format
 - [ ] refactor
     - [ ] file structures
     - [ ] append test cases
