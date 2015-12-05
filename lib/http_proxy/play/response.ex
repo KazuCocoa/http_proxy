@@ -2,6 +2,8 @@ defmodule HttpProxy.Play.Response do
   @moduledoc false
 
   @play Application.get_env :http_proxy, :play || false
+  @request_key_map Enum.into(["method", "path", "port"], MapSet.new)
+  @response_key_map Enum.into(["body", "cookies", "headers", "status_code"], MapSet.new)
 
   alias HttpProxy.Utils.File, as: HttpProxyFile
 
@@ -28,21 +30,28 @@ defmodule HttpProxy.Play.Response do
     end)
   end
 
-  # TODO: improve verification logic
   defp verify(json) do
     unless Map.has_key?(json, "request"), do: raise ArgumentError, "Should have request"
-    request = json["request"]
-    unless Map.has_key?(request, "method"), do: raise ArgumentError, "Should have method"
-    unless Map.has_key?(request, "path"), do: raise ArgumentError, "Should have path"
-    unless Map.has_key?(request, "port"), do: raise ArgumentError, "Should have port"
 
-    unless Map.has_key?(json, "response"), do: raise ArgumentError, "Should have response"
-    response = json["response"]
-    unless Map.has_key?(response, "body"), do: raise ArgumentError, "Should have body"
-    unless Map.has_key?(response, "cookies"), do: raise ArgumentError, "Should have cookies"
-    unless Map.has_key?(response, "headers"), do: raise ArgumentError, "Should have headers"
-    unless Map.has_key?(response, "status_code"), do: raise ArgumentError, "Should have status_code"
+    request_key = Map.keys(json["request"]) |> Enum.into(MapSet.new)
+    request_diff = MapSet.difference(@request_key_map, request_key)
+
+    response_key = Map.keys(json["response"]) |> Enum.into(MapSet.new)
+    response_diff = MapSet.difference(@response_key_map, response_key)
+
+    if MapSet.size(request_diff) > 0, do: raise ArgumentError, format_error_message(request_diff)
+    if MapSet.size(response_diff) > 0, do: raise ArgumentError, format_error_message(response_diff)
 
     json
+  end
+
+  defp format_error_message(mapset) do
+    message = MapSet.to_list(mapset)
+    |> Enum.reduce("", fn item, acc ->
+      ~s(#{item} #{acc})
+    end)
+    |> IO.inspect
+
+    ~s(Response jsons must include arrtibute: #{message})
   end
 end
