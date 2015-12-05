@@ -14,7 +14,7 @@ defmodule HttpProxy.Supervisor do
 
     proxies?(@proxies)
     |> Enum.reduce([], fn proxy, acc ->
-      module_name = "HttpProxy.Handle#{proxy.port}"
+      module_name = ~s(HttpProxy.Handle#{proxy.port})
       [worker(HttpProxy.Handle, [[proxy, module_name]], [id: String.to_atom(module_name)]) | acc]
     end)
     |> supervise(strategy: :one_for_one)
@@ -34,6 +34,10 @@ defmodule HttpProxy.Supervisor do
                  %{port: 4001,
                    to:   "http://yahoo.com"}
                 ]
+      record: false,
+      play: true,
+      export_path: "test/example",
+      play_path: "test/data"
     ---
     """
     raise ArgumentError, msg

@@ -34,7 +34,7 @@ defmodule HttpProxy.Handle do
     base = gen_path conn, target_proxy(conn)
     case conn.query_string do
       ""           -> base
-      query_string -> base <> "?" <> query_string
+      query_string -> ~s(#{base}?#{query_string})
     end
   end
 
@@ -106,7 +106,7 @@ defmodule HttpProxy.Handle do
         raise ArgumentError, "no scheme"
     end
   end
-  defp gen_path(conn, proxy), do: proxy.to <> "/" <> Enum.join(conn.path_info, "/")
+  defp gen_path(conn, proxy), do: ~s(#{proxy.to}/#{Enum.join(conn.path_info, "/")})
 
   defp target_proxy(conn) do
     Enum.reduce(@proxies, [], fn proxy, acc ->
