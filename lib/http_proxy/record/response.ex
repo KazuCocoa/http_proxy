@@ -9,8 +9,11 @@ defmodule HttpProxy.Record.Response do
   def record?, do: @record
 
   def record(conn) do
+    export = HttpProxyFile.get_export_path(conn.port)
+    filename = HttpProxyFile.filename(conn.path_info)
+
     Format.pretty_json(conn, true)
-    |> HttpProxy.Utils.File.export(HttpProxyFile.get_export_path(conn.port), HttpProxy.Utils.File.filename(conn.path_info))
+    |> HttpProxyFile.export(export, filename)
 
     conn
   end
