@@ -44,7 +44,11 @@ defmodule HttpProxy.Test do
     conn(:delete, "http://localhost:8080/hoge/inu", "nekoneko")
     |> HttpProxy.Handle.dispatch("")
 
-    assert Enum.count(File.ls!("example/8080")) == 4
+    exported_files = case File.ls("test/example/8080") do
+      {:ok, files} -> files
+      {:error, _}  -> []
+    end
+    assert Enum.count(exported_files) == 4
   end
 
   # TODO: move to other file

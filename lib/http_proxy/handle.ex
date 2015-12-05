@@ -5,8 +5,8 @@ defmodule HttpProxy.Handle do
   import Plug.Conn
   require Logger
 
-  alias HttpProxy.Format
-  alias HttpProxy.Utils.File, as: HttpProxyFile
+  alias HttpProxy.Play.Data, as: Data
+  alias HttpProxy.Record.Response, as: Response
 
   @proxies Application.get_env :http_proxy, :proxies
   @scheme %{http: "http://", https: "https://"}
@@ -57,14 +57,14 @@ defmodule HttpProxy.Handle do
 
     cond do
       @record && @play ->
-        raise ArgumentError, "should set record or play."
+        raise ArgumentError, "Can't set record and play at the same time."
       @play ->
         %{conn | resp_headers: headers}
         |> play_conn
       @record ->
         %{conn | resp_headers: headers}
         |> send_resp(status, body)
-        |> HttpProxy.Record.Response.record
+        |> Response.record
       true ->
         conn
     end
@@ -72,21 +72,28 @@ defmodule HttpProxy.Handle do
 
   defp play_conn(conn) do
     key = String.downcase(conn.method) <> "_" <> Integer.to_string(conn.port) <> conn.request_path
-    {_, resp} = List.keyfind(%HttpProxy.Play.Data{}.responses, String.to_atom(key), 0)
-    res_json = Map.fetch!(resp, "response")
 
-    response = [
-      "body": Map.fetch!(res_json, "body"),
-      "cookies": Map.to_list(Map.fetch!(res_json, "cookies")),
-      "headers": Map.to_list(Map.fetch!(res_json, "headers"))
-                 |> List.insert_at(0, {"Date", conn.resp_headers["Date"]}),
-       "status_code": Map.fetch!(res_json, "status_code")
-    ]
+    case List.keyfind(%Data{}.responses, String.to_atom(key), 0) do
+      {_, resp} ->
+        res_json = Map.fetch!(resp, "response")
+        response = [
+          "body": Map.fetch!(res_json, "body"),
+          "cookies": Map.to_list(Map.fetch!(res_json, "cookies")),
+          "headers": Map.to_list(Map.fetch!(res_json, "headers"))
+                     |> List.insert_at(0, {"Date", conn.resp_headers["Date"]}),
+           "status_code": Map.fetch!(res_json, "status_code")
+        ]
 
-    conn = %{conn | resp_body: response[:body] }
-    conn = %{conn | resp_cookies: response[:cookies] }
-    conn = %{conn | status: response[:status_code] }
-    conn = %{conn | resp_headers: response[:headers] }
+        conn = %{conn | resp_body: response[:body] }
+        conn = %{conn | resp_cookies: response[:cookies] }
+        conn = %{conn | status: response[:status_code] }
+        conn = %{conn | resp_headers: response[:headers] }
+      nil ->
+        conn = %{conn | resp_body: "<html>not found nil play_conn case</html>" }
+        conn = %{conn | status: 404 }
+        conn = %{conn | resp_cookies: [] }
+        conn = %{conn | resp_headers: [] }
+    end
 
     send_resp conn, conn.status, conn.resp_body
   end

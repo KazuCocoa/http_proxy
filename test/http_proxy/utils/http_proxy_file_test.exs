@@ -7,8 +7,8 @@ defmodule HttpProxy.Utils.File.Test do
   test "check path generations" do
     conn = conn(:get, "http://localhost:8080/")
 
-    assert HttpProxyFile.get_export_path == "example"
-    assert HttpProxyFile.get_export_path(conn) == "example/8080"
+    assert HttpProxyFile.get_export_path == "test/example"
+    assert HttpProxyFile.get_export_path(conn) == "test/example/8080"
     assert HttpProxyFile.get_response_path == "test/data/__files"
     assert HttpProxyFile.get_mapping_path == "test/data/mappings"
   end

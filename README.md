@@ -29,7 +29,7 @@ config :http_proxy,
             ]
   record: false, # true: record requests. false: don't record.
   play: true,    # true: play stored requests. false: don't play.
-  export_path: "example",
+  export_path: "test/example",
   play_path: "test/data"
 ```
 
