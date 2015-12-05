@@ -1,6 +1,7 @@
 defmodule HttpProxy.Play.Data do
   @moduledoc """
-  HttpProxy.Play.Data is structure for play_response case.
+  HttpProxy.Play.Data is structure for play response mode.
+  The structure gets data via HttpProxy.Play.Response.play_responses.
   """
 
   @doc ~S"""

@@ -3,8 +3,7 @@ defmodule HttpProxy.Play.Response do
 
   alias HttpProxy.Utils.File, as: HttpProxyFile
 
-  # TODO: should remove `json_test_dir`
-  def play_responses() do
+  def play_responses do
     HttpProxyFile.get_mapping_path
     |> HttpProxyFile.json_files!
     |> Enum.reduce([], fn path, acc ->

@@ -16,6 +16,10 @@ defmodule HttpProxy do
                    %{port: 4001,
                      to:   "http://yahoo.com"}
                   ]
+        record: false,
+        play: true,
+        export_path: "test/example",
+        play_path: "test/data"
   2. Access to `http://localhost:4000` via Web Browser.
   3. The http_proxy forward to **http://google.com** .
   """

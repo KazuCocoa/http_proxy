@@ -3,6 +3,8 @@ defmodule HttpProxy.Test do
   use ExUnit.Parameterized
   use Plug.Test
 
+  doctest HttpProxy.Data
+
   test "check subversion tree" do
     pid = Process.whereis HttpProxy.Supervisor
     assert pid != nil
