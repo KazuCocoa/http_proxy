@@ -17,7 +17,7 @@ $ mix proxy # start proxy server
 
 # Configuration
 
-```
+```elixir
 use Mix.Config
 
 config :http_proxy,
