@@ -4,7 +4,7 @@ defmodule HttpProxy.Record.Response do
   alias HttpProxy.Format
   alias HttpProxy.Utils.File, as: HttpProxyFile
 
-  @record Application.get_env :http_proxy, :record || false
+  @record Application.get_env(:http_proxy, :record) || false
 
   def record?, do: @record
 

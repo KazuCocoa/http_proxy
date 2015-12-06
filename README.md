@@ -15,6 +15,13 @@ $ mix deps.get
 $ mix proxy # start proxy server
 ```
 
+If you would like to start production mode, you should run with `MIX_ENV=prod` like the following command.
+
+```
+$ MIX_ENV=prod mix proxy
+```
+
+
 # Configuration
 
 ```elixir

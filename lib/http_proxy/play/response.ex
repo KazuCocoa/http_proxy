@@ -1,7 +1,7 @@
 defmodule HttpProxy.Play.Response do
   @moduledoc false
 
-  @play Application.get_env :http_proxy, :play || false
+  @play Application.get_env(:http_proxy, :play) || false
   @request_key_map Enum.into(["method", "path", "port"], MapSet.new)
   @response_key_map Enum.into(["body", "cookies", "headers", "status_code"], MapSet.new)
 
