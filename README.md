@@ -85,7 +85,7 @@ config :http_proxy,
     - [x] file structures
     - [x] append test cases
     - [ ] Add `@spec`
-    - [ ] prepare document
+    - [x] prepare document
 - [ ] use vcr <= a bit...
     - integrate https://github.com/parroty/exvcr
 
