@@ -10,7 +10,7 @@ defmodule HttpProxy.Handle do
   alias HttpProxy.Play.Response, as: Play
 
   @proxies Application.get_env :http_proxy, :proxies
-  @scheme %{http: "http://", https: "https://"}
+  @scheme [:http, :https]
 
   plug Plug.Logger
   plug :dispatch
@@ -98,14 +98,20 @@ defmodule HttpProxy.Handle do
   end
 
   defp gen_path(conn, proxy) when proxy == nil do
-    case @scheme[conn.scheme] do
-      s when s != nil ->
-        s <> conn.host <> "/" <> Enum.join(conn.path_info, "/")
+    case conn.scheme do
+      s when s in @scheme ->
+        uri = %URI{}
+        %URI{uri | scheme: Atom.to_string(conn.scheme), host: conn.host, path: conn.request_path}
+        |> URI.to_string
       _ ->
         raise ArgumentError, "no scheme"
     end
   end
-  defp gen_path(conn, proxy), do: ~s(#{proxy.to}/#{Enum.join(conn.path_info, "/")})
+  defp gen_path(conn, proxy) do
+    uri = URI.parse proxy.to
+    %URI{uri | path: conn.request_path}
+    |> URI.to_string
+  end
 
   defp target_proxy(conn) do
     Enum.reduce(@proxies, [], fn proxy, acc ->

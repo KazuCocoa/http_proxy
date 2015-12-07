@@ -36,7 +36,10 @@ defmodule HttpProxy.Format do
   end
 
   defp url(conn) do
-    "#{conn.scheme}://#{conn.host}:#{Integer.to_string(conn.port)}#{conn.request_path}?#{conn.query_string}"
+    uri = %URI{}
+    %URI{uri | scheme: Atom.to_string(conn.scheme), host: conn.host, port: conn.port,
+                 path: conn.request_path, query: conn.query_string}
+    |> URI.to_string
   end
 
   defp resp_headers(conn) do
