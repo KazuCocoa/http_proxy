@@ -36,16 +36,16 @@ defmodule HttpProxy.Test do
     File.rm_rf!(Application.get_env(:http_proxy, :export_path))
 
     conn(:get, "http://localhost:8080/hoge/inu?email=neko&pass=123")
-    |> HttpProxy.Handle.dispatch("")
+    |> HttpProxy.Handle.dispatch([])
 
     conn(:post, "http://localhost:8080/hoge/inu", "nekoneko")
-    |> HttpProxy.Handle.dispatch("")
+    |> HttpProxy.Handle.dispatch([])
 
     conn(:put, "http://localhost:8080/hoge/inu", "nekoneko")
-    |> HttpProxy.Handle.dispatch("")
+    |> HttpProxy.Handle.dispatch([])
 
     conn(:delete, "http://localhost:8080/hoge/inu", "nekoneko")
-    |> HttpProxy.Handle.dispatch("")
+    |> HttpProxy.Handle.dispatch([])
 
     exported_files = case File.ls("test/example/8080") do
       {:ok, files} -> files

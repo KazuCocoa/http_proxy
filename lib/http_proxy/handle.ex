@@ -1,5 +1,7 @@
 defmodule HttpProxy.Handle do
-  @moduledoc false
+  @moduledoc """
+  Handle every http request to outside of the server.
+  """
 
   use Plug.Builder
   import Plug.Conn
@@ -10,16 +12,23 @@ defmodule HttpProxy.Handle do
   alias HttpProxy.Play.Response, as: Play
 
   @proxies Application.get_env :http_proxy, :proxies
-  @scheme [:http, :https]
+  @scheme Application.get_env(:http_proxy, :schemes) || [:http, :https]
 
   plug Plug.Logger
   plug :dispatch
 
+  @doc """
+  Start Cowboy http process with localhost and arbitrary port.
+  Clients access to local Cowboy process with HTTP potocol.
+  """
   def start_link([proxy, module_name]) do
     Logger.info "Running Proxy with Cowboy on http://localhost:#{proxy.port} named #{module_name}"
     Plug.Adapters.Cowboy.http(__MODULE__, [], [port: proxy.port, ref: String.to_atom(module_name)])
   end
 
+  @doc """
+  Dispatch connection and Play/Record http/https requests.
+  """
   def dispatch(conn, _opts) do
     {:ok, client} = String.downcase(conn.method)
                     |> String.to_atom
