@@ -82,8 +82,8 @@ config :http_proxy,
     - [x] expand them
     - [x] verify template json format
 - [ ] refactor
-    - [ ] file structures
-    - [ ] append test cases
+    - [x] file structures
+    - [x] append test cases
     - [ ] Add `@spec`
     - [ ] prepare document
 - [ ] use vcr <= a bit...

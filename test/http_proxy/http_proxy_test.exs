@@ -54,7 +54,6 @@ defmodule HttpProxy.Test do
     assert Enum.count(exported_files) == 0
   end
 
-  # TODO: move to other file
   test "format of play_response" do
     expected = ["get_8080/request/path": %{"request" => %{"method" => "GET",
                      "path" => "request/path", "port" => 8080},
