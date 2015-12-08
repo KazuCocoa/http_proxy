@@ -18,19 +18,19 @@ defmodule HttpProxy do
   ## example
   1. Set configuration as the following in `config/config.exs`.
 
-      use Mix.Config
+          use Mix.Config
 
-      config :http_proxy,
-        proxies: [
-                   %{port: 4000,
-                     to:   "http://google.com"},
-                   %{port: 4001,
-                     to:   "http://yahoo.com"}
-                  ]
-        record: false,
-        play: true,
-        export_path: "test/example",
-        play_path: "test/data"
+          config :http_proxy,
+          proxies: [
+                     %{port: 4000,
+                       to:   "http://google.com"},
+                     %{port: 4001,
+                       to:   "http://yahoo.com"}
+                    ]
+          record: false,
+          play: true,
+          export_path: "test/example",
+          play_path: "test/data"
 
   2. Access to `http://localhost:4000` via Web Browser.
       - or access to  `http://localhost:4001`.
