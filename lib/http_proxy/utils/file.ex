@@ -39,7 +39,7 @@ defmodule HttpProxy.Utils.File do
       iex> HttpProxy.Utils.File.get_mapping_path
       "test/data/mappings"
   """
-  @spec get_export_path( | integer | binary) :: String.t
+  @spec get_export_path(integer | binary) :: String.t
   def get_export_path, do: %HttpProxyFile{}.export_path
   def get_export_path(port) when is_integer(port), do: ~s(#{%HttpProxyFile{}.export_path}/#{Integer.to_string(port)})
   def get_export_path(port) when is_binary(port), do: ~s(#{%HttpProxyFile{}.export_path}/#{port})
@@ -73,7 +73,7 @@ defmodule HttpProxy.Utils.File do
   @doc """
   Export json data into `path/file`.
   """
-  @spec filename(binary, String.t, String.t) :: :ok |  {:error, posix}
+  @spec export(binary, String.t, String.t) :: :ok |  {:error, binary}
   def export(json, path, file) do
     unless File.exists?(path), do: File.mkdir_p path
     File.write(~s(#{path}/#{file}), json)
