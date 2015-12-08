@@ -17,10 +17,43 @@ defmodule HttpProxy.Handle do
   plug Plug.Logger
   plug :dispatch
 
+  # Same as Plug.Conn
+  @type t :: %__MODULE__{
+              adapter:         adapter,
+              assigns:         assigns,
+              before_send:     before_send,
+              body_params:     params | Unfetched.t,
+              cookies:         cookies | Unfetched.t,
+              host:            host,
+              method:          method,
+              owner:           owner,
+              params:          params | Unfetched.t,
+              path_info:       segments,
+              port:            :inet.port_number,
+              private:         assigns,
+              query_params:    params | Unfetched.t,
+              query_string:    query_string,
+              peer:            peer,
+              remote_ip:       :inet.ip_address,
+              req_cookies:     cookies | Unfetched.t,
+              req_headers:     headers,
+              request_path:    binary,
+              resp_body:       body,
+              resp_cookies:    resp_cookies,
+              resp_headers:    headers,
+              scheme:          scheme,
+              script_name:     segments,
+              secret_key_base: secret_key_base,
+              state:           state,
+              status:          int_status}
+
+  @type param           :: binary | [param]
+
   @doc """
   Start Cowboy http process with localhost and arbitrary port.
   Clients access to local Cowboy process with HTTP potocol.
   """
+  @spec start_link([integer, String.t]) :: pid
   def start_link([proxy, module_name]) do
     Logger.info "Running Proxy with Cowboy on http://localhost:#{proxy.port} named #{module_name}"
     Plug.Adapters.Cowboy.http(__MODULE__, [], [port: proxy.port, ref: String.to_atom(module_name)])
@@ -29,6 +62,7 @@ defmodule HttpProxy.Handle do
   @doc """
   Dispatch connection and Play/Record http/https requests.
   """
+  @spec dispatch(t, param) :: t
   def dispatch(conn, _opts) do
     {:ok, client} = String.downcase(conn.method)
                     |> String.to_atom
@@ -38,6 +72,7 @@ defmodule HttpProxy.Handle do
     |> read_proxy(client)
   end
 
+  @spec uri(t) :: String.t
   def uri(conn) do
     base = gen_path conn, target_proxy(conn)
     case conn.query_string do

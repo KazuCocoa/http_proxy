@@ -81,10 +81,10 @@ config :http_proxy,
     - [x] implement simple case
     - [x] expand them
     - [x] verify template json format
-- [ ] refactor
+- [x] refactor
     - [x] file structures
     - [x] append test cases
-    - [ ] Add `@spec`
+    - [x] Add `@spec`
     - [x] prepare document
 - [ ] use vcr <= a bit...
     - integrate https://github.com/parroty/exvcr

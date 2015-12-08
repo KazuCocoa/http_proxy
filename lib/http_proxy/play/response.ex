@@ -7,8 +7,10 @@ defmodule HttpProxy.Play.Response do
 
   alias HttpProxy.Utils.File, as: HttpProxyFile
 
+  @spec play?() :: boolean
   def play?, do: @play
 
+  @spec play_responses() :: [binary]
   def play_responses do
     case @play do
       true ->

@@ -39,10 +39,15 @@ defmodule HttpProxy.Utils.File do
       iex> HttpProxy.Utils.File.get_mapping_path
       "test/data/mappings"
   """
+  @spec get_export_path( | integer | binary) :: String.t
   def get_export_path, do: %HttpProxyFile{}.export_path
   def get_export_path(port) when is_integer(port), do: ~s(#{%HttpProxyFile{}.export_path}/#{Integer.to_string(port)})
-  def get_export_path(port) when is_bitstring(port), do: ~s(#{%HttpProxyFile{}.export_path}/#{port})
+  def get_export_path(port) when is_binary(port), do: ~s(#{%HttpProxyFile{}.export_path}/#{port})
+
+  @spec get_response_path() :: String.t
   def get_response_path, do: %HttpProxyFile{}.play_path <> "/" <> %HttpProxyFile{}.response_files
+
+  @spec get_mapping_path() :: String.t
   def get_mapping_path, do: %HttpProxyFile{}.play_path <> "/" <> %HttpProxyFile{}.mapping_files
 
   @doc ~S"""
@@ -55,6 +60,7 @@ defmodule HttpProxy.Utils.File do
       iex> HttpProxy.Utils.File.filename("path-info-path") |> String.match?(~r(\Apath-info-path.*\.json\z))
       true
   """
+  @spec filename([String.t]) :: String.t
   def filename(path_info) when is_list(path_info) do
     random_st = Integer.to_string(:rand.uniform 100_000_000)
     ~s(#{Enum.join(path_info, "-")}-#{random_st}.json)
@@ -67,6 +73,7 @@ defmodule HttpProxy.Utils.File do
   @doc """
   Export json data into `path/file`.
   """
+  @spec filename(binary, String.t, String.t) :: :ok |  {:error, posix}
   def export(json, path, file) do
     unless File.exists?(path), do: File.mkdir_p path
     File.write(~s(#{path}/#{file}), json)
@@ -89,12 +96,15 @@ defmodule HttpProxy.Utils.File do
               "response" => %{"body" => "<html>hello world</html>", "cookies" => %{},
                 "headers" => %{"Content-Type" => "text/html; charset=UTF-8", "Server" => "GFE/2.0"}, "status_code" => 200}}}
   """
+  @spec read_json_file!(String.t) :: binary
   def read_json_file!(path) do
     case read_json_file(path) do
       {:ok, body}       -> body
       {:error, message} -> raise ArgumentError, message
     end
   end
+
+  @spec read_json_file(String.t) :: {:ok, binary} |  {:error, binary}
   def read_json_file(path) do
     case File.read(path) do
       {:ok, body}       -> JSX.decode(body)
@@ -114,12 +124,15 @@ defmodule HttpProxy.Utils.File do
       iex> HttpProxy.Utils.File.json_files("test/data/mappings")
       {:ok, ["test/data/mappings/sample.json", "test/data/mappings/sample2.json", "test/data/mappings/sample3.json"]}
   """
+  @spec json_files(String.t) :: binary
   def json_files!(dir) do
     case json_files(dir) do
       {:ok, files}      -> files
       {:error, message} -> raise ArgumentError, message
     end
   end
+
+  @spec json_files(String.t) :: {:ok, binary} |  {:error, binary}
   def json_files(dir \\ ".") do
     case File.ls(dir) do
       {:ok, files} ->

@@ -6,8 +6,10 @@ defmodule HttpProxy.Record.Response do
 
   @record Application.get_env(:http_proxy, :record) || false
 
+  @spec record?() :: boolean
   def record?, do: @record
 
+  @spec record(t) :: t
   def record(conn) do
     export = HttpProxyFile.get_export_path(conn.port)
     filename = HttpProxyFile.filename(conn.path_info)

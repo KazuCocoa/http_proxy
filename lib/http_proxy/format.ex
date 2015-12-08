@@ -3,6 +3,7 @@ defmodule HttpProxy.Format do
 
   alias HttpProxy.Data, as: Data
 
+  @spec pretty_json(t, boolean) :: binary
   def pretty_json(conn, pretty) when pretty == true, do: pretty_json(conn, false) |> JSX.prettify!
   def pretty_json(conn, _) do
     {a, b, c, d} = conn.remote_ip
