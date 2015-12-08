@@ -88,6 +88,7 @@ config :http_proxy,
     - [x] prepare document
 - [ ] use vcr <= a bit...
     - integrate https://github.com/parroty/exvcr
+- [ ] support Regex request path.
 
 # LICENSE
 MIT. Please read LICENSE.
