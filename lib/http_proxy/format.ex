@@ -16,7 +16,7 @@ defmodule HttpProxy.Format do
         remote: ~s(#{a}.#{b}.#{c}.#{d}),
         method: conn.method,
         headers: conn.req_headers, # Maybe failed to convert
-        request_body: readbody(conn),
+        request_body: readbody(Plug.Conn.read_body(conn, [])),
         options: conn.query_params
       },
       response: %{
@@ -29,14 +29,8 @@ defmodule HttpProxy.Format do
     |> JSX.encode!
   end
 
-  defp readbody(conn) do
-    case Plug.Conn.read_body(conn, []) do
-      {:ok, body, _} ->
-        body
-      {:more, _, conn} ->
-        readbody conn
-    end
-  end
+  defp readbody({:ok, body, _}), do: body
+  defp readbody({:more, _, conn}), do: readbody(Plug.Conn.read_body(conn, []))
 
   defp url(conn) do
     uri = %URI{}
