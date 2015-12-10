@@ -24,12 +24,16 @@ $ MIX_ENV=prod mix proxy
 
 # Configuration
 
+- When `:record` and `:play` are `false`, then the http_proxy works just multi port proxy.
+- When `:record` is `true`, then the http_proxy works to record request which is proxied.
+- When `:play` is `true`, then the http_proxy works to play request between this the http_proxy and clients.
+
 ```elixir
 use Mix.Config
 
 config :http_proxy,
   proxies: [
-             %{port: 8080,
+             %{port: 8080,  # proxy all request even play or record
                to:   "http://google.com"},
              %{port: 8081,
                to:   "http://yahoo.com"}
@@ -41,6 +45,8 @@ config :http_proxy,
 ```
 
 ## Example
+
+### Record request as the following
 
 ```json
 {
@@ -69,6 +75,27 @@ config :http_proxy,
       "X-XSS-Protection": "1; mode=block"
     },
     "status_code": 301
+  }
+}
+```
+
+### Play request with the following JSON data
+
+```json
+{
+  "request": {
+    "path": "request/path",
+    "port": 8080,
+    "method": "GET"
+  },
+  "response": {
+    "body": "<html>hello world</html>",
+    "cookies": {},
+    "headers": {
+      "Content-Type": "text/html; charset=UTF-8",
+      "Server": "GFE/2.0"
+    },
+    "status_code": 200
   }
 }
 ```
