@@ -56,4 +56,8 @@ defmodule HttpProxy.Play.Response do
 
     ~s(Response jsons must include arrtibute: #{message})
   end
+
+  # TODO: Match url to given pattern
+  # Pattern match conn.url with given pattern
+  def pattern(conn_url, %{url_pattern: regex}), do: String.match? conn_url, regex
 end
