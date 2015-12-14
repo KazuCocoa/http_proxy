@@ -59,5 +59,6 @@ defmodule HttpProxy.Play.Response do
 
   # TODO: Match url to given pattern
   # Pattern match conn.url with given pattern
-  def pattern(conn_url, %{url_pattern: regex}), do: String.match? conn_url, regex
+  @spec pattern(binary, %{binary => binary}) :: boolean
+  def pattern(conn_url, %{"url_pattern" => regex}), do: String.match? conn_url, regex
 end
