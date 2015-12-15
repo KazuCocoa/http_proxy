@@ -2,7 +2,7 @@ defmodule HttpProxy.Play.Response do
   @moduledoc false
 
   @play Application.get_env(:http_proxy, :play) || false
-  @request_key_map Enum.into(["method", "path", "port"], MapSet.new)
+  @request_key_map Enum.into(["method", "path", "port", "path_pattern"], MapSet.new)
   @response_key_map Enum.into(["body", "cookies", "headers", "status_code"], MapSet.new)
 
   alias HttpProxy.Utils.File, as: HttpProxyFile
@@ -41,7 +41,15 @@ defmodule HttpProxy.Play.Response do
     response_key = Map.keys(json["response"]) |> Enum.into(MapSet.new)
     response_diff = MapSet.difference(@response_key_map, response_key)
 
-    if MapSet.size(request_diff) > 0, do: raise ArgumentError, format_error_message(request_diff)
+    case {MapSet.member?(request_diff, "path_pattern"), MapSet.member?(request_diff, "path")} do
+      {true, true} ->
+        raise ArgumentError, format_error_message(request_diff)
+      {false, false} ->
+        raise ArgumentError, format_error_message(Enum.into(["port", "path_pattern"], MapSet.new))
+      {_, _} ->
+        # ok
+    end
+
     if MapSet.size(response_diff) > 0, do: raise ArgumentError, format_error_message(response_diff)
 
     json
@@ -60,5 +68,5 @@ defmodule HttpProxy.Play.Response do
   # TODO: Match url to given pattern
   # Pattern match conn.url with given pattern
   @spec pattern(binary, %{binary => binary}) :: boolean
-  def pattern(conn_url, %{"url_pattern" => regex}), do: String.match? conn_url, regex
+  def pattern(conn_url, %{"path_pattern" => regex}), do: String.match? conn_url, regex
 end
