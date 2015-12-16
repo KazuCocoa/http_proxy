@@ -26,10 +26,20 @@ defmodule HttpProxy.Play.Response do
     |> Enum.reduce([], fn path, acc ->
       json = HttpProxyFile.read_json_file!(path)
              |> verify
-
-      key = ~s(#{String.downcase(json["request"]["method"])}_#{Integer.to_string(json["request"]["port"])}/#{json["request"]["path"]})
+      key = json |> gen_key
       List.keystore(acc, String.to_atom(key), 0, {String.to_atom(key), json})
     end)
+  end
+
+  defp gen_key(map) when is_map(map) do
+    base = ~s(#{String.downcase(map["request"]["method"])}_#{Integer.to_string(map["request"]["port"])}/)
+    uri = case Map.has_key?(map["request"], "path_pattern") do
+            false ->
+              ~s(#{map["request"]["path"]})
+            true ->
+              ~s(#{map["request"]["path_pattern"]})
+          end
+    base <> uri
   end
 
   defp verify(json) do
