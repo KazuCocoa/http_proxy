@@ -89,7 +89,9 @@ defmodule HttpProxy.Handle do
   defp play_conn(conn) do
     key = String.downcase(conn.method) <> "_" <> Integer.to_string(conn.port) <> conn.request_path
 
-    case List.keyfind(%Data{}.responses, String.to_atom(key), 0) do
+    # TODO: do matching with string ot regex
+    # ここでパターンマッチか、完全一致でpathを振り分ける
+    case Keyword.get(%Data{}.responses, String.to_atom(key), 0) do
       {_, resp} ->
         res_json = Map.fetch!(resp, "response")
         response = [
