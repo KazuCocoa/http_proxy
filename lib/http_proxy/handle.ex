@@ -91,7 +91,7 @@ defmodule HttpProxy.Handle do
 
     # TODO: do matching with string ot regex
     # ここでパターンマッチか、完全一致でpathを振り分ける
-    case Keyword.get(%Data{}.responses, String.to_atom(key), 0) do
+    case Keyword.get(%Data{}.responses, String.to_atom(key)) do
       {_, resp} ->
         res_json = Map.fetch!(resp, "response")
         response = [
