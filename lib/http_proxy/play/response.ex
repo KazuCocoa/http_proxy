@@ -1,18 +1,17 @@
 defmodule HttpProxy.Play.Response do
   @moduledoc false
 
-  @play Application.get_env(:http_proxy, :play) || false
   @request_key_map Enum.into(["method", "path", "port", "path_pattern"], MapSet.new)
   @response_key_map Enum.into(["body", "cookies", "headers", "status_code"], MapSet.new)
 
   alias HttpProxy.Utils.File, as: HttpProxyFile
 
   @spec play?() :: boolean
-  def play?, do: @play
+  def play?, do: Application.get_env :http_proxy, :play, false
 
   @spec play_responses() :: [binary]
   def play_responses do
-    case @play do
+    case play? do
       true ->
         gen_response
       false ->

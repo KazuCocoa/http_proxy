@@ -4,6 +4,7 @@ defmodule HttpProxy.Test do
   use Plug.Test
 
   doctest HttpProxy.Data
+  doctest HttpProxy.Handle
 
   test "check subversion tree" do
     pid = Process.whereis HttpProxy.Supervisor

@@ -6,10 +6,8 @@ defmodule HttpProxy.Record.Response do
 
   @type t :: %Plug.Conn{}
 
-  @record Application.get_env(:http_proxy, :record) || false
-
   @spec record?() :: boolean
-  def record?, do: @record
+  def record?, do: Application.get_env :http_proxy, :record, false
 
   @spec record(t) :: t
   def record(conn) do

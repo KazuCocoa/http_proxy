@@ -11,8 +11,7 @@ defmodule HttpProxy.Handle do
   alias HttpProxy.Record.Response, as: Record
   alias HttpProxy.Play.Response, as: Play
 
-  @proxies Application.get_env :http_proxy, :proxies
-  @scheme Application.get_env(:http_proxy, :schemes) || [:http, :https]
+  @default_schemes [:http, :https]
 
   plug Plug.Logger
   plug :dispatch
@@ -20,7 +19,7 @@ defmodule HttpProxy.Handle do
   # Same as Plug.Conn https://github.com/elixir-lang/plug/blob/576c04c2cba778f1ac9ca28aa71c50efa1046b50/lib/plug/conn.ex#L125
   @type t :: %Plug.Conn{}
 
-  @type param           :: binary | [param]
+  @type param :: binary | [param]
 
   @doc """
   Start Cowboy http process with localhost and arbitrary port.
@@ -52,6 +51,32 @@ defmodule HttpProxy.Handle do
       ""           -> base
       query_string -> ~s(#{base}?#{query_string})
     end
+  end
+
+  @doc ~S"""
+  Get proxy defined in config/config.exs
+
+  ## Example
+
+      iex> HttpProxy.Handle.proxies
+      [%{port: 8080, to: "http://google.com"}, %{port: 8081, to: "http://neko.com"}]
+  """
+  @spec proxies() :: []
+  def proxies do
+    Application.get_env :http_proxy, :proxies, nil
+  end
+
+  @doc ~S"""
+  Get schemes which is defined as deault.
+
+  ## Example
+
+      iex> HttpProxy.Handle.schemes
+      [:http, :https]
+  """
+  @spec schemes() :: []
+  def schemes do
+    @default_schemes
   end
 
   defp write_proxy(conn, client) do
@@ -118,7 +143,7 @@ defmodule HttpProxy.Handle do
 
   defp gen_path(conn, proxy) when proxy == nil do
     case conn.scheme do
-      s when s in @scheme ->
+      s when s in @default_schemes ->
         uri = %URI{}
         %URI{uri | scheme: Atom.to_string(conn.scheme), host: conn.host, path: conn.request_path}
         |> URI.to_string
@@ -133,7 +158,7 @@ defmodule HttpProxy.Handle do
   end
 
   defp target_proxy(conn) do
-    Enum.reduce(@proxies, [], fn proxy, acc ->
+    Enum.reduce(proxies, [], fn proxy, acc ->
       cond do
         proxy.port == conn.port ->
           [proxy | acc]
