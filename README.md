@@ -8,19 +8,57 @@ Base implementation is inspired by https://github.com/josevalim/proxy.
     - http_proxy support multi port and multi urls on one execution command `mix proxy`.
 - Support VCR
 
-# How to use
+# Quick use as http proxy
+## set application and deps
+
+- `mix.exs`
+
+```
+def application do
+  [applications: [:http_proxy]]
+end
+
+...
+
+defp deps do
+  [
+    {:http_proxy, "~> 0.3.2"}
+  ]
+end
+```
+
+## set configure
+
+- `config/config.exs`
+
+```
+use Mix.Config
+
+config :http_proxy,
+  proxies: [
+             %{port: 8080,  # proxy all request even play or record
+               to:   "http://google.com"},
+             %{port: 8081,
+               to:   "http://yahoo.com"}
+            ]
+```
+
+## solve deps and run server
 
 ```
 $ mix deps.get
-$ mix proxy # start proxy server
+$ mix run --no-halt # start proxy server
 ```
 
 If you would like to start production mode, you should run with `MIX_ENV=prod` like the following command.
 
 ```
-$ MIX_ENV=prod mix proxy
+$ MIX_ENV=prod mix run --no-halt
 ```
 
+## launch browser
+
+Launch browser and open `http://localhost:8080` or `http://localhost:8081`.
 
 # Configuration
 
@@ -39,7 +77,7 @@ config :http_proxy,
                to:   "http://yahoo.com"}
             ]
   record: false, # true: record requests. false: don't record.
-  play: true,    # true: play stored requests. false: don't play.
+  play: false,   # true: play stored requests. false: don't play.
   export_path: "test/example",
   play_path: "test/data"
 ```
