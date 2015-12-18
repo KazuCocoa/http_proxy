@@ -107,7 +107,8 @@ defmodule HttpProxy.Handle do
         |> send_resp(status, body)
         |> Record.record
       true ->
-        conn
+        %{conn | resp_headers: headers}
+        |> send_resp(status, body)
     end
   end
 
