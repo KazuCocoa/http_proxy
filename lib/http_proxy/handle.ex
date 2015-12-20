@@ -112,34 +112,37 @@ defmodule HttpProxy.Handle do
     end
   end
 
+  # TODO: do matthing request_path
+  # 1. path_patternか、pathを持っているかで分岐
+  # 2. path_patternを持たない場合、keyの完全一致で判断
+  # 3. path_patternを持っている場合、Response.pattern/2 で、conn.request_pathとpath_patternでパターンマッチ
+  # 4. trueなら、その対応する応答を返す。falseなら404
   defp play_conn(conn) do
     key = String.downcase(conn.method) <> "_" <> Integer.to_string(conn.port) <> conn.request_path
-
-    # TODO: do matching with string ot regex
-    # ここでパターンマッチか、完全一致でpathを振り分ける
     case Keyword.get(%Data{}.responses, String.to_atom(key)) do
       {_, resp} ->
-        res_json = Map.fetch!(resp, "response")
-        response = [
-          "body": Map.fetch!(res_json, "body"),
-          "cookies": Map.to_list(Map.fetch!(res_json, "cookies")),
-          "headers": Map.to_list(Map.fetch!(res_json, "headers"))
-                     |> List.insert_at(0, {"Date", conn.resp_headers["Date"]}),
-           "status_code": Map.fetch!(res_json, "status_code")
-        ]
-
-        conn = %{conn | resp_body: response[:body] }
-        conn = %{conn | resp_cookies: response[:cookies] }
-        conn = %{conn | status: response[:status_code] }
-        conn = %{conn | resp_headers: response[:headers] }
+        response = resp |> gen_response(conn)
+        conn = %{conn | resp_body: response[:body], resp_cookies: response[:cookies], status: response[:status_code], resp_headers: response[:headers]}
       nil ->
-        conn = %{conn | resp_body: "<html>not found nil play_conn case</html>" }
-        conn = %{conn | status: 404 }
-        conn = %{conn | resp_cookies: [] }
-        conn = %{conn | resp_headers: [] }
+        conn = no_match conn
     end
 
     send_resp conn, conn.status, conn.resp_body
+  end
+
+  defp no_match(conn) do
+    %{conn | resp_body: "<html>not found nil play_conn case</html>", status: 404, resp_cookies: [], resp_headers: []}
+  end
+
+  defp gen_response(resp, conn) do
+    res_json = Map.fetch!(resp, "response")
+    [
+      "body": Map.fetch!(res_json, "body"),
+      "cookies": Map.to_list(Map.fetch!(res_json, "cookies")),
+      "headers": Map.to_list(Map.fetch!(res_json, "headers"))
+                 |> List.insert_at(0, {"Date", conn.resp_headers["Date"]}),
+       "status_code": Map.fetch!(res_json, "status_code")
+    ]
   end
 
   defp gen_path(conn, proxy) when proxy == nil do
