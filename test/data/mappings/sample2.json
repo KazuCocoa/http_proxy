@@ -1,6 +1,6 @@
 {
   "request": {
-    "path": "request/path2",
+    "path_pattern": "request.*neko",
     "port": 8080,
     "method": "POST"
   },

@@ -15,9 +15,9 @@ defmodule HttpProxy.Play.ResponseTest do
       assert Response.pattern(conn_url, sample["request"]) == expected_bool
     end do
       [
-        "match simple url":     {"neko", ~r/neko/, true},
-        "do not match string":  {"path/to/string", ~r/pathtostring/, false},
-        "match regex case":     {"path/to/string", ~r/\Apath.*string\z/, true}
+        "match simple url":     {"neko", "neko", true},
+        "do not match string":  {"path/to/string", "pathtostring", false},
+        "match regex case":     {"path/to/string", "path.*string", true}
       ]
   end
 end
