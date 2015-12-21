@@ -2,7 +2,6 @@ defmodule HttpProxy.Format do
   @moduledoc false
 
   alias HttpProxy.Data, as: Data
-  # require IEx
 
   @type t :: %Plug.Conn{}
 
