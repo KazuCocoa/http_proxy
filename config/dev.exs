@@ -7,6 +7,7 @@ config :http_proxy,
              %{port: 8081,
                to:   "http://yahoo.com"}
             ],
+  timeout: 20_000, # ms
   record: false,
   play: true,
   export_path: "test/example",

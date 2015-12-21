@@ -27,8 +27,17 @@ defmodule HttpProxy.Handle do
   """
   @spec start_link([binary]) :: pid
   def start_link([proxy, module_name]) do
-    Logger.info "Running Proxy with Cowboy on http://localhost:#{proxy.port} named #{module_name}"
-    Plug.Adapters.Cowboy.http(__MODULE__, [], [port: proxy.port, ref: String.to_atom(module_name)])
+    Logger.info "Running Proxy with Cowboy on http://localhost:#{proxy.port} named #{module_name}, timeout: #{timeout}"
+    Plug.Adapters.Cowboy.http(__MODULE__, [], cowboy_options(proxy.port, module_name))
+  end
+
+  # see https://github.com/elixir-lang/plug/blob/master/lib/plug/adapters/cowboy.ex#L5
+  defp cowboy_options(port, module_name) do
+    [port: port, ref: String.to_atom(module_name), timeout: timeout]
+  end
+
+  defp timeout do
+    Application.get_env(:http_proxy, :timeout) || 5_000
   end
 
   @doc """
