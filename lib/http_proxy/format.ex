@@ -2,12 +2,13 @@ defmodule HttpProxy.Format do
   @moduledoc false
 
   alias HttpProxy.Data, as: Data
+  # require IEx
 
   @type t :: %Plug.Conn{}
 
-  @spec pretty_json(t, boolean) :: binary
-  def pretty_json(conn, pretty) when pretty == true, do: pretty_json(conn, false) |> JSX.prettify!
-  def pretty_json(conn, _) do
+  @spec pretty_json(t, binary, binary, boolean) :: binary
+  def pretty_json(conn, req_body, resp_body, pretty) when pretty == true, do: pretty_json(conn, req_body, resp_body, false) |> JSX.prettify!
+  def pretty_json(conn, req_body, resp_body, _) do
     {a, b, c, d} = conn.remote_ip
 
     %Data{
@@ -16,11 +17,11 @@ defmodule HttpProxy.Format do
         remote: ~s(#{a}.#{b}.#{c}.#{d}),
         method: conn.method,
         headers: conn.req_headers, # Maybe failed to convert
-        request_body: readbody(Plug.Conn.read_body(conn, [])),
+        request_body: req_body,
         options: conn.query_params
       },
       response: %{
-        body: conn.resp_body,
+        body: resp_body,
         cookies: conn.resp_cookies,
         status_code: conn.status,
         headers: resp_headers(conn)
@@ -28,9 +29,6 @@ defmodule HttpProxy.Format do
     }
     |> JSX.encode!
   end
-
-  defp readbody({:ok, body, _}), do: body
-  defp readbody({:more, _, conn}), do: readbody(Plug.Conn.read_body(conn, []))
 
   defp url(conn) do
     uri = %URI{}

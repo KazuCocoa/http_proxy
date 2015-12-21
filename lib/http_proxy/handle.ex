@@ -39,7 +39,7 @@ defmodule HttpProxy.Handle do
     {:ok, client} = String.downcase(conn.method)
                     |> String.to_atom
                     |> :hackney.request(uri(conn), conn.req_headers, :stream, [])
-    conn
+    {conn, ""}
     |> write_proxy(client)
     |> read_proxy(client)
   end
@@ -79,22 +79,20 @@ defmodule HttpProxy.Handle do
     @default_schemes
   end
 
-  defp write_proxy(conn, client) do
+  defp write_proxy({conn, req_body}, client) do
     case read_body(conn, []) do
       {:ok, body, conn} ->
         :hackney.send_body client, body
-        conn
+        {conn, body}
       {:more, body, conn} ->
         :hackney.send_body client, body
-        write_proxy conn, client
+        write_proxy {conn, req_body <> body}, client
     end
   end
 
-  defp read_proxy(conn, client) do
+  defp read_proxy({conn, req_body}, client) do
     {:ok, status, headers, client} = :hackney.start_response client
-    {:ok, body} = :hackney.body client
-
-    headers = List.keydelete headers, "Transfer-Encoding", 0
+    {:ok, res_body} = :hackney.body client
 
     cond do
       Record.record? && Play.play? ->
@@ -104,11 +102,11 @@ defmodule HttpProxy.Handle do
         |> play_conn
       Record.record? ->
         %{conn | resp_headers: headers}
-        |> send_resp(status, body)
-        |> Record.record
+        |> send_resp(status, res_body)
+        |> Record.record(req_body, res_body)
       true ->
         %{conn | resp_headers: headers}
-        |> send_resp(status, body)
+        |> send_resp(status, res_body)
     end
   end
 
@@ -119,11 +117,11 @@ defmodule HttpProxy.Handle do
   # 4. trueなら、その対応する応答を返す。falseなら404
   defp play_conn(conn) do
     key = String.downcase(conn.method) <> "_" <> Integer.to_string(conn.port) <> conn.request_path
-    case Keyword.get(%Data{}.responses, String.to_atom(key)) do
-      {_, resp} ->
+    case Keyword.fetch(%Data{}.responses, String.to_atom(key)) do
+      {:ok, resp} ->
         response = resp |> gen_response(conn)
         conn = %{conn | resp_body: response[:body], resp_cookies: response[:cookies], status: response[:status_code], resp_headers: response[:headers]}
-      nil ->
+      :error ->
         conn = no_match conn
     end
 
