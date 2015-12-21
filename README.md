@@ -76,6 +76,7 @@ config :http_proxy,
              %{port: 8081,
                to:   "http://yahoo.com"}
             ]
+  timeout: 20_000, # ms
   record: false, # true: record requests. false: don't record.
   play: false,   # true: play stored requests. false: don't play.
   export_path: "test/example",
