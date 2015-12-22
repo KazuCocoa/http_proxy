@@ -89,7 +89,7 @@ defmodule HttpProxy.Handle do
   end
 
   defp write_proxy({conn, req_body}, client) do
-    case read_body(conn, []) do
+    case read_body(conn, [read_timeout: req_timeout]) do
       {:ok, body, conn} ->
         :hackney.send_body client, body
         {conn, body}
