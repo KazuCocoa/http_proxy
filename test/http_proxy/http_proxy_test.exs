@@ -6,6 +6,16 @@ defmodule HttpProxy.Test do
   doctest HttpProxy.Data
   doctest HttpProxy.Handle
 
+  defp set_play_mode do
+    Application.put_env :http_proxy, :record, false
+    Application.put_env :http_proxy, :play, true
+  end
+
+  defp set_record_mode do
+    Application.put_env :http_proxy, :record, true
+    Application.put_env :http_proxy, :play, false
+  end
+
   test "check subversion tree" do
     pid = Process.whereis HttpProxy.Supervisor
     assert pid != nil
@@ -32,9 +42,9 @@ defmodule HttpProxy.Test do
       ]
   end
 
-  # TODO: prepare record = true case
-  test "send request and get response" do
+  test "send request and get response with record mode" do
     File.rm_rf!(Application.get_env(:http_proxy, :export_path))
+    set_record_mode
 
     conn(:get, "http://localhost:8080/hoge/inu?email=neko&pass=123")
     |> HttpProxy.Handle.dispatch([])
@@ -48,11 +58,39 @@ defmodule HttpProxy.Test do
     conn(:delete, "http://localhost:8080/hoge/inu", "nekoneko")
     |> HttpProxy.Handle.dispatch([])
 
-    exported_files = case File.ls("test/example/8080") do
+    exported_files = case File.ls("test/example/8080/mappings") do
+      {:ok, files} -> files
+      {:error, _}  -> []
+    end
+
+    exported_body_files = case File.ls("test/example/8080/__files") do
+      {:ok, files} -> files
+      {:error, _}  -> []
+    end
+
+    assert {Enum.count(exported_files), Enum.count(exported_body_files)} == {4, 4}
+
+    set_play_mode
+  end
+
+  test "send request and get response with play mode" do
+    File.rm_rf!(Application.get_env(:http_proxy, :export_path))
+    set_play_mode
+
+    conn(:get, "http://localhost:8080/hoge/inu?email=neko&pass=123")
+    |> HttpProxy.Handle.dispatch([])
+
+    exported_files = case File.ls("test/example/8080/mappings") do
       {:ok, files} -> files
       {:error, _}  -> []
     end
     assert Enum.count(exported_files) == 0
+
+    exported_body_files = case File.ls("test/example/8080/__files") do
+      {:ok, files} -> files
+      {:error, _}  -> []
+    end
+    assert Enum.count(exported_body_files) == 0
   end
 
   test "format of play_response" do

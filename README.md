@@ -100,7 +100,7 @@ config :http_proxy,
     "url": "http://localhost:8080/hoge/inu?email=neko&pass=123"
   },
   "response": {
-    "body": "<HTML><HEAD><meta http-equiv=\"content-type\" content=\"text/html;charset=utf-8\">\n<TITLE>301 Moved</TITLE></HEAD><BODY>\n<H1>301 Moved</H1>\nThe document has moved\n<A HREF=\"http://www.google.com/hoge/inu?email=neko&amp;pass=123\">here</A>.\r\n</BODY></HTML>\r\n",
+    "body_file": "path/to/body_file.json",
     "cookies": {},
     "headers": {
       "Cache-Control": "public, max-age=2592000",
@@ -117,6 +117,7 @@ config :http_proxy,
   }
 }
 ```
+Response body will save in "path/to/body_file.json".
 
 ### Play request with the following JSON data
 

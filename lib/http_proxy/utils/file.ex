@@ -25,13 +25,22 @@ defmodule HttpProxy.Utils.File do
 
   ## Exmaple
       iex> HttpProxy.Utils.File.get_export_path
-      "test/example"
+      "test/example/mappings"
 
       iex> HttpProxy.Utils.File.get_export_path(8080)
-      "test/example/8080"
+      "test/example/8080/mappings"
 
       iex> HttpProxy.Utils.File.get_export_path("8080")
-      "test/example/8080"
+      "test/example/8080/mappings"
+
+      iex> HttpProxy.Utils.File.get_export_binary_path
+      "test/example/__files"
+
+      iex> HttpProxy.Utils.File.get_export_binary_path(8080)
+      "test/example/8080/__files"
+
+      iex> HttpProxy.Utils.File.get_export_binary_path("8080")
+      "test/example/8080/__files"
 
       iex> HttpProxy.Utils.File.get_response_path
       "test/data/__files"
@@ -40,15 +49,20 @@ defmodule HttpProxy.Utils.File do
       "test/data/mappings"
   """
   @spec get_export_path(integer | binary) :: String.t
-  def get_export_path, do: %HttpProxyFile{}.export_path
-  def get_export_path(port) when is_integer(port), do: ~s(#{%HttpProxyFile{}.export_path}/#{Integer.to_string(port)})
-  def get_export_path(port) when is_binary(port), do: ~s(#{%HttpProxyFile{}.export_path}/#{port})
+  def get_export_path, do: ~s(#{%HttpProxyFile{}.export_path}/#{%HttpProxyFile{}.mapping_files})
+  def get_export_path(port) when is_integer(port), do: ~s(#{%HttpProxyFile{}.export_path}/#{Integer.to_string(port)}/#{%HttpProxyFile{}.mapping_files})
+  def get_export_path(port) when is_binary(port), do: ~s(#{%HttpProxyFile{}.export_path}/#{port}/#{%HttpProxyFile{}.mapping_files})
+
+  @spec get_export_binary_path(integer | binary) :: String.t
+  def get_export_binary_path, do: ~s(#{%HttpProxyFile{}.export_path}/#{%HttpProxyFile{}.response_files})
+  def get_export_binary_path(port) when is_integer(port), do: ~s(#{%HttpProxyFile{}.export_path}/#{Integer.to_string(port)}/#{%HttpProxyFile{}.response_files})
+  def get_export_binary_path(port) when is_binary(port), do: ~s(#{%HttpProxyFile{}.export_path}/#{port}/#{%HttpProxyFile{}.response_files})
 
   @spec get_response_path() :: String.t
-  def get_response_path, do: %HttpProxyFile{}.play_path <> "/" <> %HttpProxyFile{}.response_files
+  def get_response_path, do: ~s(#{%HttpProxyFile{}.play_path}/#{%HttpProxyFile{}.response_files})
 
   @spec get_mapping_path() :: String.t
-  def get_mapping_path, do: %HttpProxyFile{}.play_path <> "/" <> %HttpProxyFile{}.mapping_files
+  def get_mapping_path, do: ~s(#{%HttpProxyFile{}.play_path}/#{%HttpProxyFile{}.mapping_files})
 
   @doc ~S"""
   Generate json file name with `:rand.uniform`
