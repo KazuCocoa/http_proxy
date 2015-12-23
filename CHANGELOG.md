@@ -4,6 +4,7 @@
 Export file into `mappings` / `__files` with recording mode
 
 e.g.
+
 1. When record a request and a response
 2. Then two files are saved into following files
     - `test/example/8080/mappings/request_file.json`
