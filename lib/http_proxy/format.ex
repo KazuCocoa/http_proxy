@@ -6,8 +6,8 @@ defmodule HttpProxy.Format do
   @type t :: %Plug.Conn{}
 
   @spec pretty_json(t, binary, binary, boolean) :: binary
-  def pretty_json(conn, req_body, resp_body, pretty) when pretty == true, do: pretty_json(conn, req_body, resp_body, false) |> JSX.prettify!
-  def pretty_json(conn, req_body, resp_body, _) do
+  def pretty_json(conn, req_body, res_body_file, pretty) when pretty == true, do: pretty_json(conn, req_body, res_body_file, false) |> JSX.prettify!
+  def pretty_json(conn, req_body, res_body_file, _) do
     {a, b, c, d} = conn.remote_ip
 
     %Data{
@@ -20,7 +20,7 @@ defmodule HttpProxy.Format do
         options: conn.query_params
       },
       response: %{
-        body: resp_body,
+        body_file: res_body_file,
         cookies: conn.resp_cookies,
         status_code: conn.status,
         headers: resp_headers(conn)
