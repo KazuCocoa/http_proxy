@@ -100,21 +100,28 @@ defmodule HttpProxy.Handle do
   end
 
   defp read_proxy({conn, req_body}, client) do
-    {:ok, status, headers, client} = :hackney.start_response client
-    {:ok, res_body} = :hackney.body client
+    case :hackney.start_response client do
+      {:ok, status, headers, client} ->
+        {:ok, res_body} = :hackney.body client
+        resd_request(%{conn | resp_headers: headers}, client, req_body, res_body, status)
+      {:error, message} ->
+        resd_request(%{conn | resp_headers: conn.resp_headers}, client, req_body, Atom.to_string(message), 408)
+    end
+  end
 
+  defp resd_request(conn, client, req_body, res_body, status) do
     cond do
       Record.record? && Play.play? ->
         raise ArgumentError, "Can't set record and play at the same time."
       Play.play? ->
-        %{conn | resp_headers: headers}
+        conn
         |> play_conn
       Record.record? ->
-        %{conn | resp_headers: headers}
+        conn
         |> send_resp(status, res_body)
         |> Record.record(req_body, res_body)
       true ->
-        %{conn | resp_headers: headers}
+        conn
         |> send_resp(status, res_body)
     end
   end
