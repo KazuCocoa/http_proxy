@@ -1,5 +1,8 @@
 # Changelogs
 
+## 0.4.1: Dec 25, 2015
+record timeout into jsons when request timeout [#3](https://github.com/KazuCocoa/http_proxy/issues/3)
+
 ## 0.4.0: Dec 23, 2015
 Export file into `mappings` / `__files` with recording mode
 
