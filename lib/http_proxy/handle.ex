@@ -103,13 +103,13 @@ defmodule HttpProxy.Handle do
     case :hackney.start_response client do
       {:ok, status, headers, client} ->
         {:ok, res_body} = :hackney.body client
-        resd_request(%{conn | resp_headers: headers}, client, req_body, res_body, status)
+        resd_request(%{conn | resp_headers: headers}, req_body, res_body, status)
       {:error, message} ->
-        resd_request(%{conn | resp_headers: conn.resp_headers}, client, req_body, Atom.to_string(message), 408)
+        resd_request(%{conn | resp_headers: conn.resp_headers}, req_body, Atom.to_string(message), 408)
     end
   end
 
-  defp resd_request(conn, client, req_body, res_body, status) do
+  defp resd_request(conn, req_body, res_body, status) do
     cond do
       Record.record? && Play.play? ->
         raise ArgumentError, "Can't set record and play at the same time."
