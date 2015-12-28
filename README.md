@@ -43,6 +43,13 @@ config :http_proxy,
             ]
 ```
 
+- To manage logger, you should define logger settings like the following.
+
+```
+config :logger, :console,
+  level: :info
+```
+
 ## solve deps and run server
 
 ```
