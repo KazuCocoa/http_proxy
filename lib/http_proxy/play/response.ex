@@ -79,4 +79,7 @@ defmodule HttpProxy.Play.Response do
 
   @spec pattern(binary, %{binary => binary}) :: boolean
   def pattern(conn_url, %{@path_pattern => regex_string}), do: Regex.compile!(regex_string) |> Regex.match?(conn_url)
+
+  @spec has_path_pattern?(binary) :: boolean
+  def has_path_pattern?(json), do: Map.keys(json["request"]) |> Enum.into(MapSet.new) |> MapSet.member? @path_pattern
 end

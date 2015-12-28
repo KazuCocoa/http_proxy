@@ -132,8 +132,9 @@ defmodule HttpProxy.Handle do
   # 3. path_patternを持っている場合、Response.pattern/2 で、conn.request_pathとpath_patternでパターンマッチ
   # 4. trueなら、その対応する応答を返す。falseなら404
   defp play_conn(conn) do
-    key = String.downcase(conn.method) <> "_" <> Integer.to_string(conn.port) <> conn.request_path
-    case Keyword.fetch(%Data{}.responses, String.to_atom(key)) do
+    prefix_key = ~s(#{String.downcase(conn.method)}_)
+    request_path_key = Integer.to_string(conn.port) <> conn.request_path
+    case Keyword.fetch(%Data{}.responses, String.to_atom(prefix_key <> request_path_key)) do
       {:ok, resp} ->
         response = resp |> gen_response(conn)
         conn = %{conn | resp_body: response[:body], resp_cookies: response[:cookies], status: response[:status_code], resp_headers: response[:headers]}
