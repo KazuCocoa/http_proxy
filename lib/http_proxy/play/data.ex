@@ -22,5 +22,9 @@ defmodule HttpProxy.Play.Data do
                  "headers" => %{"Content-Type" => "text/html; charset=UTF-8", "Server" => "GFE/2.0"}, "status_code" => 200}}]}
   """
 
+  alias HttpProxy.Play.Data
+
   defstruct responses: HttpProxy.Play.Response.play_responses
+
+  def responses, do: %Data{}.responses
 end

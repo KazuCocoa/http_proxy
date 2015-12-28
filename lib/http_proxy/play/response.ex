@@ -8,6 +8,7 @@ defmodule HttpProxy.Play.Response do
   @response_key_map Enum.into(["body", "cookies", "headers", "status_code"], MapSet.new)
 
   alias HttpProxy.Utils.File, as: HttpProxyFile
+  alias HttpProxy.Play.Data
 
   @spec play?() :: boolean
   def play?, do: Application.get_env :http_proxy, :play, false
@@ -75,6 +76,25 @@ defmodule HttpProxy.Play.Response do
     |> IO.inspect
 
     ~s(Response jsons must include arrtibute: #{message})
+  end
+
+  @doc """
+  Return list of paths associated with `path` and `path_pattern`.
+  """
+  @spec play_paths(binary) :: [binary]
+  def play_paths(key), do: play_data_responses Data.responses, key
+
+  defp play_data_responses(nil, _), do: []
+  defp play_data_responses(res, key) do
+    res
+    |> Enum.reduce([], fn res_tuple, acc ->
+      case elem(res_tuple, 1)["request"][key] do
+        nil ->
+          acc
+        elem ->
+          Enum.into acc, [elem]
+      end
+    end)
   end
 
   @spec pattern(binary, %{binary => binary}) :: boolean

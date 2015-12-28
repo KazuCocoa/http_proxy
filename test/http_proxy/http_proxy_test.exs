@@ -6,6 +6,8 @@ defmodule HttpProxy.Test do
   doctest HttpProxy.Data
   doctest HttpProxy.Handle
 
+  alias HttpProxy.Play.Data
+
   defp set_play_mode do
     Application.put_env :http_proxy, :record, false
     Application.put_env :http_proxy, :play, true
@@ -109,7 +111,7 @@ defmodule HttpProxy.Test do
                    "response" => %{"body" => "<html>hello world 3</html>", "cookies" => %{},
                      "headers" => %{"Content-Type" => "text/html; charset=UTF-8",
                        "Server" => "GFE/2.0"}, "status_code" => 200}}]
-    assert expected == %HttpProxy.Play.Data{}.responses
+    assert expected == Data.responses
   end
 
 end

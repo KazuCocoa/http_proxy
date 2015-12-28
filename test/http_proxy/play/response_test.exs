@@ -37,4 +37,11 @@ defmodule HttpProxy.Play.ResponseTest do
     assert Response.has_path_pattern?(sample) == false
   end
 
+  test "#play_paths" do
+    expected = %HttpProxy.Play.Paths{path_patterns: ["request.*neko"],
+                paths: ["request/path", "request/path"]}
+    assert HttpProxy.Play.Paths.__struct__ == expected
+    assert HttpProxy.Play.Paths.paths == ["request/path", "request/path"]
+    assert HttpProxy.Play.Paths.path_patterns == ["request.*neko"]
+  end
 end

@@ -7,7 +7,7 @@ defmodule HttpProxy.Handle do
   import Plug.Conn
   require Logger
 
-  alias HttpProxy.Play.Data, as: Data
+  alias HttpProxy.Play.Data
   alias HttpProxy.Record.Response, as: Record
   alias HttpProxy.Play.Response, as: Play
 
@@ -132,9 +132,11 @@ defmodule HttpProxy.Handle do
   # 3. path_patternを持っている場合、Response.pattern/2 で、conn.request_pathとpath_patternでパターンマッチ
   # 4. trueなら、その対応する応答を返す。falseなら404
   defp play_conn(conn) do
-    prefix_key = ~s(#{String.downcase(conn.method)}_)
-    request_path_key = Integer.to_string(conn.port) <> conn.request_path
-    case Keyword.fetch(%Data{}.responses, String.to_atom(prefix_key <> request_path_key)) do
+    prefix_key = ~s(#{String.downcase(conn.method)}_#{Integer.to_string(conn.port)})
+    request_path_key = conn.request_path
+    # TODO: ここで、request_pathとHttpProxy.Play.Paths.paths or path_patterns のリストに合致するものがあれば、それぞれで適した値を返す
+    # 処理に変更する
+    case Keyword.fetch(Data.responses, String.to_atom(prefix_key <> request_path_key)) do
       {:ok, resp} ->
         response = resp |> gen_response(conn)
         conn = %{conn | resp_body: response[:body], resp_cookies: response[:cookies], status: response[:status_code], resp_headers: response[:headers]}
