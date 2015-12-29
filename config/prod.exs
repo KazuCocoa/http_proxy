@@ -11,3 +11,8 @@ config :http_proxy,
   play: false,
   export_path: "test/example",
   play_path: "test/data"
+
+config :logger, :console,
+  format: "\n$date $time [$level] $metadata$message",
+  metadata: [:user_id],
+  level: :error
