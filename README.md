@@ -22,7 +22,7 @@ end
 
 defp deps do
   [
-    {:http_proxy, "~> 0.4.0"}
+    {:http_proxy, "~> 0.5.0"}
   ]
 end
 ```
@@ -131,7 +131,7 @@ Response body will save in "path/to/body_file.json".
 ```json
 {
   "request": {
-    "path": "request/path",
+    "path": "/request/path",
     "port": 8080,
     "method": "GET"
   },
@@ -160,9 +160,9 @@ Response body will save in "path/to/body_file.json".
     - [x] append test cases
     - [x] Add `@spec`
     - [x] prepare document
+- [x] support Regex request path.
 - [ ] use vcr <= a bit...
     - integrate https://github.com/parroty/exvcr
-- [ ] support Regex request path.
 
 # LICENSE
 MIT. Please read LICENSE.
