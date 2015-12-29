@@ -73,4 +73,9 @@ defmodule HttpProxy.HttpTest do
         {:post, "http://localhost:8081/request/path?email=neko&pass=123", "<html>hello world 3</html>"}
       ]
   end
+
+  test "start and stop http_proxy" do
+    assert HttpProxy.stop == :ok
+    assert HttpProxy.start == :ok
+  end
 end

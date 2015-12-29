@@ -22,7 +22,7 @@ end
 
 defp deps do
   [
-    {:http_proxy, "~> 0.5.0"}
+    {:http_proxy, "~> 0.5.1"}
   ]
 end
 ```
@@ -193,6 +193,7 @@ Response body will save in "path/to/body_file.json".
     - [x] Add `@spec`
     - [x] prepare document
 - [x] support Regex request path.
+- [x] start/stop http_proxy manually
 - [ ] use vcr <= a bit...
     - integrate https://github.com/parroty/exvcr
 

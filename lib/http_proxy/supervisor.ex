@@ -7,6 +7,8 @@ defmodule HttpProxy.Supervisor do
     Supervisor.start_link __MODULE__, :ok, [name: __MODULE__]
   end
 
+  ## Callbacks
+
   def init(:ok) do
     import Supervisor.Spec
 

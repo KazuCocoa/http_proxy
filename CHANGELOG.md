@@ -1,5 +1,8 @@
 # Changelogs
 
+## 0.5.1: Dec 30, 2015
+Add `HttpProxy.stop` and `HttpProxy.start` to stop/start the proxy manually.
+
 ## 0.5.0: Dec 29, 2015
 - Support regex path matching in play mode.
 

@@ -48,7 +48,34 @@ defmodule HttpProxy do
 
   use Application
 
+  @spec start(:normal, []) :: pid
   def start(_type, _args) do
     HttpProxy.Supervisor.start_link
   end
+
+  @doc """
+  Stopt http_proxy.
+  """
+  @spec stop :: :ok
+  def stop do
+    Application.stop :ranch
+    Application.stop :cowboy
+    Application.stop :hackney
+    Application.stop :plug
+    Application.stop :http_proxy
+  end
+
+  @doc """
+  Start http_proxy.
+  If the proxy is already running, return `{:error, {:already_started, :http_proxy}}`
+  """
+  @spec start() :: :ok | {:error, tuple}
+  def start do
+    Application.start :ranch
+    Application.start :cowboy
+    Application.start :hackney
+    Application.start :plug
+    Application.start :http_proxy
+  end
+
 end
