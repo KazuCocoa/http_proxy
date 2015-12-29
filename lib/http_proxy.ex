@@ -59,7 +59,11 @@ defmodule HttpProxy do
   @spec stop :: :ok
   def stop do
     Application.stop :ranch
+    Application.stop :cowlib
     Application.stop :cowboy
+    Application.stop :idna
+    Application.stop :mimerl
+    Application.stop :certifi
     Application.stop :hackney
     Application.stop :plug
     Application.stop :http_proxy
@@ -72,7 +76,11 @@ defmodule HttpProxy do
   @spec start() :: :ok | {:error, tuple}
   def start do
     Application.start :ranch
+    Application.start :cowlib
     Application.start :cowboy
+    Application.start :idna
+    Application.start :mimerl
+    Application.start :certifi
     Application.start :hackney
     Application.start :plug
     Application.start :http_proxy

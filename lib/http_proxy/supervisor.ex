@@ -33,7 +33,7 @@ defmodule HttpProxy.Supervisor do
                    to:   "http://google.com"},
                  %{port: 4001,
                    to:   "http://yahoo.com"}
-                ]
+                ],
       record: false,
       play: true,
       export_path: "test/example",
