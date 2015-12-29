@@ -15,7 +15,7 @@ Base implementation is inspired by https://github.com/josevalim/proxy.
 
 ```
 def application do
-  [applications: [:http_proxy]]
+  [applications: [:logger, :http_proxy]] # logger is option
 end
 
 ...
@@ -72,6 +72,7 @@ Launch browser and open `http://localhost:8080` or `http://localhost:8081`.
 - When `:record` and `:play` are `false`, then the http_proxy works just multi port proxy.
 - When `:record` is `true`, then the http_proxy works to record request which is proxied.
 - When `:play` is `true`, then the http_proxy works to play request between this the http_proxy and clients.
+    - You should set JSON files under `mappings` in `play_path`.
 
 ```elixir
 use Mix.Config
@@ -128,6 +129,13 @@ Response body will save in "path/to/body_file.json".
 
 ### Play request with the following JSON data
 
+- Example is https://github.com/KazuCocoa/http_proxy/tree/master/test/data/mappings
+- You can set `path` or `path_pattern` as attribute under `request`.
+    - If `path`, the http_proxy check requests are matched completely.
+    - If `path_pattern`, the http_proxy check requests are matched with Regex.
+
+#### `path` case
+
 ```json
 {
   "request": {
@@ -146,6 +154,30 @@ Response body will save in "path/to/body_file.json".
   }
 }
 ```
+
+#### `path_pattern` case
+
+- Pattern match with `Regex.match?(Regex.compile!("\A/request.*neko\z"), request_path)`
+
+```json
+{
+  "request": {
+    "path_pattern": "\A/request.*neko\z",
+    "port": 8080,
+    "method": "GET"
+  },
+  "response": {
+    "body": "<html>hello world2</html>",
+    "cookies": {},
+    "headers": {
+      "Content-Type": "text/html; charset=UTF-8",
+      "Server": "GFE/2.0"
+    },
+    "status_code": 200
+  }
+}
+```
+
 
 # TODO
 - [x] record request

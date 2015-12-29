@@ -1,5 +1,23 @@
 # Changelogs
 
+## 0.5.0: Dec 29, 2015
+- Support regex path matching in play mode.
+
+You can specify request path with Regex like the following `path_pattern`.
+
+```
+{
+  "request": {
+    "path_pattern": "\A/request.*neko\z",
+    "port": 8080,
+    "method": "GET"
+  },
+  ...
+}
+```
+
+And some refactors.
+
 ## 0.4.1: Dec 25, 2015
 record timeout into jsons when request timeout [#3](https://github.com/KazuCocoa/http_proxy/issues/3)
 
