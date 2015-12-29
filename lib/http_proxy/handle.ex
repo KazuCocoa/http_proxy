@@ -127,33 +127,25 @@ defmodule HttpProxy.Handle do
     end
   end
 
-  # TODO: do matthing request_path
-  # 1. connに含まれるurlが、pathsのURLに一致するものがあるか
-  # 2. path_patternsのlistの中に一致するものがあるか
-  # 3. trueなら、その対応するkeyに対応する応答を返す。falseなら404
   defp play_conn(conn) do
-    prefix_key = "#{String.downcase(conn.method)}_#{Integer.to_string(conn.port)}"
-    request_path_key = conn.request_path
-    # TODO: ここで、request_pathとHttpProxy.Play.Paths.paths or path_patterns のリストに合致するものがあれば、それぞれで適した値を返す
-    # 処理に変更する
-    case PlayPaths.has_path?(request_path_key) || PlayPaths.has_path_pattern?(request_path_key) do
-      nil ->
-        conn = no_match conn
-      matched_path ->
-        case Keyword.fetch(Data.responses, String.to_atom(prefix_key <> matched_path)) do
-          {:ok, resp} ->
-            response = resp |> gen_response(conn)
-            conn = %{conn | resp_body: response[:body], resp_cookies: response[:cookies], status: response[:status_code], resp_headers: response[:headers]}
-          :error ->
-            conn = no_match conn
-        end
-    end
-
+    conn = matched_path? conn, PlayPaths.has_path?(conn.request_path) || PlayPaths.has_path_pattern?(conn.request_path)
     send_resp conn, conn.status, conn.resp_body
   end
 
   defp no_match(conn) do
     %{conn | resp_body: "<html>not found nil play_conn case</html>", status: 404, resp_cookies: [], resp_headers: []}
+  end
+
+  defp matched_path?(conn, nil), do: no_match conn
+  defp matched_path?(conn, matched_path) do
+    prefix_key = "#{String.downcase(conn.method)}_#{Integer.to_string(conn.port)}"
+    case Keyword.fetch(Data.responses, String.to_atom(prefix_key <> matched_path)) do
+      {:ok, resp} ->
+        response = resp |> gen_response(conn)
+        %{conn | resp_body: response[:body], resp_cookies: response[:cookies], status: response[:status_code], resp_headers: response[:headers]}
+      :error ->
+        no_match conn
+    end
   end
 
   defp gen_response(resp, conn) do
@@ -170,8 +162,7 @@ defmodule HttpProxy.Handle do
   defp gen_path(conn, proxy) when proxy == nil do
     case conn.scheme do
       s when s in @default_schemes ->
-        uri = %URI{}
-        %URI{uri | scheme: Atom.to_string(conn.scheme), host: conn.host, path: conn.request_path}
+        %URI{%URI{} | scheme: Atom.to_string(conn.scheme), host: conn.host, path: conn.request_path}
         |> URI.to_string
       _ ->
         raise ArgumentError, "no scheme"

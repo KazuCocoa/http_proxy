@@ -1,18 +1,11 @@
-defmodule HttpProxy.Play.ResponseTest do
+defmodule HttpProxy.Play.PathsTest do
   use ExUnit.Case, async: true
   use ExUnit.Parameterized
 
   doctest HttpProxy.Play.Data
+  doctest HttpProxy.Play.Paths
 
   alias HttpProxy.Play.Paths
-
-  test "HttpProxy.Play.Paths#play_paths" do
-    expected = %Paths{path_patterns: ["\\A/request.*neko\\z"],
-                paths: ["/request/path", "/request/path"]}
-    assert Paths.__struct__ == expected
-    assert Paths.paths == ["/request/path", "/request/path"]
-    assert Paths.path_patterns == ["\\A/request.*neko\\z"]
-  end
 
   test "HttpProxy.Play.Paths#has_path? is true" do
     path = "/request/path"
