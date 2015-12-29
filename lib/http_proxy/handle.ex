@@ -140,9 +140,6 @@ defmodule HttpProxy.Handle do
       nil ->
         conn = no_match conn
       matched_path ->
-        IO.inspect Keyword.fetch(Data.responses, String.to_atom(prefix_key <> matched_path))
-        require IEx
-        IEx.pry
         case Keyword.fetch(Data.responses, String.to_atom(prefix_key <> matched_path)) do
           {:ok, resp} ->
             response = resp |> gen_response(conn)

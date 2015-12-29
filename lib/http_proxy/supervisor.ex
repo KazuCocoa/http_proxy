@@ -12,7 +12,7 @@ defmodule HttpProxy.Supervisor do
 
     proxies?(HttpProxy.Handle.proxies)
     |> Enum.reduce([], fn proxy, acc ->
-      module_name = ~s(HttpProxy.Handle#{proxy.port})
+      module_name = "HttpProxy.Handle#{proxy.port}"
       [worker(HttpProxy.Handle, [[proxy, module_name]], [id: String.to_atom(module_name)]) | acc]
     end)
     |> supervise(strategy: :one_for_one)

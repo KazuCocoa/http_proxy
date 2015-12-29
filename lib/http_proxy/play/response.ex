@@ -35,7 +35,7 @@ defmodule HttpProxy.Play.Response do
   end
 
   defp gen_key(map) when is_map(map) do
-    base = ~s(#{String.downcase(map["request"]["method"])}_#{Integer.to_string(map["request"]["port"])})
+    base = "#{String.downcase(map["request"]["method"])}_#{Integer.to_string(map["request"]["port"])}"
     uri = case Map.has_key?(map["request"], @path_pattern) do
             false ->
               "#{map["request"]["path"]}"
@@ -71,11 +71,11 @@ defmodule HttpProxy.Play.Response do
   defp format_error_message(mapset) do
     message = MapSet.to_list(mapset)
     |> Enum.reduce("", fn item, acc ->
-      ~s(#{item} #{acc})
+      "#{item} #{acc}"
     end)
     |> IO.inspect
 
-    ~s(Response jsons must include arrtibute: #{message})
+    "Response jsons must include arrtibute: #{message}"
   end
 
   @doc """
@@ -96,11 +96,4 @@ defmodule HttpProxy.Play.Response do
       end
     end)
   end
-
-  @spec pattern(binary, %{binary => binary}) :: boolean
-  def pattern(conn_url, %{@path_pattern => regex_string}), do: Regex.compile!(regex_string) |> Regex.match?(conn_url)
-
-  # 不要かもしれない
-  @spec has_path_pattern?(binary) :: boolean
-  def has_path_pattern?(json), do: Map.keys(json["request"]) |> Enum.into(MapSet.new) |> MapSet.member? @path_pattern
 end

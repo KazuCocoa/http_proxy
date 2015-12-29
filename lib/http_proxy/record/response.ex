@@ -15,7 +15,7 @@ defmodule HttpProxy.Record.Response do
     export_body = HttpProxyFile.get_export_binary_path(conn.port)
     filename = HttpProxyFile.filename(conn.path_info)
 
-    Format.pretty_json(conn, req_body, ~s(#{export_body}/#{filename}), true)
+    Format.pretty_json(conn, req_body, "#{export_body}/#{filename}", true)
     |> HttpProxyFile.export(export_mapping, filename)
 
     res_body
