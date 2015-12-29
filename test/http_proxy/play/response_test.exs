@@ -5,6 +5,7 @@ defmodule HttpProxy.Play.ResponseTest do
   doctest HttpProxy.Play.Data
 
   alias HttpProxy.Play.Response
+  alias HttpProxy.Play.Paths
 
   test_with_params "regex url patterns",
     fn conn_url, url_pattern, expected_bool ->
@@ -21,7 +22,7 @@ defmodule HttpProxy.Play.ResponseTest do
       ]
   end
 
-  test "#has_path_pattern? is true" do
+  test "HttpProxy.Play.Response#has_path_pattern? is true" do
     sample = %{ "request" => %{"method" => "GET", "path_pattern" => "example_pattern", "port" => 8080},
                   "response" => %{"body" => "<html>hello world</html>", "cookies" => %{},
                      "headers" => %{"Content-Type" => "text/html; charset=UTF-8",
@@ -29,7 +30,7 @@ defmodule HttpProxy.Play.ResponseTest do
     assert Response.has_path_pattern?(sample) == true
   end
 
-  test "#has_path_pattern? is false" do
+  test "HttpProxy.Play.Response#has_path_pattern? is false" do
     sample = %{ "request" => %{"method" => "GET", "path" => "example_pattern", "port" => 8080},
                   "response" => %{"body" => "<html>hello world</html>", "cookies" => %{},
                      "headers" => %{"Content-Type" => "text/html; charset=UTF-8",
@@ -37,11 +38,32 @@ defmodule HttpProxy.Play.ResponseTest do
     assert Response.has_path_pattern?(sample) == false
   end
 
-  test "#play_paths" do
-    expected = %HttpProxy.Play.Paths{path_patterns: ["request.*neko"],
-                paths: ["request/path", "request/path"]}
-    assert HttpProxy.Play.Paths.__struct__ == expected
-    assert HttpProxy.Play.Paths.paths == ["request/path", "request/path"]
-    assert HttpProxy.Play.Paths.path_patterns == ["request.*neko"]
+  test "HttpProxy.Play.Paths#play_paths" do
+    expected = %Paths{path_patterns: ["\\A/request.*neko\\z"],
+                paths: ["/request/path", "/request/path"]}
+    assert Paths.__struct__ == expected
+    assert Paths.paths == ["/request/path", "/request/path"]
+    assert Paths.path_patterns == ["\\A/request.*neko\\z"]
   end
+
+  test "HttpProxy.Play.Paths#has_path? is true" do
+    path = "/request/path"
+    assert Paths.has_path?(path) == "/request/path"
+  end
+
+  test "HttpProxy.Play.Paths#has_path? is false" do
+    path = "/request/path/neko"
+    assert Paths.has_path?(path) == nil
+  end
+
+  test "HttpProxy.Play.Paths#has_path_pattern? is true" do
+    path = "/request_ok_case_neko"
+    assert Paths.has_path_pattern?(path) == "\\A/request.*neko\\z"
+  end
+
+  test "HttpProxy.Play.Paths#has_path_pattern? is false" do
+    path = "/request"
+    assert Paths.has_path_pattern?(path) == nil
+  end
+
 end

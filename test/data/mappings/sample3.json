@@ -1,8 +1,8 @@
 {
   "request": {
-    "path": "request/path",
+    "path": "/request/path",
     "port": 8081,
-    "method": "GET"
+    "method": "POST"
   },
   "response": {
     "body": "<html>hello world 3</html>",

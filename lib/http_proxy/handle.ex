@@ -10,6 +10,7 @@ defmodule HttpProxy.Handle do
   alias HttpProxy.Play.Data
   alias HttpProxy.Record.Response, as: Record
   alias HttpProxy.Play.Response, as: Play
+  alias HttpProxy.Play.Paths, as: PlayPaths
 
   @default_schemes [:http, :https]
 
@@ -58,7 +59,7 @@ defmodule HttpProxy.Handle do
     base = gen_path conn, target_proxy(conn)
     case conn.query_string do
       ""           -> base
-      query_string -> ~s(#{base}?#{query_string})
+      query_string -> "#{base}?#{query_string}"
     end
   end
 
@@ -127,21 +128,28 @@ defmodule HttpProxy.Handle do
   end
 
   # TODO: do matthing request_path
-  # 1. path_patternか、pathを持っているかで分岐
-  # 2. path_patternを持たない場合、keyの完全一致で判断
-  # 3. path_patternを持っている場合、Response.pattern/2 で、conn.request_pathとpath_patternでパターンマッチ
-  # 4. trueなら、その対応する応答を返す。falseなら404
+  # 1. connに含まれるurlが、pathsのURLに一致するものがあるか
+  # 2. path_patternsのlistの中に一致するものがあるか
+  # 3. trueなら、その対応するkeyに対応する応答を返す。falseなら404
   defp play_conn(conn) do
-    prefix_key = ~s(#{String.downcase(conn.method)}_#{Integer.to_string(conn.port)})
+    prefix_key = "#{String.downcase(conn.method)}_#{Integer.to_string(conn.port)}"
     request_path_key = conn.request_path
     # TODO: ここで、request_pathとHttpProxy.Play.Paths.paths or path_patterns のリストに合致するものがあれば、それぞれで適した値を返す
     # 処理に変更する
-    case Keyword.fetch(Data.responses, String.to_atom(prefix_key <> request_path_key)) do
-      {:ok, resp} ->
-        response = resp |> gen_response(conn)
-        conn = %{conn | resp_body: response[:body], resp_cookies: response[:cookies], status: response[:status_code], resp_headers: response[:headers]}
-      :error ->
+    case PlayPaths.has_path?(request_path_key) || PlayPaths.has_path_pattern?(request_path_key) do
+      nil ->
         conn = no_match conn
+      matched_path ->
+        IO.inspect Keyword.fetch(Data.responses, String.to_atom(prefix_key <> matched_path))
+        require IEx
+        IEx.pry
+        case Keyword.fetch(Data.responses, String.to_atom(prefix_key <> matched_path)) do
+          {:ok, resp} ->
+            response = resp |> gen_response(conn)
+            conn = %{conn | resp_body: response[:body], resp_cookies: response[:cookies], status: response[:status_code], resp_headers: response[:headers]}
+          :error ->
+            conn = no_match conn
+        end
     end
 
     send_resp conn, conn.status, conn.resp_body

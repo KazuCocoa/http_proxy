@@ -49,20 +49,20 @@ defmodule HttpProxy.Utils.File do
       "test/data/mappings"
   """
   @spec get_export_path(integer | binary) :: String.t
-  def get_export_path, do: ~s(#{%HttpProxyFile{}.export_path}/#{%HttpProxyFile{}.mapping_files})
-  def get_export_path(port) when is_integer(port), do: ~s(#{%HttpProxyFile{}.export_path}/#{Integer.to_string(port)}/#{%HttpProxyFile{}.mapping_files})
-  def get_export_path(port) when is_binary(port), do: ~s(#{%HttpProxyFile{}.export_path}/#{port}/#{%HttpProxyFile{}.mapping_files})
+  def get_export_path, do: "#{%HttpProxyFile{}.export_path}/#{%HttpProxyFile{}.mapping_files}"
+  def get_export_path(port) when is_integer(port), do: "#{%HttpProxyFile{}.export_path}/#{Integer.to_string(port)}/#{%HttpProxyFile{}.mapping_files}"
+  def get_export_path(port) when is_binary(port), do: "#{%HttpProxyFile{}.export_path}/#{port}/#{%HttpProxyFile{}.mapping_files}"
 
   @spec get_export_binary_path(integer | binary) :: String.t
-  def get_export_binary_path, do: ~s(#{%HttpProxyFile{}.export_path}/#{%HttpProxyFile{}.response_files})
-  def get_export_binary_path(port) when is_integer(port), do: ~s(#{%HttpProxyFile{}.export_path}/#{Integer.to_string(port)}/#{%HttpProxyFile{}.response_files})
-  def get_export_binary_path(port) when is_binary(port), do: ~s(#{%HttpProxyFile{}.export_path}/#{port}/#{%HttpProxyFile{}.response_files})
+  def get_export_binary_path, do: "#{%HttpProxyFile{}.export_path}/#{%HttpProxyFile{}.response_files}"
+  def get_export_binary_path(port) when is_integer(port), do: "#{%HttpProxyFile{}.export_path}/#{Integer.to_string(port)}/#{%HttpProxyFile{}.response_files}"
+  def get_export_binary_path(port) when is_binary(port), do: "#{%HttpProxyFile{}.export_path}/#{port}/#{%HttpProxyFile{}.response_files}"
 
   @spec get_response_path() :: String.t
-  def get_response_path, do: ~s(#{%HttpProxyFile{}.play_path}/#{%HttpProxyFile{}.response_files})
+  def get_response_path, do: "#{%HttpProxyFile{}.play_path}/#{%HttpProxyFile{}.response_files}"
 
   @spec get_mapping_path() :: String.t
-  def get_mapping_path, do: ~s(#{%HttpProxyFile{}.play_path}/#{%HttpProxyFile{}.mapping_files})
+  def get_mapping_path, do: "#{%HttpProxyFile{}.play_path}/#{%HttpProxyFile{}.mapping_files}"
 
   @doc ~S"""
   Generate json file name with `:rand.uniform`
@@ -77,11 +77,11 @@ defmodule HttpProxy.Utils.File do
   @spec filename([String.t]) :: String.t
   def filename(path_info) when is_list(path_info) do
     random_st = Integer.to_string(:rand.uniform 100_000_000)
-    ~s(#{Enum.join(path_info, "-")}-#{random_st}.json)
+    "#{Enum.join(path_info, "-")}-#{random_st}.json"
   end
   def filename(path_info) when is_bitstring(path_info) do
     random_st = Integer.to_string(:rand.uniform 100_000_000)
-    ~s(#{path_info}-#{random_st}.json)
+    "#{path_info}-#{random_st}.json"
   end
 
   @doc """
@@ -90,7 +90,7 @@ defmodule HttpProxy.Utils.File do
   @spec export(binary, String.t, String.t) :: :ok |  {:error, binary}
   def export(json, path, file) do
     unless File.exists?(path), do: File.mkdir_p path
-    File.write(~s(#{path}/#{file}), json)
+    File.write("#{path}/#{file}", json)
   end
 
   @doc ~S"""
@@ -100,13 +100,13 @@ defmodule HttpProxy.Utils.File do
   ## Example
 
       iex> HttpProxy.Utils.File.read_json_file!("test/data/mappings/sample.json")
-      %{"request" => %{"method" => "GET", "path" => "request/path", "port" => 8080},
+      %{"request" => %{"method" => "GET", "path" => "/request/path", "port" => 8080},
              "response" => %{"body" => "<html>hello world</html>", "cookies" => %{},
                "headers" => %{"Content-Type" => "text/html; charset=UTF-8", "Server" => "GFE/2.0"}, "status_code" => 200}}
 
       iex> HttpProxy.Utils.File.read_json_file("test/data/mappings/sample.json")
       {:ok,
-            %{"request" => %{"method" => "GET", "path" => "request/path", "port" => 8080},
+            %{"request" => %{"method" => "GET", "path" => "/request/path", "port" => 8080},
               "response" => %{"body" => "<html>hello world</html>", "cookies" => %{},
                 "headers" => %{"Content-Type" => "text/html; charset=UTF-8", "Server" => "GFE/2.0"}, "status_code" => 200}}}
   """

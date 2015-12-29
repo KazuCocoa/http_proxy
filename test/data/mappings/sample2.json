@@ -1,8 +1,8 @@
 {
   "request": {
-    "path_pattern": "request.*neko",
+    "path_pattern": "\A/request.*neko\z",
     "port": 8080,
-    "method": "POST"
+    "method": "GET"
   },
   "response": {
     "body": "<html>hello world2</html>",

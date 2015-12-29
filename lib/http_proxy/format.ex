@@ -13,7 +13,7 @@ defmodule HttpProxy.Format do
     %Data{
       request: %{
         url: url(conn),
-        remote: ~s(#{a}.#{b}.#{c}.#{d}),
+        remote: "#{a}.#{b}.#{c}.#{d}",
         method: conn.method,
         headers: conn.req_headers, # Maybe failed to convert
         request_body: req_body,

@@ -35,12 +35,12 @@ defmodule HttpProxy.Play.Response do
   end
 
   defp gen_key(map) when is_map(map) do
-    base = ~s(#{String.downcase(map["request"]["method"])}_#{Integer.to_string(map["request"]["port"])}/)
+    base = ~s(#{String.downcase(map["request"]["method"])}_#{Integer.to_string(map["request"]["port"])})
     uri = case Map.has_key?(map["request"], @path_pattern) do
             false ->
-              ~s(#{map["request"]["path"]})
+              "#{map["request"]["path"]}"
             true ->
-              ~s(#{map["request"]["path_pattern"]})
+              "#{map["request"]["path_pattern"]}"
           end
     base <> uri
   end
@@ -100,6 +100,7 @@ defmodule HttpProxy.Play.Response do
   @spec pattern(binary, %{binary => binary}) :: boolean
   def pattern(conn_url, %{@path_pattern => regex_string}), do: Regex.compile!(regex_string) |> Regex.match?(conn_url)
 
+  # 不要かもしれない
   @spec has_path_pattern?(binary) :: boolean
   def has_path_pattern?(json), do: Map.keys(json["request"]) |> Enum.into(MapSet.new) |> MapSet.member? @path_pattern
 end

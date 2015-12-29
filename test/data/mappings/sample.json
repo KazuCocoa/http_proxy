@@ -1,6 +1,6 @@
 {
   "request": {
-    "path": "request/path",
+    "path": "/request/path",
     "port": 8080,
     "method": "GET"
   },
