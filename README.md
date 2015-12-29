@@ -15,14 +15,14 @@ Base implementation is inspired by https://github.com/josevalim/proxy.
 
 ```
 def application do
-  [applications: [:logger, :http_proxy]] # logger is option
+  [applications: [:logger, :http_proxy]] # logger is option. :http_request is not need if you run http_proxy with HttpProxy.start/0 or stop/0.
 end
 
 ...
 
 defp deps do
   [
-    {:http_proxy, "~> 0.5.1"}
+    {:http_proxy, "~> 0.5.2"}
   ]
 end
 ```
