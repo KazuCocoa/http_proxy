@@ -33,13 +33,9 @@ defmodule HttpProxy.Handle do
   end
 
   # see https://github.com/elixir-lang/plug/blob/master/lib/plug/adapters/cowboy.ex#L5
-  defp cowboy_options(port, module_name) do
-    [port: port, ref: String.to_atom(module_name), timeout: req_timeout]
-  end
+  defp cowboy_options(port, module_name), do: [port: port, ref: String.to_atom(module_name), timeout: req_timeout]
 
-  defp req_timeout do
-    Application.get_env(:http_proxy, :timeout) || 5_000
-  end
+  defp req_timeout, do: Application.get_env(:http_proxy, :timeout) || 5_000
 
   @doc """
   Dispatch connection and Play/Record http/https requests.
@@ -72,9 +68,7 @@ defmodule HttpProxy.Handle do
       [%{port: 8080, to: "http://google.com"}, %{port: 8081, to: "http://neko.com"}]
   """
   @spec proxies() :: []
-  def proxies do
-    Application.get_env :http_proxy, :proxies, nil
-  end
+  def proxies, do: Application.get_env :http_proxy, :proxies, nil
 
   @doc ~S"""
   Get schemes which is defined as deault.
@@ -85,9 +79,7 @@ defmodule HttpProxy.Handle do
       [:http, :https]
   """
   @spec schemes() :: []
-  def schemes do
-    @default_schemes
-  end
+  def schemes, do: @default_schemes
 
   defp write_proxy({conn, req_body}, client) do
     case read_body(conn, [read_timeout: req_timeout]) do
@@ -133,12 +125,12 @@ defmodule HttpProxy.Handle do
   end
 
   defp no_match(conn) do
-    %{conn | resp_body: "<html>not found nil play_conn case</html>", status: 404, resp_cookies: [], resp_headers: []}
+    %{conn | resp_body: "{not found nil play_conn case}", status: 404, resp_cookies: [], resp_headers: []}
   end
 
   defp matched_path?(conn, nil), do: no_match conn
   defp matched_path?(conn, matched_path) do
-    prefix_key = "#{String.downcase(conn.method)}_#{Integer.to_string(conn.port)}"
+    prefix_key = String.downcase(conn.method) <> "_" <> Integer.to_string(conn.port)
     case Keyword.fetch(Data.responses, String.to_atom(prefix_key <> matched_path)) do
       {:ok, resp} ->
         response = resp |> gen_response(conn)

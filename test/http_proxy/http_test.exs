@@ -64,11 +64,11 @@ defmodule HttpProxy.HttpTest do
       assert conn.resp_body == expected_body
     end do
       [
-        {:get, "http://localhost:8080/hoge/inu?email=neko&pass=123", "<html>not found nil play_conn case</html>"},
+        {:get, "http://localhost:8080/hoge/inu?email=neko&pass=123", "{not found nil play_conn case}"},
         {:get, "http://localhost:8080/request/path", "<html>hello world</html>"},
         {:get, "http://localhost:8080/request_neko", "<html>hello world2</html>"},
         {:get, "http://localhost:8080/request_neko?email=neko&pass=123", "<html>hello world2</html>"},
-        {:get, "http://localhost:8080/request_neko_fail", "<html>not found nil play_conn case</html>"},
+        {:get, "http://localhost:8080/request_neko_fail", "{not found nil play_conn case}"},
         {:post, "http://localhost:8081/request/path", "<html>hello world 3</html>"},
         {:post, "http://localhost:8081/request/path?email=neko&pass=123", "<html>hello world 3</html>"}
       ]
