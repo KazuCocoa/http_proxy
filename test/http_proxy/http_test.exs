@@ -3,19 +3,9 @@ defmodule HttpProxy.HttpTest do
   use ExUnit.Parameterized
   use Plug.Test
 
-  defp set_play_mode do
-    Application.put_env :http_proxy, :record, false
-    Application.put_env :http_proxy, :play, true
-  end
-
-  defp set_record_mode do
-    Application.put_env :http_proxy, :record, true
-    Application.put_env :http_proxy, :play, false
-  end
-
   test "files are created in record mode" do
     File.rm_rf!(Application.get_env(:http_proxy, :export_path))
-    set_record_mode
+    HttpProxy.TestHelper.set_record_mode
 
     conn(:get, "http://localhost:8080/hoge/inu?email=neko&pass=123") |> HttpProxy.Handle.dispatch([])
     conn(:post, "http://localhost:8080/hoge/inu", "nekoneko") |> HttpProxy.Handle.dispatch([])
@@ -34,12 +24,12 @@ defmodule HttpProxy.HttpTest do
 
     assert {Enum.count(exported_files), Enum.count(exported_body_files)} == {4, 4}
 
-    set_play_mode
+    HttpProxy.TestHelper.set_play_mode
   end
 
   test "files are not created in play mode" do
     File.rm_rf!(Application.get_env(:http_proxy, :export_path))
-    set_play_mode
+    HttpProxy.TestHelper.set_play_mode
 
     conn(:get, "http://localhost:8080/hoge/inu?email=neko&pass=123")
     |> HttpProxy.Handle.dispatch([])
@@ -59,7 +49,7 @@ defmodule HttpProxy.HttpTest do
 
   test_with_params "play responses agains particular request",
     fn method, uri, expected_body ->
-      set_play_mode
+      HttpProxy.TestHelper.set_play_mode
       conn = conn(method, uri) |> HttpProxy.Handle.dispatch([])
       assert conn.resp_body == expected_body
     end do

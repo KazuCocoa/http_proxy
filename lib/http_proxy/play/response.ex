@@ -78,8 +78,19 @@ defmodule HttpProxy.Play.Response do
     "Response jsons must include arrtibute: #{message}"
   end
 
-  @doc """
+  @doc ~S"""
   Return list of paths associated with `path` and `path_pattern`.
+
+  ## Example
+
+      iex> HttpProxy.Play.Response.play_paths("path")
+      ["/request/path", "/request/path"]
+
+      iex> HttpProxy.Play.Response.play_paths("path_pattern")
+      ["\\A/request.*neko\\z"]
+
+      iex> HttpProxy.Play.Response.play_paths("no_pattern")
+      []
   """
   @spec play_paths(binary) :: [binary]
   def play_paths(key), do: play_data_responses Data.responses, key

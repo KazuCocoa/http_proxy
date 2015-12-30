@@ -54,8 +54,10 @@ defmodule HttpProxy.Handle do
   def uri(conn) do
     base = gen_path conn, target_proxy(conn)
     case conn.query_string do
-      ""           -> base
-      query_string -> "#{base}?#{query_string}"
+      "" ->
+        base
+      query_string ->
+        "#{base}?#{query_string}"
     end
   end
 
