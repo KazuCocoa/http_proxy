@@ -13,6 +13,7 @@ defmodule HttpProxy.Mixfile do
      deps: deps,
      package: package,
      aliases: aliases,
+     test_coverage: [tool: Coverex.Task],
      preferred_cli_env: [
           vcr: :test, "vcr.delete": :test, "vcr.check": :test, "vcr.show": :test
         ]
@@ -27,7 +28,10 @@ defmodule HttpProxy.Mixfile do
   end
 
   defp aliases do
-    [proxy: ["run --no-halt"]]
+    [
+      proxy: ["run --no-halt"],
+      test: ["test --cover"]
+    ]
   end
 
   defp deps do
@@ -39,7 +43,8 @@ defmodule HttpProxy.Mixfile do
       {:ex_parameterized, "~> 1.0", only: :test},
       {:earmark, "~> 0.1", only: :dev},
       {:ex_doc, "~> 0.10", only: :dev},
-      {:exvcr, "~> 0.6", only: :test}
+      {:exvcr, "~> 0.6", only: :test},
+      {:coverex, "~> 1.4.7", only: :test}
     ]
   end
 

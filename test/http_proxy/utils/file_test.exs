@@ -5,6 +5,7 @@ defmodule HttpProxy.Utils.FileTest do
   alias HttpProxy.Utils.File, as: HttpProxyFile
 
   doctest HttpProxy.Utils.File
+  doctest HttpProxy.Utils
 
   test "check read json files" do
     json_test_dir = "test/data/mappings"
