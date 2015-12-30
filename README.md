@@ -178,7 +178,6 @@ Response body will save in "path/to/body_file.json".
 }
 ```
 
-
 # TODO
 - [x] record request
     - [x] should able to encode cookies: Use JSX to decode into jsons.
@@ -196,6 +195,10 @@ Response body will save in "path/to/body_file.json".
 - [x] start/stop http_proxy manually
 - [ ] use vcr <= a bit...
     - integrate https://github.com/parroty/exvcr
+
+# styleguide
+
+http://elixir.community/styleguide
 
 # LICENSE
 MIT. Please read LICENSE.

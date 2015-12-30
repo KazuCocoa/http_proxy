@@ -1,13 +1,15 @@
 defmodule HttpProxy.Format do
-  @moduledoc false
+  @moduledoc """
+  Format some Plug.Conn and request into JSON
+  """
 
   alias HttpProxy.Data, as: Data
 
   @type t :: %Plug.Conn{}
 
-  @spec pretty_json(t, binary, binary, boolean) :: binary
-  def pretty_json(conn, req_body, res_body_file, pretty) when pretty == true, do: pretty_json(conn, req_body, res_body_file, false) |> JSX.prettify!
-  def pretty_json(conn, req_body, res_body_file, _) do
+  @spec pretty_json!(t, binary, binary, boolean) :: binary
+  def pretty_json!(conn, req_body, res_body_file, pretty) when pretty == true, do: pretty_json!(conn, req_body, res_body_file, false) |> JSX.prettify!
+  def pretty_json!(conn, req_body, res_body_file, _) do
     {a, b, c, d} = conn.remote_ip
 
     %Data{

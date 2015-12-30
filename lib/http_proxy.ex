@@ -85,5 +85,4 @@ defmodule HttpProxy do
     Application.start :plug
     Application.start :http_proxy
   end
-
 end

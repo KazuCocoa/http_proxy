@@ -49,40 +49,36 @@ defmodule HttpProxy.Utils.File do
       "test/data/mappings"
   """
   @spec get_export_path(integer | binary) :: String.t
-  def get_export_path, do: "#{%HttpProxyFile{}.export_path}/#{%HttpProxyFile{}.mapping_files}"
-  def get_export_path(port) when is_integer(port), do: "#{%HttpProxyFile{}.export_path}/#{Integer.to_string(port)}/#{%HttpProxyFile{}.mapping_files}"
-  def get_export_path(port) when is_binary(port), do: "#{%HttpProxyFile{}.export_path}/#{port}/#{%HttpProxyFile{}.mapping_files}"
+  def get_export_path, do: %HttpProxyFile{}.export_path <> "/" <> %HttpProxyFile{}.mapping_files
+  def get_export_path(port) when is_integer(port), do: %HttpProxyFile{}.export_path <> "/" <> Integer.to_string(port) <> "/" <> %HttpProxyFile{}.mapping_files
+  def get_export_path(port) when is_binary(port), do: %HttpProxyFile{}.export_path <> "/" <> port <> "/" <> %HttpProxyFile{}.mapping_files
 
   @spec get_export_binary_path(integer | binary) :: String.t
-  def get_export_binary_path, do: "#{%HttpProxyFile{}.export_path}/#{%HttpProxyFile{}.response_files}"
-  def get_export_binary_path(port) when is_integer(port), do: "#{%HttpProxyFile{}.export_path}/#{Integer.to_string(port)}/#{%HttpProxyFile{}.response_files}"
-  def get_export_binary_path(port) when is_binary(port), do: "#{%HttpProxyFile{}.export_path}/#{port}/#{%HttpProxyFile{}.response_files}"
+  def get_export_binary_path, do: %HttpProxyFile{}.export_path <> "/" <> %HttpProxyFile{}.response_files
+  def get_export_binary_path(port) when is_integer(port), do: %HttpProxyFile{}.export_path <> "/" <> Integer.to_string(port) <> "/" <> %HttpProxyFile{}.response_files
+  def get_export_binary_path(port) when is_binary(port), do: %HttpProxyFile{}.export_path <> "/" <> port <> "/" <> %HttpProxyFile{}.response_files
 
   @spec get_response_path() :: String.t
-  def get_response_path, do: "#{%HttpProxyFile{}.play_path}/#{%HttpProxyFile{}.response_files}"
+  def get_response_path, do: %HttpProxyFile{}.play_path <> "/" <> %HttpProxyFile{}.response_files
 
   @spec get_mapping_path() :: String.t
-  def get_mapping_path, do: "#{%HttpProxyFile{}.play_path}/#{%HttpProxyFile{}.mapping_files}"
+  def get_mapping_path, do: %HttpProxyFile{}.play_path <> "/" <> %HttpProxyFile{}.mapping_files
 
   @doc ~S"""
   Generate json file name with `:rand.uniform`
 
   ## Example
-      iex> HttpProxy.Utils.File.filename(["path-info-path"]) |> String.match?(~r(\Apath-info-path.*\.json\z))
+      iex> HttpProxy.Utils.File.filename(["path", "info", "path"]) |> String.match?(~r(\Apath-info-path.*\.json\z))
       true
 
       iex> HttpProxy.Utils.File.filename("path-info-path") |> String.match?(~r(\Apath-info-path.*\.json\z))
       true
   """
   @spec filename([String.t]) :: String.t
-  def filename(path_info) when is_list(path_info) do
-    random_st = Integer.to_string(:rand.uniform 100_000_000)
-    "#{Enum.join(path_info, "-")}-#{random_st}.json"
-  end
-  def filename(path_info) when is_bitstring(path_info) do
-    random_st = Integer.to_string(:rand.uniform 100_000_000)
-    "#{path_info}-#{random_st}.json"
-  end
+  def filename(path_info) when is_list(path_info), do: Enum.join(path_info, "-") <> "-" <> randam_string <> ".json"
+  def filename(path_info) when is_bitstring(path_info), do: path_info <> "-" <> randam_string <> ".json"
+
+  defp randam_string, do: Integer.to_string(:rand.uniform 100_000_000)
 
   @doc """
   Export json data into `path/file`.
@@ -90,7 +86,7 @@ defmodule HttpProxy.Utils.File do
   @spec export(binary, String.t, String.t) :: :ok |  {:error, binary}
   def export(json, path, file) do
     unless File.exists?(path), do: File.mkdir_p path
-    File.write("#{path}/#{file}", json)
+    File.write(path <> "/" <> file, json)
   end
 
   @doc ~S"""
@@ -121,8 +117,10 @@ defmodule HttpProxy.Utils.File do
   @spec read_json_file(String.t) :: {:ok, binary} |  {:error, binary}
   def read_json_file(path) do
     case File.read(path) do
-      {:ok, body}       -> JSX.decode(body)
-      {:error, message} -> {:error, message}
+      {:ok, body} ->
+        JSX.decode(body)
+      {:error, message} ->
+        {:error, message}
     end
   end
 
@@ -141,8 +139,10 @@ defmodule HttpProxy.Utils.File do
   @spec json_files(String.t) :: binary
   def json_files!(dir) do
     case json_files(dir) do
-      {:ok, files}      -> files
-      {:error, message} -> raise ArgumentError, "Do you have json files to play response in #{dir} ?"
+      {:ok, files} ->
+        files
+      {:error, message} ->
+        raise ArgumentError, "Do you have json files to play response in #{dir} ?"
     end
   end
 
@@ -155,7 +155,8 @@ defmodule HttpProxy.Utils.File do
                   Path.extname(file) == ".json"
                 end, &(dir <> "/" <> &1))
         {:ok, files}
-      {:error, message} -> {:error, message}
+      {:error, message} ->
+        {:error, message}
     end
   end
 end

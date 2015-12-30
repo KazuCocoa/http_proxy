@@ -1,11 +1,11 @@
 defmodule HttpProxy.Supervisor do
-  @moduledoc false
+  @moduledoc """
+  Supervisor for HttpProxy
+  """
 
   use Supervisor
 
-  def start_link do
-    Supervisor.start_link __MODULE__, :ok, [name: __MODULE__]
-  end
+  def start_link, do: Supervisor.start_link __MODULE__, :ok, [name: __MODULE__]
 
   ## Callbacks
 
@@ -35,7 +35,7 @@ defmodule HttpProxy.Supervisor do
                    to:   "http://yahoo.com"}
                 ],
       record: false,
-      play: true,
+      play: false,
       export_path: "test/example",
       play_path: "test/data"
     ---
