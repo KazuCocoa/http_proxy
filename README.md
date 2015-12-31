@@ -25,7 +25,7 @@ end
 
 defp deps do
   [
-    {:http_proxy, "~> 0.5.2"}
+    {:http_proxy, "~> 0.5.3"}
   ]
 end
 ```

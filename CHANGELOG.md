@@ -1,6 +1,9 @@
 # Changelogs
 
-## 0.5.1: Dec 30, 2015
+## 0.5.3: Dec 31, 2015
+Fix getting headers in play mode with Elixir 1.2.0 [#15](https://github.com/KazuCocoa/http_proxy/issues/15)
+
+## 0.5.1 and 0.5.2: Dec 30, 2015
 Add `HttpProxy.stop` and `HttpProxy.start` to stop/start the proxy manually.
 
 ## 0.5.0: Dec 29, 2015
