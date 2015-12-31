@@ -3,7 +3,7 @@ defmodule HttpProxy.Format do
   Format some Plug.Conn and request into JSON
   """
 
-  alias HttpProxy.Data, as: Data
+  alias HttpProxy.Data
 
   @type t :: %Plug.Conn{}
 

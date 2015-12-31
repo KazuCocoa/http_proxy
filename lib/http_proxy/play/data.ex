@@ -4,8 +4,8 @@ defmodule HttpProxy.Play.Data do
   The structure gets data via HttpProxy.Play.Response.play_responses.
   """
 
-
   alias HttpProxy.Play.Data
+  alias HttpProxy.Play.Response, as: HttpProxyResponse
 
   @doc ~S"""
   Structure associated with responses used play response mode.
@@ -24,7 +24,7 @@ defmodule HttpProxy.Play.Data do
                "response" => %{"body" => "<html>hello world 3</html>", "cookies" => %{},
                  "headers" => %{"Content-Type" => "text/html; charset=UTF-8", "Server" => "GFE/2.0"}, "status_code" => 200}}]}
   """
-  defstruct responses: HttpProxy.Play.Response.play_responses
+  defstruct responses: HttpProxyResponse.play_responses
 
   @doc ~S"""
   Return `responses` attribute in `HttpProxy.Play.Data.__struct__`

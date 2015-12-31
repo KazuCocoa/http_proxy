@@ -47,10 +47,11 @@ defmodule HttpProxy do
   """
 
   use Application
+  alias HttpProxy.Supervisor, as: HttpProxySup
 
   @spec start(:normal, []) :: pid
   def start(_type, _args) do
-    HttpProxy.Supervisor.start_link
+    HttpProxySup.start_link
   end
 
   @doc """
