@@ -7,6 +7,8 @@ defmodule HttpProxy.Handle do
   import Plug.Conn
   require Logger
 
+  alias Plug.Conn
+
   alias HttpProxy.Play.Data
   alias HttpProxy.Record.Response, as: Record
   alias HttpProxy.Play.Response, as: Play
@@ -127,7 +129,8 @@ defmodule HttpProxy.Handle do
   end
 
   defp no_match(conn) do
-    %{conn | resp_body: "{not found nil play_conn case}", status: 404, resp_cookies: [], resp_headers: []}
+    %{conn | resp_body: "{not found nil play_conn case}", resp_cookies: [], resp_headers: []}
+    |> Conn.put_status(404)
   end
 
   defp matched_path?(conn, nil), do: no_match conn
@@ -136,7 +139,8 @@ defmodule HttpProxy.Handle do
     case Keyword.fetch(Data.responses, String.to_atom(prefix_key <> matched_path)) do
       {:ok, resp} ->
         response = resp |> gen_response(conn)
-        %{conn | resp_body: response[:body], resp_cookies: response[:cookies], status: response[:status_code], resp_headers: response[:headers]}
+        %{conn | resp_body: response[:body], resp_cookies: response[:cookies], resp_headers: response[:headers]}
+        |> Conn.put_status(response[:status_code])
       :error ->
         no_match conn
     end
@@ -148,7 +152,7 @@ defmodule HttpProxy.Handle do
       "body": Map.fetch!(res_json, "body"),
       "cookies": Map.to_list(Map.fetch!(res_json, "cookies")),
       "headers": Map.to_list(Map.fetch!(res_json, "headers"))
-                 |> List.insert_at(0, {"Date", conn.resp_headers["Date"]}),
+                 |> List.insert_at(0, {"Date", hd(Conn.get_resp_header conn, "Date")}),
        "status_code": Map.fetch!(res_json, "status_code")
     ]
   end
