@@ -30,7 +30,7 @@ defmodule HttpProxy.Handle do
   """
   @spec start_link([binary]) :: pid
   def start_link([proxy, module_name]) do
-    Logger.info "Running Proxy with Cowboy on http://localhost:#{proxy.port} named #{module_name}, timeout: #{req_timeout}"
+    Logger.info "Running #{__MODULE__} on http://localhost:#{proxy.port} named #{module_name}, timeout: #{req_timeout}"
     Plug.Adapters.Cowboy.http(__MODULE__, [], cowboy_options(proxy.port, module_name))
   end
 
