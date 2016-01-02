@@ -64,6 +64,22 @@ defmodule HttpProxy.HttpTest do
       ]
   end
 
+  test "raise error with play and record mode" do
+    HttpProxy.TestHelper.set_play_and_record_mode
+    assert_raise ArgumentError, "Can't set record and play at the same time.", fn ->
+      conn(:get, "http://localhost:8080/") |> HttpProxy.Handle.dispatch([])
+    end
+    HttpProxy.TestHelper.set_play_mode
+  end
+
+  # send real request to outside server
+  test "set play and record false" do
+    HttpProxy.TestHelper.set_proxy_mode
+    conn = conn(:get, "http://localhost:8081/") |> HttpProxy.Handle.dispatch([])
+    assert conn.status == 200
+    HttpProxy.TestHelper.set_play_mode
+  end
+
   test "start and stop http_proxy" do
     assert HttpProxy.stop == :ok
     assert HttpProxy.start == :ok
