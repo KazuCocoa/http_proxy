@@ -64,6 +64,14 @@ defmodule HttpProxy.HttpTest do
       ]
   end
 
+  test "no mached scheme" do
+    assert_raise ArgumentError, "no scheme", fn ->
+      conn(:get, "http://localhost:8082/")
+      |> Map.put(:scheme, :ftp)
+      |> HttpProxy.Handle.uri
+    end
+  end
+
   test "raise error with play and record mode" do
     HttpProxy.TestHelper.set_play_and_record_mode
     assert_raise ArgumentError, "Can't set record and play at the same time.", fn ->
