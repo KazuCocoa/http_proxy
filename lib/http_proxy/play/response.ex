@@ -38,9 +38,9 @@ defmodule HttpProxy.Play.Response do
     base = String.downcase(map["request"]["method"]) <> "_" <> Integer.to_string(map["request"]["port"])
     uri = case Map.has_key?(map["request"], @path_pattern) do
             false ->
-              map["request"]["path"]
+              map["request"][@path]
             true ->
-              map["request"]["path_pattern"]
+              map["request"][@path_pattern]
           end
     base <> uri
   end
