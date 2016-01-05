@@ -3,9 +3,11 @@ defmodule HttpProxy.Play.Response do
 
   @path_pattern "path_pattern"
   @path "path"
+  @body "body"
+  @body_file "body_file"
 
   @request_key_map Enum.into(["method", @path, "port", @path_pattern], MapSet.new)
-  @response_key_map Enum.into(["body", "cookies", "headers", "status_code"], MapSet.new)
+  @response_key_map Enum.into([@body, @body_file, "cookies", "headers", "status_code"], MapSet.new)
 
   alias HttpProxy.Utils.File, as: HttpProxyFile
   alias HttpProxy.Play.Data
@@ -58,12 +60,19 @@ defmodule HttpProxy.Play.Response do
       {true, true} ->
         raise ArgumentError, format_error_message(request_diff)
       {false, false} ->
-        raise ArgumentError, format_error_message(Enum.into(["port", @path_pattern], MapSet.new))
+        raise ArgumentError, format_error_message(Enum.into([@path, @path_pattern], MapSet.new))
       {_, _} ->
         # ok
     end
 
-    if MapSet.size(response_diff) > 0, do: raise ArgumentError, format_error_message(response_diff)
+    case {MapSet.member?(response_diff, @body), MapSet.member?(response_diff, @body_file)} do
+      {true, true} ->
+        raise ArgumentError, format_error_message(response_diff)
+      {false, false} ->
+        raise ArgumentError, format_error_message(Enum.into([@body, @body_file], MapSet.new))
+      {_, _} ->
+        # ok
+    end
 
     json
   end

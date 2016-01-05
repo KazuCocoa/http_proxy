@@ -5,7 +5,7 @@
     "method": "GET"
   },
   "response": {
-    "body": "<html>hello world2</html>",
+    "body_file": "test/data/__files/example.json",
     "cookies": {},
     "headers": {
       "Content-Type": "text/html; charset=UTF-8",

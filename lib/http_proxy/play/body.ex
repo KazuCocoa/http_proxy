@@ -3,14 +3,16 @@ defmodule HttpProxy.Play.Body do
   Get files against play
   """
 
-  alias HttpProxy.Play.Data
-
   @spec get_body(binary) :: binary
-  def get_body(hash_value), do: hash_value["response"]["body"]
+  def get_body(%{"response" => %{"body" => body}}), do: body
+  def get_body(%{"response" => %{"body_file" => body_file}}) do
+    case get_binay_from body_file do
+      {:ok, result} ->
+        result
+      {:error, _} ->
+        ""
+    end
+  end
 
-  @spec get_body_file(binary) :: Path.t
-  def get_body_file(hash_value), do: hash_value["response"]["body_file"]
-
-  @spec get_binay_from!(Path.t) :: binary | no_return
-  def get_binay_from!(file_path), do: File.read!(file_path)
+  defp get_binay_from(file_path), do: File.read(file_path)
 end
