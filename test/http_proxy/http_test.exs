@@ -56,8 +56,8 @@ defmodule HttpProxy.HttpTest do
       [
         {:get, "http://localhost:8080/hoge/inu?email=neko&pass=123", "{not found nil play_conn case}"},
         {:get, "http://localhost:8080/request/path", "<html>hello world</html>"},
-        {:get, "http://localhost:8080/request_neko", "<html>hello world2</html>"},
-        {:get, "http://localhost:8080/request_neko?email=neko&pass=123", "<html>hello world2</html>"},
+        {:get, "http://localhost:8080/request_neko", "{\n  \"example\": \"data\"\n}\n"},
+        {:get, "http://localhost:8080/request_neko?email=neko&pass=123", "{\n  \"example\": \"data\"\n}\n"},
         {:get, "http://localhost:8080/request_neko_fail", "{not found nil play_conn case}"},
         {:post, "http://localhost:8081/request/path", "<html>hello world 3</html>"},
         {:post, "http://localhost:8081/request/path?email=neko&pass=123", "<html>hello world 3</html>"}

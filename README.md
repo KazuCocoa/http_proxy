@@ -3,8 +3,7 @@
 [![Build Status](https://travis-ci.org/KazuCocoa/http_proxy.svg?branch=master)](https://travis-ci.org/KazuCocoa/http_proxy)
 [![](https://img.shields.io/hexpm/v/http_proxy.svg?style=flat)](https://hex.pm/packages/http_proxy)
 
-Simple multi HTTP Proxy using Plug.
-Base implementation is inspired by https://github.com/josevalim/proxy.
+Simple multi HTTP Proxy using Plug. And suppot record/play requests.
 
 # MY GOAL
 - Record/Play proxied requests
@@ -136,8 +135,11 @@ Response body will save in "path/to/body_file.json".
 - You can set `path` or `path_pattern` as attribute under `request`.
     - If `path`, the http_proxy check requests are matched completely.
     - If `path_pattern`, the http_proxy check requests are matched with Regex.
+- You can set `body` or `body_file` as attribute under `response`.
+    - If `body`, the http_proxy send the body string.
+    - If `body_file`, the http_proxy send the body_file binary as response.
 
-#### `path` case
+#### `path` and `body` case
 
 ```json
 {
@@ -158,9 +160,10 @@ Response body will save in "path/to/body_file.json".
 }
 ```
 
-#### `path_pattern` case
+#### `path_pattern` and `body_file` case
 
 - Pattern match with `Regex.match?(Regex.compile!("\A/request.*neko\z"), request_path)`
+- `File.read/2` via `file/to/path.json` and respond the binary
 
 ```json
 {
@@ -170,7 +173,7 @@ Response body will save in "path/to/body_file.json".
     "method": "GET"
   },
   "response": {
-    "body": "<html>hello world2</html>",
+    "body_file": "file/to/path.json",
     "cookies": {},
     "headers": {
       "Content-Type": "text/html; charset=UTF-8",

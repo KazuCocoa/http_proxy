@@ -13,6 +13,7 @@ defmodule HttpProxy.Handle do
   alias HttpProxy.Record.Response, as: Record
   alias HttpProxy.Play.Response, as: Play
   alias HttpProxy.Play.Paths, as: PlayPaths
+  alias HttpProxy.Play.Body, as: PlayBody
 
   @default_schemes [:http, :https]
 
@@ -125,6 +126,7 @@ defmodule HttpProxy.Handle do
 
   defp play_conn(conn) do
     conn = matched_path? conn, PlayPaths.has_path?(conn.request_path) || PlayPaths.has_path_pattern?(conn.request_path)
+    # TODO: conn.resp_bodyに返すべき値を代入する
     send_resp conn, conn.status, conn.resp_body
   end
 
@@ -149,7 +151,7 @@ defmodule HttpProxy.Handle do
   defp gen_response(resp, conn) do
     res_json = Map.fetch!(resp, "response")
     [
-      "body": Map.fetch!(res_json, "body"),
+      "body": PlayBody.get_body(resp),
       "cookies": Map.to_list(Map.fetch!(res_json, "cookies")),
       "headers": Map.to_list(Map.fetch!(res_json, "headers"))
                  |> List.insert_at(0, {"Date", hd(Conn.get_resp_header conn, "Date")}),
