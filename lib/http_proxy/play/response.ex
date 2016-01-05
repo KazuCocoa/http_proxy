@@ -62,7 +62,7 @@ defmodule HttpProxy.Play.Response do
       {false, false} ->
         raise ArgumentError, format_error_message(Enum.into([@path, @path_pattern], MapSet.new))
       {_, _} ->
-        # ok
+        :ok
     end
 
     case {MapSet.member?(response_diff, @body), MapSet.member?(response_diff, @body_file)} do
@@ -71,7 +71,7 @@ defmodule HttpProxy.Play.Response do
       {false, false} ->
         raise ArgumentError, format_error_message(Enum.into([@body, @body_file], MapSet.new))
       {_, _} ->
-        # ok
+        :ok
     end
 
     json
