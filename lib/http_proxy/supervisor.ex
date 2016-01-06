@@ -11,8 +11,6 @@ defmodule HttpProxy.Supervisor do
   ## Callbacks
 
   def init(:ok) do
-    import Supervisor.Spec
-
     proxies?(Handle.proxies)
     |> Enum.reduce([], fn proxy, acc ->
       module_name = "HttpProxy.Handle#{proxy.port}"

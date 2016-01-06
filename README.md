@@ -56,6 +56,7 @@ config :logger, :console,
 
 ```
 $ mix deps.get
+$ mix clean
 $ mix run --no-halt # start proxy server
 ```
 
