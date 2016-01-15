@@ -4,42 +4,49 @@ defmodule  HttpProxy.Play.Paths do
   The structure gets paths as list via HttpProxy.Play.Response.play_paths.
   """
 
-  alias HttpProxy.Play.Paths
   alias HttpProxy.Play.Response
+  alias HttpProxy.Agent, as: ProxyAgent
+
+  @paths :play_paths
+  @patterns :play_path_patterns
 
   @doc ~S"""
-  Structure associated with response paths used play response mode.
-  The `http_proxy` returns response when the http_proxy receives http request and its path matchs `path` or `path_pattern`.
-
-  ## Example
-
-      iex> HttpProxy.Play.Paths.__struct__
-      %HttpProxy.Play.Paths{path_patterns: ["\\A/request.*neko\\z"],
-          paths: ["/request/path", "/request/path"]}
-  """
-  defstruct paths: Response.play_paths("path"), path_patterns: Response.play_paths("path_pattern")
-
-  @doc ~S"""
-  Return `paths` attribute in `HttpProxy.Play.Paths.__struct__`
+  Return `paths` stored in Agent.
 
   ## Example
 
       iex> HttpProxy.Play.Paths.paths
       ["/request/path", "/request/path"]
   """
-  @spec paths() :: list
-  def paths, do: %Paths{}.paths
+  @spec paths() :: binary
+  def paths, do: paths ProxyAgent.get(@paths)
+  defp paths(nil) do
+    ProxyAgent.put @paths, Response.play_paths("path")
+    paths
+  end
+  defp paths(val), do: val
+
+  @spec clear_paths() :: :ok
+  def clear_paths, do: ProxyAgent.put @paths, nil
 
   @doc ~S"""
-  Return `path_patterns` attribute in `HttpProxy.Play.Paths.__struct__`
+  Return `path_patterns` stored in Agent.
 
   ## Example
 
       iex> HttpProxy.Play.Paths.path_patterns
       ["\\A/request.*neko\\z"]
   """
-  @spec path_patterns() :: list
-  def path_patterns, do: %Paths{}.path_patterns
+  @spec path_patterns() :: binary
+  def path_patterns, do: path_patterns ProxyAgent.get(@patterns)
+  defp path_patterns(nil) do
+    ProxyAgent.put @patterns, Response.play_paths("path_pattern")
+    path_patterns
+  end
+  defp path_patterns(val), do: val
+
+  @spec clear_path_patterns() :: :ok
+  def clear_path_patterns, do: ProxyAgent.put @patterns, nil
 
   @spec has_path?(binary) :: binary | nil
   def has_path?(path) do

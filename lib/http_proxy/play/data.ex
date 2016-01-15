@@ -4,30 +4,13 @@ defmodule HttpProxy.Play.Data do
   The structure gets data via HttpProxy.Play.Response.play_responses.
   """
 
-  alias HttpProxy.Play.Data
   alias HttpProxy.Play.Response, as: HttpProxyResponse
+  alias HttpProxy.Agent, as: ProxyAgent
+
+  @responses :play_responses
 
   @doc ~S"""
-  Structure associated with responses used play response mode.
-
-  ## Example
-
-      iex> HttpProxy.Play.Data.__struct__
-      %HttpProxy.Play.Data{responses: ["get_8080/request/path": %{"request" => %{"method" => "GET",
-                 "path" => "/request/path", "port" => 8080},
-               "response" => %{"body" => "<html>hello world</html>", "cookies" => %{},
-                 "headers" => %{"Content-Type" => "text/html; charset=UTF-8", "Server" => "GFE/2.0"}, "status_code" => 200}},
-             "get_8080\\A/request.*neko\\z": %{"request" => %{"method" => "GET", "path_pattern" => "\\A/request.*neko\\z", "port" => 8080},
-               "response" => %{"body_file" => "test/data/__files/example.json", "cookies" => %{},
-                 "headers" => %{"Content-Type" => "text/html; charset=UTF-8", "Server" => "GFE/2.0"}, "status_code" => 200}},
-             "post_8081/request/path": %{"request" => %{"method" => "POST", "path" => "/request/path", "port" => 8081},
-               "response" => %{"body" => "<html>hello world 3</html>", "cookies" => %{},
-                 "headers" => %{"Content-Type" => "text/html; charset=UTF-8", "Server" => "GFE/2.0"}, "status_code" => 201}}]}
-  """
-  defstruct responses: HttpProxyResponse.play_responses
-
-  @doc ~S"""
-  Return `responses` attribute in `HttpProxy.Play.Data.__struct__`
+  Return `responses` stored in Agent.
 
   ## Example
 
@@ -48,6 +31,14 @@ defmodule HttpProxy.Play.Data do
            "headers" => %{"Content-Type" => "text/html; charset=UTF-8",
              "Server" => "GFE/2.0"}, "status_code" => 201}}]
   """
-  @spec responses :: binary
-  def responses, do: %Data{}.responses
+  @spec responses() :: binary
+  def responses, do: response ProxyAgent.get(@responses)
+  defp response(nil) do
+    ProxyAgent.put @responses, HttpProxyResponse.play_responses
+    responses
+  end
+  defp response(val), do: val
+
+  @spec clear_responses() :: :ok
+  def clear_responses, do: ProxyAgent.put @responses, nil
 end
