@@ -1,5 +1,5 @@
 defmodule HttpProxy.AgentTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: false
 
   alias HttpProxy.Agent, as: ProxyAgent
 
@@ -19,6 +19,6 @@ defmodule HttpProxy.AgentTest do
 
     assert ProxyAgent.get(:play_responses) == nil
     assert ProxyAgent.get(:play_paths) == nil
-    assert ProxyAgent.get(:play_path_patterns) == nil    
+    assert ProxyAgent.get(:play_path_patterns) == nil
   end
 end
