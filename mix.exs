@@ -4,7 +4,7 @@ defmodule HttpProxy.Mixfile do
   def project do
     [app: :http_proxy,
      version: "0.6.0",
-     elixir: "~> 1.1",
+     elixir: "~> 1.2",
      name: "ExHttpProxy",
      source_url: "https://github.com/KazuCocoa/http_proxy",
      description: "Multi port HTTP Proxy and support record/play request.",
@@ -13,7 +13,8 @@ defmodule HttpProxy.Mixfile do
      deps: deps,
      package: package,
      aliases: aliases,
-     test_coverage: [tool: Coverex.Task],
+     test_coverage: [tool: ExCoveralls],
+     preferred_cli_env: ["coveralls": :test, "coveralls.detail": :test, "coveralls.post": :test],
      preferred_cli_env: [
           vcr: :test, "vcr.delete": :test, "vcr.check": :test, "vcr.show": :test
         ]
@@ -30,7 +31,7 @@ defmodule HttpProxy.Mixfile do
   defp aliases do
     [
       proxy: ["run --no-halt"],
-      test: ["test --cover"]
+      test: ["coveralls"]
     ]
   end
 
@@ -44,7 +45,7 @@ defmodule HttpProxy.Mixfile do
       {:earmark, "~> 0.1", only: :dev},
       {:ex_doc, "~> 0.10", only: :dev},
       {:exvcr, "~> 0.6", only: :test},
-      {:coverex, "~> 1.4.7", only: :test}
+      {:excoveralls, "~> 0.4", only: :test}
     ]
   end
 

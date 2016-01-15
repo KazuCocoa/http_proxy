@@ -3,10 +3,9 @@ language: elixir
 otp_release:
   - 18.0
   - 18.1
+  - 18.2
 
 elixir:
-  - 1.1.0
-  - 1.1.1
   - 1.2.0
 
 sudo: false

@@ -115,7 +115,7 @@ defmodule HttpProxy.Utils.File do
   def read_json_file!(path) do
     case read_json_file(path) do
       {:ok, body}       -> body
-      {:error, message} -> raise ArgumentError, "Do you set correct json format files to play response in #{path} ?"
+      {:error, _} -> raise ArgumentError, "Do you set correct json format files to play response in #{path} ?"
     end
   end
 
@@ -146,7 +146,7 @@ defmodule HttpProxy.Utils.File do
     case json_files(dir) do
       {:ok, files} ->
         files
-      {:error, message} ->
+      {:error, _} ->
         raise ArgumentError, "Do you have json files to play response in #{dir} ?"
     end
   end
