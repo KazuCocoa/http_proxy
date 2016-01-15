@@ -10,7 +10,7 @@ defmodule HttpProxy.Play.Data do
   @responses :play_responses
 
   @doc ~S"""
-  Return `responses` attribute in `HttpProxy.Play.Data.__struct__`
+  Return `responses` stored in Agent.
 
   ## Example
 
@@ -32,13 +32,13 @@ defmodule HttpProxy.Play.Data do
              "Server" => "GFE/2.0"}, "status_code" => 201}}]
   """
   @spec responses() :: binary
-  def responses do
-    case ProxyAgent.get(@responses) do
-      nil ->
-        ProxyAgent.put @responses, HttpProxyResponse.play_responses
-        responses
-      response_val ->
-        response_val
-    end
+  def responses, do: response ProxyAgent.get(@responses)
+  defp response(nil) do
+    ProxyAgent.put @responses, HttpProxyResponse.play_responses
+    responses
   end
+  defp response(val), do: val
+
+  @spec clear_responses() :: :ok
+  def clear_responses, do: ProxyAgent.put @responses, nil
 end

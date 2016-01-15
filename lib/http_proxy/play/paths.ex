@@ -10,9 +10,8 @@ defmodule  HttpProxy.Play.Paths do
   @paths :play_paths
   @patterns :play_path_patterns
 
-
   @doc ~S"""
-  Return `paths` attribute in `HttpProxy.Play.Paths.__struct__`
+  Return `paths` stored in Agent.
 
   ## Example
 
@@ -20,18 +19,18 @@ defmodule  HttpProxy.Play.Paths do
       ["/request/path", "/request/path"]
   """
   @spec paths() :: binary
-  def paths do
-    case ProxyAgent.get(@paths) do
-      nil ->
-        ProxyAgent.put @paths, Response.play_paths("path")
-        paths
-      paths_val ->
-        paths_val
-    end
+  def paths, do: paths ProxyAgent.get(@paths)
+  defp paths(nil) do
+    ProxyAgent.put @paths, Response.play_paths("path")
+    paths
   end
+  defp paths(val), do: val
+
+  @spec clear_paths() :: :ok
+  def clear_paths, do: ProxyAgent.put @paths, nil
 
   @doc ~S"""
-  Return `path_patterns` attribute in `HttpProxy.Play.Paths.__struct__`
+  Return `path_patterns` stored in Agent.
 
   ## Example
 
@@ -39,15 +38,15 @@ defmodule  HttpProxy.Play.Paths do
       ["\\A/request.*neko\\z"]
   """
   @spec path_patterns() :: binary
-  def path_patterns do
-    case ProxyAgent.get(@patterns) do
-      nil ->
-        ProxyAgent.put @patterns, Response.play_paths("path_pattern")
-        path_patterns
-      paths_pattern_val ->
-        paths_pattern_val
-    end
+  def path_patterns, do: path_patterns ProxyAgent.get(@patterns)
+  defp path_patterns(nil) do
+    ProxyAgent.put @patterns, Response.play_paths("path_pattern")
+    path_patterns
   end
+  defp path_patterns(val), do: val
+
+  @spec clear_path_patterns() :: :ok
+  def clear_path_patterns, do: ProxyAgent.put @patterns, nil
 
   @spec has_path?(binary) :: binary | nil
   def has_path?(path) do
