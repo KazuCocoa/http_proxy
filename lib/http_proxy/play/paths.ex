@@ -4,20 +4,12 @@ defmodule  HttpProxy.Play.Paths do
   The structure gets paths as list via HttpProxy.Play.Response.play_paths.
   """
 
-  alias HttpProxy.Play.Paths
   alias HttpProxy.Play.Response
+  alias HttpProxy.Agent, as: ProxyAgent
 
-  @doc ~S"""
-  Structure associated with response paths used play response mode.
-  The `http_proxy` returns response when the http_proxy receives http request and its path matchs `path` or `path_pattern`.
+  @paths :play_paths
+  @patterns :play_path_patterns
 
-  ## Example
-
-      iex> HttpProxy.Play.Paths.__struct__
-      %HttpProxy.Play.Paths{path_patterns: ["\\A/request.*neko\\z"],
-          paths: ["/request/path", "/request/path"]}
-  """
-  defstruct paths: Response.play_paths("path"), path_patterns: Response.play_paths("path_pattern")
 
   @doc ~S"""
   Return `paths` attribute in `HttpProxy.Play.Paths.__struct__`
@@ -27,8 +19,16 @@ defmodule  HttpProxy.Play.Paths do
       iex> HttpProxy.Play.Paths.paths
       ["/request/path", "/request/path"]
   """
-  @spec paths() :: list
-  def paths, do: %Paths{}.paths
+  @spec paths() :: binary
+  def paths do
+    case ProxyAgent.get(@paths) do
+      nil ->
+        ProxyAgent.put @paths, Response.play_paths("path")
+        paths
+      paths_val ->
+        paths_val
+    end
+  end
 
   @doc ~S"""
   Return `path_patterns` attribute in `HttpProxy.Play.Paths.__struct__`
@@ -38,8 +38,16 @@ defmodule  HttpProxy.Play.Paths do
       iex> HttpProxy.Play.Paths.path_patterns
       ["\\A/request.*neko\\z"]
   """
-  @spec path_patterns() :: list
-  def path_patterns, do: %Paths{}.path_patterns
+  @spec path_patterns() :: binary
+  def path_patterns do
+    case ProxyAgent.get(@patterns) do
+      nil ->
+        ProxyAgent.put @patterns, Response.play_paths("path_pattern")
+        path_patterns
+      paths_pattern_val ->
+        paths_pattern_val
+    end
+  end
 
   @spec has_path?(binary) :: binary | nil
   def has_path?(path) do
