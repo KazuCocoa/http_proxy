@@ -6,10 +6,14 @@ defmodule HttpProxy.SupervisorTest do
     assert pid != nil
 
     children = Supervisor.which_children HttpProxy.Supervisor
-    {id, _, _, modules} = hd(children)
+    assert Enum.count(children) == 3
 
-    assert Enum.count(children) == 2
+    {id, _, _, modules} = hd(children)
     assert id == :"HttpProxy.Handle8080"
     assert modules == [HttpProxy.Handle]
+
+    {id, _, _, modules} = List.last(children)
+    assert "#{id}" == "Elixir.HttpProxy.Agent"
+    assert modules == [HttpProxy.Agent]
   end
 end
