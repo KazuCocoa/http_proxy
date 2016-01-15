@@ -5,6 +5,7 @@ defmodule HttpProxy.Supervisor do
 
   use Supervisor
   alias HttpProxy.Handle
+  alias HttpProxy.Agent, as: ProxyAgent
 
   def start_link, do: Supervisor.start_link __MODULE__, :ok, [name: __MODULE__]
 
@@ -16,6 +17,7 @@ defmodule HttpProxy.Supervisor do
       module_name = "HttpProxy.Handle#{proxy.port}"
       [worker(Handle, [[proxy, module_name]], [id: String.to_atom(module_name)]) | acc]
     end)
+    |> Enum.into([worker(ProxyAgent, [])])
     |> supervise(strategy: :one_for_one)
   end
 
