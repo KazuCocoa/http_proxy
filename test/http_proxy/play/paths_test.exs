@@ -7,14 +7,15 @@ defmodule HttpProxy.Play.PathsTest do
 
   alias HttpProxy.Play.Paths
 
-  test "HttpProxy.Play.Paths#has_path? is true" do
-    path = "/request/path"
-    assert Paths.has_path?(path) == "/request/path"
-  end
-
-  test "HttpProxy.Play.Paths#has_path? is false" do
-    path = "/request/path/neko"
-    assert Paths.has_path?(path) == nil
+  test_with_params "HttpProxy.Play.Paths#has_path?",
+    fn path, expected_path ->
+      assert Paths.has_path?(path) == expected_path
+    end do
+      [
+        {"/request/path/neko", nil},
+        {"/request/path", "/request/path"},
+        {"%E3%81%82%20", nil}
+      ]
   end
 
   test_with_params "HttpProxy.Play.Paths#has_path_pattern?",

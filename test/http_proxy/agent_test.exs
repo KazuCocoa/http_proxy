@@ -11,12 +11,7 @@ defmodule HttpProxy.AgentTest do
   end
 
   test "clear data" do
-    assert ProxyAgent.get(:play_responses) != nil
-    assert ProxyAgent.get(:play_paths) != nil
-    assert ProxyAgent.get(:play_path_patterns) != nil
-
     ProxyAgent.clear
-
     assert ProxyAgent.get(:play_responses) == nil
     assert ProxyAgent.get(:play_paths) == nil
     assert ProxyAgent.get(:play_path_patterns) == nil

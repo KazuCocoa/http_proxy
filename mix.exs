@@ -3,7 +3,7 @@ defmodule HttpProxy.Mixfile do
 
   def project do
     [app: :http_proxy,
-     version: "0.6.0",
+     version: "1.0.0",
      elixir: "~> 1.2",
      name: "ExHttpProxy",
      source_url: "https://github.com/KazuCocoa/http_proxy",
@@ -41,10 +41,10 @@ defmodule HttpProxy.Mixfile do
       {:plug, "~> 1.0.0"},
       {:hackney, "~> 1.4.4"},
       {:exjsx, "~> 3.2"},
-      {:ex_parameterized, "~> 1.0", only: :test},
       {:earmark, "~> 0.1", only: :dev},
       {:ex_doc, "~> 0.10", only: :dev},
       {:exvcr, "~> 0.6", only: :test},
+      {:ex_parameterized, "~> 1.0", only: :test},
       {:excoveralls, "~> 0.4", only: :test}
     ]
   end

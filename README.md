@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/KazuCocoa/http_proxy.svg?branch=master)](https://travis-ci.org/KazuCocoa/http_proxy)
 [![](https://img.shields.io/hexpm/v/http_proxy.svg?style=flat)](https://hex.pm/packages/http_proxy)
 
-Simple multi HTTP Proxy using Plug. And suppot record/play requests.
+Simple multi HTTP Proxy using Plug. And support record/play requests.
 
 # MY GOAL
 - Record/Play proxied requests
@@ -11,6 +11,9 @@ Simple multi HTTP Proxy using Plug. And suppot record/play requests.
 - Support VCR
 
 # Quick use as http proxy
+## requirement
+- Elixir over 1.2
+
 ## set application and deps
 
 - `mix.exs`
@@ -24,7 +27,7 @@ end
 
 defp deps do
   [
-    {:http_proxy, "~> 0.5.3"}
+    {:http_proxy, "~> 1.0.0"}
   ]
 end
 ```

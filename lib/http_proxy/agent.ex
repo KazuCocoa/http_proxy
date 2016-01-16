@@ -4,7 +4,7 @@ defmodule HttpProxy.Agent do
   alias HttpProxy.Play.Paths
 
   @spec start_link() :: {:ok, pid} | {:error, {:already_started, pid} | term}
-  def start_link, do: Agent.start(fn -> Map.new end, name: __MODULE__)
+  def start_link, do: Agent.start(&Map.new/0, name: __MODULE__)
 
   @spec put(atom, binary) :: :ok
   def put(key, value), do: Agent.update(__MODULE__, &Map.put(&1, key, value))
