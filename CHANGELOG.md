@@ -1,5 +1,13 @@
 # Changelogs
 
+## 1.0.0: Jan 16, 2016
+Lock over Elixir1.2
+Support store play responses in Agent.
+
+## 0.6.0: Jan 7, 2016
+support setting response body from file.
+read README and `body_file`
+
 ## 0.5.3: Dec 31, 2015
 Fix getting headers in play mode with Elixir 1.2.0 [#15](https://github.com/KazuCocoa/http_proxy/issues/15)
 
