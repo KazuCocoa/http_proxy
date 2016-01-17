@@ -3,6 +3,7 @@ defmodule HttpProxyVerTest do
   use ExVCR.Mock, adapter: ExVCR.Adapter.Hackney
   use Plug.Test
 
+  @tag skip: "make this test flaky other tests"
   test "get request" do
     use_cassette "httpoison_get" do
       con = conn(:get, "http://localhost:8080/")
