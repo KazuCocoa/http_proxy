@@ -1,5 +1,5 @@
 defmodule HttpProxy.HttpTest do
-  use ExUnit.Case, async: true
+  use ExUnit.Case, async: false
   use ExUnit.Parameterized
   use Plug.Test
 

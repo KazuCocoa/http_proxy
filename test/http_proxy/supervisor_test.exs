@@ -1,5 +1,5 @@
 defmodule HttpProxy.SupervisorTest do
-  use ExUnit.Case, async: true
+  use ExUnit.Case, async: false
 
   test "check subversion tree" do
     pid = Process.whereis HttpProxy.Supervisor
