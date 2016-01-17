@@ -1,18 +1,18 @@
 # Changelogs
 
 ## 1.0.0: Jan 16, 2016
-Lock over Elixir1.2
-Support store play responses in Agent.
+- Lock over Elixir1.2
+- Support store play responses in Agent.
 
 ## 0.6.0: Jan 7, 2016
-support setting response body from file.
-read README and `body_file`
+- support setting response body from file.
+- read README and `body_file`
 
 ## 0.5.3: Dec 31, 2015
-Fix getting headers in play mode with Elixir 1.2.0 [#15](https://github.com/KazuCocoa/http_proxy/issues/15)
+- Fix getting headers in play mode with Elixir 1.2.0 [#15](https://github.com/KazuCocoa/http_proxy/issues/15)
 
 ## 0.5.1 and 0.5.2: Dec 30, 2015
-Add `HttpProxy.stop` and `HttpProxy.start` to stop/start the proxy manually.
+- Add `HttpProxy.stop` and `HttpProxy.start` to stop/start the proxy manually.
 
 ## 0.5.0: Dec 29, 2015
 - Support regex path matching in play mode.
@@ -46,24 +46,24 @@ e.g.
     - `test/example/8080/__files/request_file.json`
 
 ## 0.3.4: Dec 23, 2015
-update timeout settings
+- update timeout settings
 
 ## 0.3.3: Dec 21, 2015
-Support timeout option
-Record every request/response body
+- Support timeout option
+- Record every request/response body
 
 ## 0.3.2: Dec 18, 2015
-fix define method instead some initial value [#1](https://github.com/KazuCocoa/http_proxy/issues/1)
-fix don't sent request when proxy mode
+- fix define method instead some initial value [#1](https://github.com/KazuCocoa/http_proxy/issues/1)
+- fix don't sent request when proxy mode
 
 ## 0.3.0: Dec 8, 2015
-Support record/play request for each proxy.
+- Support record/play request for each proxy.
 
 ## 0.2.1: Nov 21, 2015
-arrange format like VRC one.
+- arrange format like VRC one.
 
 ## 0.2.0: Nov 13, 2015
-support record request and export into JSON
+- support record request and export into JSON
 
 ## 0.1.0: Nov 8, 2015
-initial release
+- initial release

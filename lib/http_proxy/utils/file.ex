@@ -114,8 +114,10 @@ defmodule HttpProxy.Utils.File do
   @spec read_json_file!(String.t) :: binary
   def read_json_file!(path) do
     case read_json_file(path) do
-      {:ok, body}       -> body
-      {:error, _} -> raise ArgumentError, "Do you set correct json format files to play response in #{path} ?"
+      {:ok, body} ->
+        body
+      {:error, _} ->
+        raise ArgumentError, "Do you set correct json format files to play response in #{path} ?"
     end
   end
 

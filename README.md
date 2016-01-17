@@ -17,10 +17,12 @@ Simple multi HTTP Proxy using Plug. And support record/play requests.
 ## set application and deps
 
 - `mix.exs`
+    - `:logger` is option.
+    - `:http_proxy` is not need if you run http_proxy with `HttpProxy.start/0` or `HttpProxy.stop/0` manually.
 
-```
+```elixir
 def application do
-  [applications: [:logger, :http_proxy]] # logger is option. :http_request is not need if you run http_proxy with HttpProxy.start/0 or stop/0.
+  [applications: [:logger, :http_proxy]]
 end
 
 ...
