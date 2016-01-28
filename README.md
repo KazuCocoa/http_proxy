@@ -86,17 +86,17 @@ Launch browser and open `http://localhost:8080` or `http://localhost:8081`.
 use Mix.Config
 
 config :http_proxy,
-  proxies: [
-             %{port: 8080,  # proxy all request even play or record
+  proxies: [                   # MUST
+             %{port: 8080,     # proxy all request even play or record
                to:   "http://google.com"},
              %{port: 8081,
                to:   "http://yahoo.com"}
             ]
-  timeout: 20_000, # ms
-  record: false, # true: record requests. false: don't record.
-  play: false,   # true: play stored requests. false: don't play.
-  export_path: "test/example",
-  play_path: "test/data"
+  timeout: 20_000,             # Option, ms
+  record: false,               # Option, true: record requests. false: don't record.
+  play: false,                 # Option, true: play stored requests. false: don't play.
+  export_path: "test/example", # Option
+  play_path: "test/data"       # Option
 ```
 
 ## Example
