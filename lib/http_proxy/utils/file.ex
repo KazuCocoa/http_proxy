@@ -90,7 +90,7 @@ defmodule HttpProxy.Utils.File do
   @doc """
   Export json data into `path/file`.
   """
-  @spec export(binary, String.t, String.t) :: :ok |  {:error, binary}
+  @spec export(binary, String.t, String.t) :: :ok |  {:error, atom}
   def export(json, path, file) do
     unless File.exists?(path), do: File.mkdir_p path
     File.write(path <> "/" <> file, json)

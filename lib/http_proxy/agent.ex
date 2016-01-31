@@ -9,7 +9,7 @@ defmodule HttpProxy.Agent do
   @spec start_link() :: {:ok, pid} | {:error, {:already_started, pid} | term}
   def start_link, do: Agent.start(&Map.new/0, name: __MODULE__)
 
-  @spec put(atom, binary) :: :ok
+  @spec put(atom, [binary] | binary | nil) :: :ok
   def put(key, value), do: Agent.update(__MODULE__, &Map.put(&1, key, value))
 
   @spec get(atom) :: binary | nil

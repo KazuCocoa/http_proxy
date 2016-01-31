@@ -55,7 +55,7 @@ defmodule HttpProxy do
   use Application
   alias HttpProxy.Supervisor, as: HttpProxySup
 
-  @spec start(:normal, []) :: pid
+  @spec start(:normal, []) :: {:ok, pid}
   def start(_type, _args) do
     HttpProxySup.start_link
   end
@@ -63,7 +63,7 @@ defmodule HttpProxy do
   @doc """
   Stopt http_proxy.
   """
-  @spec stop :: :ok
+  @spec stop :: :ok | {:error, term}
   def stop do
     Application.stop :ranch
     Application.stop :cowlib
@@ -80,7 +80,7 @@ defmodule HttpProxy do
   Start http_proxy.
   If the proxy is already running, return `{:error, {:already_started, :http_proxy}}`
   """
-  @spec start() :: :ok | {:error, tuple}
+  @spec start() :: :ok | {:error, term}
   def start do
     Application.start :ranch
     Application.start :cowlib
