@@ -45,9 +45,11 @@ defmodule HttpProxy.Handle do
   """
   @spec dispatch(t, param) :: t
   def dispatch(conn, _opts) do
-    {:ok, client} = String.downcase(conn.method)
+    {:ok, client} = conn.method
+                    |> String.downcase
                     |> String.to_atom
-                    |> :hackney.request(uri(conn), conn.req_headers, :stream, [connect_timeout: req_timeout, recv_timeout: req_timeout])
+                    |> :hackney.request(uri(conn), conn.req_headers, :stream,
+                      [connect_timeout: req_timeout, recv_timeout: req_timeout])
     {conn, ""}
     |> write_proxy(client)
     |> read_proxy(client)
@@ -125,7 +127,7 @@ defmodule HttpProxy.Handle do
   end
 
   defp play_conn(conn) do
-    conn = matched_path? conn, PlayPaths.has_path?(conn.request_path) || PlayPaths.has_path_pattern?(conn.request_path)
+    conn = matched_path? conn, PlayPaths.path?(conn.request_path) || PlayPaths.path_pattern?(conn.request_path)
     # TODO: conn.resp_bodyに返すべき値を代入する
     send_resp conn, conn.status, conn.resp_body
   end
@@ -153,7 +155,9 @@ defmodule HttpProxy.Handle do
     [
       "body": PlayBody.get_body(resp),
       "cookies": Map.to_list(Map.fetch!(res_json, "cookies")),
-      "headers": Map.to_list(Map.fetch!(res_json, "headers"))
+      "headers": res_json
+                 |> Map.fetch!("headers")
+                 |> Map.to_list
                  |> List.insert_at(0, {"Date", hd(Conn.get_resp_header conn, "Date")}),
        "status_code": Map.fetch!(res_json, "status_code")
     ]
@@ -175,7 +179,8 @@ defmodule HttpProxy.Handle do
   end
 
   defp target_proxy(conn) do
-    Enum.reduce(proxies, [], fn proxy, acc ->
+    proxies
+    |> Enum.reduce([], fn proxy, acc ->
       cond do
         proxy.port == conn.port ->
           [proxy | acc]

@@ -12,7 +12,8 @@ defmodule HttpProxy.Supervisor do
   ## Callbacks
 
   def init(:ok) do
-    proxies?(Handle.proxies)
+    Handle.proxies
+    |> proxies?
     |> Enum.reduce([], fn proxy, acc ->
       module_name = "HttpProxy.Handle#{proxy.port}"
       [worker(Handle, [[proxy, module_name]], [id: String.to_atom(module_name)]) | acc]

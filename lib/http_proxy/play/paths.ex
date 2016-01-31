@@ -48,8 +48,8 @@ defmodule  HttpProxy.Play.Paths do
   @spec clear_path_patterns() :: :ok
   def clear_path_patterns, do: ProxyAgent.put @patterns, nil
 
-  @spec has_path?(binary) :: binary | nil
-  def has_path?(path) do
+  @spec path?(binary) :: binary | nil
+  def path?(path) do
     case Enum.member? paths, path do
       false ->
         nil
@@ -58,8 +58,8 @@ defmodule  HttpProxy.Play.Paths do
     end
   end
 
-  @spec has_path_pattern?(binary) :: binary | nil
-  def has_path_pattern?(path) do
+  @spec path_pattern?(binary) :: binary | nil
+  def path_pattern?(path) do
     Enum.find path_patterns, nil, fn pattern ->
       Regex.match?(Regex.compile!(pattern), path)
     end

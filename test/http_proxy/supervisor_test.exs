@@ -13,7 +13,7 @@ defmodule HttpProxy.SupervisorTest do
     assert modules == [HttpProxy.Handle]
 
     {id, _, _, modules} = List.last(children)
-    assert "#{id}" == "Elixir.HttpProxy.Agent"
+    assert id == HttpProxy.Agent
     assert modules == [HttpProxy.Agent]
   end
 end

@@ -1,4 +1,7 @@
 defmodule HttpProxy.Agent do
+  @moduledoc """
+  Store play responses which is read from files.
+  """
 
   alias HttpProxy.Play.Data
   alias HttpProxy.Play.Paths
