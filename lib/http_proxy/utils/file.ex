@@ -55,7 +55,9 @@ defmodule HttpProxy.Utils.File do
 
   @spec get_export_binary_path(integer | binary) :: String.t
   def get_export_binary_path, do: export_path <> "/" <> response_files
-  def get_export_binary_path(port) when is_integer(port), do: export_path <> "/" <> Integer.to_string(port) <> "/" <> response_files
+  def get_export_binary_path(port) when is_integer(port) do
+    export_path <> "/" <> Integer.to_string(port) <> "/" <> response_files
+  end
   def get_export_binary_path(port) when is_binary(port), do: export_path <> "/" <> port <> "/" <> response_files
 
   @spec get_response_path() :: String.t

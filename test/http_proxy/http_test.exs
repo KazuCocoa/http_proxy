@@ -7,10 +7,10 @@ defmodule HttpProxy.HttpTest do
     File.rm_rf!(Application.get_env(:http_proxy, :export_path))
     HttpProxy.TestHelper.set_record_mode
 
-    conn(:get, "http://localhost:8080/hoge/inu?email=neko&pass=123") |> HttpProxy.Handle.dispatch([])
-    conn(:post, "http://localhost:8080/hoge/inu", "nekoneko") |> HttpProxy.Handle.dispatch([])
-    conn(:put, "http://localhost:8080/hoge/inu", "nekoneko") |> HttpProxy.Handle.dispatch([])
-    conn(:delete, "http://localhost:8080/hoge/inu", "nekoneko") |> HttpProxy.Handle.dispatch([])
+    HttpProxy.Handle.dispatch(conn(:get, "http://localhost:8080/hoge/inu?email=neko&pass=123"), [])
+    HttpProxy.Handle.dispatch(conn(:post, "http://localhost:8080/hoge/inu", "nekoneko"), [])
+    HttpProxy.Handle.dispatch(conn(:put, "http://localhost:8080/hoge/inu", "nekoneko"), [])
+    HttpProxy.Handle.dispatch(conn(:delete, "http://localhost:8080/hoge/inu", "nekoneko"), [])
 
     exported_files = case File.ls("test/example/8080/mappings") do
       {:ok, files} -> files
@@ -31,8 +31,7 @@ defmodule HttpProxy.HttpTest do
     File.rm_rf!(Application.get_env(:http_proxy, :export_path))
     HttpProxy.TestHelper.set_play_mode
 
-    conn(:get, "http://localhost:8080/hoge/inu?email=neko&pass=123")
-    |> HttpProxy.Handle.dispatch([])
+    HttpProxy.Handle.dispatch(conn(:get, "http://localhost:8080/hoge/inu?email=neko&pass=123"), [])
 
     exported_files = case File.ls("test/example/8080/mappings") do
       {:ok, files} -> files
@@ -50,7 +49,7 @@ defmodule HttpProxy.HttpTest do
   test_with_params "play responses agains particular request",
     fn method, uri, expected_body ->
       HttpProxy.TestHelper.set_play_mode
-      conn = conn(method, uri) |> HttpProxy.Handle.dispatch([])
+      conn = HttpProxy.Handle.dispatch(conn(method, uri), [])
       assert conn.resp_body == expected_body
     end do
       [
@@ -66,7 +65,9 @@ defmodule HttpProxy.HttpTest do
 
   test "no mached scheme" do
     assert_raise ArgumentError, "no scheme", fn ->
-      conn(:get, "http://localhost:8082/")
+      conn = conn(:get, "http://localhost:8082/")
+
+      conn
       |> Map.put(:scheme, :ftp)
       |> HttpProxy.Handle.uri
     end
@@ -75,7 +76,7 @@ defmodule HttpProxy.HttpTest do
   test "raise error with play and record mode" do
     HttpProxy.TestHelper.set_play_and_record_mode
     assert_raise ArgumentError, "Can't set record and play at the same time.", fn ->
-      conn(:get, "http://localhost:8080/") |> HttpProxy.Handle.dispatch([])
+      HttpProxy.Handle.dispatch(conn(:get, "http://localhost:8080/"), [])
     end
     HttpProxy.TestHelper.set_play_mode
   end
@@ -83,7 +84,7 @@ defmodule HttpProxy.HttpTest do
   # send real request to outside server
   test "set play and record false" do
     HttpProxy.TestHelper.set_proxy_mode
-    conn = conn(:get, "http://localhost:8081/") |> HttpProxy.Handle.dispatch([])
+    conn = HttpProxy.Handle.dispatch(conn(:get, "http://localhost:8081/"), [])
     assert conn.status == 200
     HttpProxy.TestHelper.set_play_mode
   end

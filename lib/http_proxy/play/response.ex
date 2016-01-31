@@ -50,13 +50,13 @@ defmodule HttpProxy.Play.Response do
   defp validate(json) do
     unless Map.has_key?(json, "request"), do: raise ArgumentError, "Should have request"
 
-    request_key = Map.keys(json["request"]) |> Enum.into(MapSet.new)
+    request_key = json["request"] |> Map.keys |> Enum.into(MapSet.new)
     request_diff = MapSet.difference(@request_key_map, request_key)
 
-    response_key = Map.keys(json["response"]) |> Enum.into(MapSet.new)
+    response_key = json["response"] |> Map.keys |> Enum.into(MapSet.new)
     response_diff = MapSet.difference(@response_key_map, response_key)
 
-    case {MapSet.member?(request_diff, @path_pattern), MapSet.member?(request_diff, @path)} do
+    case member_path?(request_diff, request_diff) do
       {true, true} ->
         raise ArgumentError, format_error_message(request_diff)
       {false, false} ->
@@ -65,7 +65,7 @@ defmodule HttpProxy.Play.Response do
         :ok
     end
 
-    case {MapSet.member?(response_diff, @body), MapSet.member?(response_diff, @body_file)} do
+    case member_body?(response_diff, response_diff) do
       {true, true} ->
         raise ArgumentError, format_error_message(response_diff)
       {false, false} ->
@@ -77,12 +77,21 @@ defmodule HttpProxy.Play.Response do
     json
   end
 
+  defp member_path?(request_diff, request_diff) do
+    {MapSet.member?(request_diff, @path_pattern), MapSet.member?(request_diff, @path)}
+  end
+
+  defp member_body?(response_diff, response_diff) do
+    {MapSet.member?(response_diff, @body), MapSet.member?(response_diff, @body_file)}
+  end
+
   defp format_error_message(mapset) do
-    message = MapSet.to_list(mapset)
-    |> Enum.reduce("", fn item, acc ->
-      "#{item} #{acc}"
-    end)
-    |> IO.inspect
+    message = mapset
+              |> MapSet.to_list
+              |> Enum.reduce("", fn item, acc ->
+                "#{item} #{acc}"
+              end)
+              |> IO.inspect
 
     "Response jsons must include arrtibute: #{message}"
   end

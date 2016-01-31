@@ -2,6 +2,7 @@
   "coverex": {:hex, :coverex, "1.4.8"},
   "cowboy": {:hex, :cowboy, "1.0.4"},
   "cowlib": {:hex, :cowlib, "1.0.2"},
+  "dogma": {:hex, :dogma, "0.0.11"},
   "earmark": {:hex, :earmark, "0.2.1"},
   "ex_doc": {:hex, :ex_doc, "0.11.3"},
   "ex_parameterized": {:hex, :ex_parameterized, "1.0.2"},
