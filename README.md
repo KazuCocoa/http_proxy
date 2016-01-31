@@ -29,7 +29,7 @@ end
 
 defp deps do
   [
-    {:http_proxy, "~> 1.0.0"}
+    {:http_proxy, "~> 1.0.1"}
   ]
 end
 ```
@@ -192,17 +192,8 @@ Response body will save in "path/to/body_file.json".
 
 # TODO
 - [x] record request
-    - [x] should able to encode cookies: Use JSX to decode into jsons.
-    - [x] format to like vrc
 - [x] play request
-    - [x] implement simple case
-    - [x] expand them
-    - [x] verify template json format
 - [x] refactor
-    - [x] file structures
-    - [x] append test cases
-    - [x] Add `@spec`
-    - [x] prepare document
 - [x] support Regex request path.
 - [x] start/stop http_proxy manually
 - [ ] use vcr <= a bit...
