@@ -1,5 +1,5 @@
 defmodule HttpProxy.Utils.FileTest do
-  use ExUnit.Case, async: false
+  use ExUnit.Case, async: true
   use Plug.Test
 
   alias HttpProxy.Utils.File, as: HttpProxyFile

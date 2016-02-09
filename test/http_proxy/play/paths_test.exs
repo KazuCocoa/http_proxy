@@ -1,5 +1,5 @@
 defmodule HttpProxy.Play.PathsTest do
-  use ExUnit.Case, async: false
+  use ExUnit.Case, async: true
   use ExUnit.Parameterized
 
   doctest HttpProxy.Play.Data

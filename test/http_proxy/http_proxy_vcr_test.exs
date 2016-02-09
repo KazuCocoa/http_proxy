@@ -1,5 +1,5 @@
 defmodule HttpProxyVerTest do
-  use ExUnit.Case, async: false
+  use ExUnit.Case, async: true
   use ExVCR.Mock, adapter: ExVCR.Adapter.Hackney
   use Plug.Test
 

@@ -20,4 +20,5 @@
   "plug": {:hex, :plug, "1.0.3"},
   "poison": {:hex, :poison, "1.5.2"},
   "ranch": {:hex, :ranch, "1.2.1"},
+  "shouldi": {:git, "https://github.com/batate/shouldi.git", "3f384b748fdb66cb6cbcdc2f58d6119928c7a319", []},
   "ssl_verify_hostname": {:hex, :ssl_verify_hostname, "1.0.5"}}
