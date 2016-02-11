@@ -46,7 +46,7 @@ defmodule HttpProxy.Mixfile do
       {:exvcr, "~> 0.6", only: :test},
       {:ex_parameterized, "~> 1.0", only: :test},
       {:excoveralls, "~> 0.4", only: :test},
-      {:dogma, "~> 0.0", only: [:dev, :test]},
+      {:dogma, "~> 0.0.1", only: [:dev, :test]},
       {:dialyxir, "~> 0.3", only: :dev},
       {:shouldi, github: "batate/shouldi", only: :test}
     ]

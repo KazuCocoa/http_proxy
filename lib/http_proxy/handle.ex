@@ -96,6 +96,8 @@ defmodule HttpProxy.Handle do
       {:more, body, conn} ->
         :hackney.send_body client, body
         write_proxy {conn, req_body <> body}, client
+      {:error, term} ->
+        Logger.error term
     end
   end
 
