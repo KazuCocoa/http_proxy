@@ -1,5 +1,8 @@
 # Changelogs
 
+## 1.0.1: Feb 1, 2016
+- update some dependencies
+
 ## 1.0.0: Jan 16, 2016
 - Lock over Elixir1.2
 - Support store play responses in Agent.
