@@ -3,8 +3,8 @@ defmodule HttpProxy.HttpTest do
   use ExUnit.Parameterized
   use Plug.Test
 
-  alias TestHelper
-  alias HttpProxyHandle, as: HttpProxyHandle
+  alias HttpProxy.TestHelper, as: TestHelper
+  alias HttpProxy.Handle, as: HttpProxyHandle
 
   test "files are created in record mode" do
     File.rm_rf!(Application.get_env(:http_proxy, :export_path))
