@@ -8,6 +8,7 @@ defmodule HttpProxy.Handle do
   require Logger
 
   alias Plug.Conn
+  alias Plug.Adapters.Cowboy, as: PlugCowboy
 
   alias HttpProxy.Play.Data
   alias HttpProxy.Record.Response, as: Record
@@ -32,7 +33,7 @@ defmodule HttpProxy.Handle do
   @spec start_link([binary]) :: pid
   def start_link([proxy, module_name]) do
     Logger.info "Running #{__MODULE__} on http://localhost:#{proxy.port} named #{module_name}, timeout: #{req_timeout}"
-    Plug.Adapters.Cowboy.http(__MODULE__, [], cowboy_options(proxy.port, module_name))
+    PlugCowboy.http(__MODULE__, [], cowboy_options(proxy.port, module_name))
   end
 
   # see https://github.com/elixir-lang/plug/blob/master/lib/plug/adapters/cowboy.ex#L5
@@ -130,7 +131,7 @@ defmodule HttpProxy.Handle do
 
   defp play_conn(conn) do
     conn = matched_path? conn, PlayPaths.path?(conn.request_path) || PlayPaths.path_pattern?(conn.request_path)
-    # TODO: conn.resp_bodyに返すべき値を代入する
+    # TODO: conn.resp_body
     send_resp conn, conn.status, conn.resp_body
   end
 

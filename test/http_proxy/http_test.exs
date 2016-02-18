@@ -3,14 +3,17 @@ defmodule HttpProxy.HttpTest do
   use ExUnit.Parameterized
   use Plug.Test
 
+  alias TestHelper
+  alias HttpProxyHandle, as: HttpProxyHandle
+
   test "files are created in record mode" do
     File.rm_rf!(Application.get_env(:http_proxy, :export_path))
-    HttpProxy.TestHelper.set_record_mode
+    TestHelper.set_record_mode
 
-    HttpProxy.Handle.dispatch(conn(:get, "http://localhost:8080/hoge/inu?email=neko&pass=123"), [])
-    HttpProxy.Handle.dispatch(conn(:post, "http://localhost:8080/hoge/inu", "nekoneko"), [])
-    HttpProxy.Handle.dispatch(conn(:put, "http://localhost:8080/hoge/inu", "nekoneko"), [])
-    HttpProxy.Handle.dispatch(conn(:delete, "http://localhost:8080/hoge/inu", "nekoneko"), [])
+    HttpProxyHandle.dispatch(conn(:get, "http://localhost:8080/hoge/inu?email=neko&pass=123"), [])
+    HttpProxyHandle.dispatch(conn(:post, "http://localhost:8080/hoge/inu", "nekoneko"), [])
+    HttpProxyHandle.dispatch(conn(:put, "http://localhost:8080/hoge/inu", "nekoneko"), [])
+    HttpProxyHandle.dispatch(conn(:delete, "http://localhost:8080/hoge/inu", "nekoneko"), [])
 
     exported_files = case File.ls("test/example/8080/mappings") do
       {:ok, files} -> files
@@ -24,14 +27,14 @@ defmodule HttpProxy.HttpTest do
 
     assert {Enum.count(exported_files), Enum.count(exported_body_files)} == {4, 4}
 
-    HttpProxy.TestHelper.set_play_mode
+    TestHelper.set_play_mode
   end
 
   test "files are not created in play mode" do
     File.rm_rf!(Application.get_env(:http_proxy, :export_path))
-    HttpProxy.TestHelper.set_play_mode
+    TestHelper.set_play_mode
 
-    HttpProxy.Handle.dispatch(conn(:get, "http://localhost:8080/hoge/inu?email=neko&pass=123"), [])
+    HttpProxyHandle.dispatch(conn(:get, "http://localhost:8080/hoge/inu?email=neko&pass=123"), [])
 
     exported_files = case File.ls("test/example/8080/mappings") do
       {:ok, files} -> files
@@ -48,8 +51,8 @@ defmodule HttpProxy.HttpTest do
 
   test_with_params "play responses agains particular request",
     fn method, uri, expected_body ->
-      HttpProxy.TestHelper.set_play_mode
-      conn = HttpProxy.Handle.dispatch(conn(method, uri), [])
+      TestHelper.set_play_mode
+      conn = HttpProxyHandle.dispatch(conn(method, uri), [])
       assert conn.resp_body == expected_body
     end do
       [
@@ -69,24 +72,24 @@ defmodule HttpProxy.HttpTest do
 
       conn
       |> Map.put(:scheme, :ftp)
-      |> HttpProxy.Handle.uri
+      |> HttpProxyHandle.uri
     end
   end
 
   test "raise error with play and record mode" do
-    HttpProxy.TestHelper.set_play_and_record_mode
+    TestHelper.set_play_and_record_mode
     assert_raise ArgumentError, "Can't set record and play at the same time.", fn ->
-      HttpProxy.Handle.dispatch(conn(:get, "http://localhost:8080/"), [])
+      HttpProxyHandle.dispatch(conn(:get, "http://localhost:8080/"), [])
     end
-    HttpProxy.TestHelper.set_play_mode
+    TestHelper.set_play_mode
   end
 
   # send real request to outside server
   test "set play and record false" do
-    HttpProxy.TestHelper.set_proxy_mode
-    conn = HttpProxy.Handle.dispatch(conn(:get, "http://localhost:8081/"), [])
+    TestHelper.set_proxy_mode
+    conn = HttpProxyHandle.dispatch(conn(:get, "http://localhost:8081/"), [])
     assert conn.status == 200
-    HttpProxy.TestHelper.set_play_mode
+    TestHelper.set_play_mode
   end
 
   test "start and stop http_proxy" do
@@ -99,7 +102,7 @@ defmodule HttpProxy.HttpTest do
     alias HttpProxy.Play.Response
 
     should "#play_responses with play mode" do
-      HttpProxy.TestHelper.set_play_mode
+      TestHelper.set_play_mode
 
       expected = ["get_8080/request/path": %{"request" => %{"method" => "GET", "path" => "/request/path", "port" => 8080},
                 "response" => %{"body" => "<html>hello world</html>", "cookies" => %{},
@@ -116,7 +119,7 @@ defmodule HttpProxy.HttpTest do
     end
 
     should "HttpProxy.Play.Response#play_responses with record mode" do
-      HttpProxy.TestHelper.set_record_mode
+      TestHelper.set_record_mode
 
       expected = []
 

@@ -3,13 +3,15 @@ defmodule HttpProxy.HandleTest do
   use ExUnit.Parameterized
   use Plug.Test
 
+  alias HttpProxy.Handle, as: HttpProxyHandle
+
   doctest HttpProxy.Data
   doctest HttpProxy.Handle
 
   test_with_params "should convert urls",
     fn local_url, proxied_url ->
       conn = conn(:get, local_url)
-      assert HttpProxy.Handle.uri(conn) == proxied_url
+      assert HttpProxyHandle.uri(conn) == proxied_url
     end do
       [
         "root":  {"http://localhost:8080/", "http://google.com/" },
