@@ -34,7 +34,7 @@ defp deps do
 end
 ```
 
-## set configure
+## set configuration
 
 - `config/config.exs`
 
@@ -43,7 +43,7 @@ use Mix.Config
 
 config :http_proxy,
   proxies: [
-             %{port: 8080,  # proxy all request even play or record
+             %{port: 8080,
                to:   "http://google.com"},
              %{port: 8081,
                to:   "http://yahoo.com"}
@@ -74,8 +74,44 @@ $ MIX_ENV=prod mix run --no-halt
 ## launch browser
 
 Launch browser and open `http://localhost:8080` or `http://localhost:8081`.
+Then, `http://localhost:8080` redirect to `http://google.com` and `http://localhost:8081` do to `http://yahoo.com`.
 
 # Configuration
+## Customize proxy port
+
+- You can customize proxy port. For example, if you change waiting port from `8080` to `4000`, then you can access to `http://google.com` via `http://localhost:4000`.
+
+```
+use Mix.Config
+
+config :http_proxy,
+  proxies: [
+             %{port: 4000,
+               to:   "http://google.com"},
+             %{port: 8081,
+               to:   "http://yahoo.com"}
+            ]
+```
+
+## Add proxy
+
+- You can increase waiting port to add configuration. You can add them up to much resources. For example, the following setting allow you to access to `http://apple.com` via `http://localhost:8082` in addition.
+
+```
+use Mix.Config
+
+config :http_proxy,
+  proxies: [
+             %{port: 8080,
+               to:   "http://google.com"},
+             %{port: 8081,
+               to:   "http://yahoo.com"},
+             %{port: 8082,
+               to:   "http://apple.com"}
+            ]
+```
+
+## Play and Record mode
 
 - When `:record` and `:play` are `false`, then the http_proxy works just multi port proxy.
 - When `:record` is `true`, then the http_proxy works to record request which is proxied.
@@ -100,7 +136,6 @@ config :http_proxy,
 ```
 
 ## Example
-
 ### Record request as the following
 
 ```json
