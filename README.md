@@ -128,11 +128,11 @@ config :http_proxy,
              %{port: 8081,
                to:   "http://yahoo.com"}
             ]
-  timeout: 20_000,             # Option, ms
+  timeout: 20_000,             # Option, ms to wait http request.
   record: false,               # Option, true: record requests. false: don't record.
   play: false,                 # Option, true: play stored requests. false: don't play.
-  export_path: "test/example", # Option
-  play_path: "test/data"       # Option
+  export_path: "test/example", # Option, path to export recorded files.
+  play_path: "test/data"       # Option, path to read json files as response to.
 ```
 
 ## Example
