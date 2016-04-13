@@ -9,7 +9,7 @@ config :http_proxy,
             ],
   timeout: 20_000, # ms
   record: false,
-  play: true,
+  play: false,
   export_path: "test/example",
   play_path: "test/data"
 
