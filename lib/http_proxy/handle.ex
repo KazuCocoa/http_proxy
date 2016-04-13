@@ -90,13 +90,14 @@ defmodule HttpProxy.Handle do
   def schemes, do: @default_schemes
 
   defp write_proxy({conn, req_body}, client) do
+    dammy_status = 200
     case read_body(conn, [read_timeout: req_timeout]) do
       {:ok, body, conn} ->
-        :hackney.send_body client, body
+        resp conn, dammy_status, body
         {conn, body}
       {:more, body, conn} ->
-        :hackney.send_body client, body
-        write_proxy {conn, req_body <> body}, client
+        resp conn, dammy_status, body
+        write_proxy {conn, ""}, client
       {:error, term} ->
         Logger.error term
     end
