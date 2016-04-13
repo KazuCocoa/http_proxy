@@ -39,13 +39,13 @@ defmodule HttpProxy.Mixfile do
     [
       {:cowboy, "~> 1.0.0" },
       {:plug, "~> 1.0"},
-      {:hackney, "~> 1.4.4"},
+      {:hackney, "~> 1.6"},
       {:exjsx, "~> 3.2"},
       {:earmark, "~> 0.1", only: :dev},
       {:ex_doc, "~> 0.10", only: :dev},
-      {:exvcr, "~> 0.6", only: :test},
+      {:exvcr, "~> 0.7", only: :test},
       {:ex_parameterized, "~> 1.0", only: :test},
-      {:excoveralls, "~> 0.4", only: :test},
+      {:excoveralls, "~> 0.5", only: :test},
       {:credo, "~> 0.3", only: [:dev, :test]},
       {:dialyxir, "~> 0.3", only: :dev},
       {:shouldi, github: "batate/shouldi", only: :test}
