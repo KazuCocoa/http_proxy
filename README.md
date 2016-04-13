@@ -29,7 +29,7 @@ end
 
 defp deps do
   [
-    {:http_proxy, "~> 1.0.1"}
+    {:http_proxy, "~> 1.0.2"}
   ]
 end
 ```

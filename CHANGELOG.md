@@ -1,5 +1,8 @@
 # Changelogs
 
+## 1.0.2: Apr 14, 2016
+- update some dependencies
+
 ## 1.0.1: Feb 1, 2016
 - update some dependencies
 
