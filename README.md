@@ -10,6 +10,27 @@ Simple multi HTTP Proxy using Plug. And support record/play requests.
     - http_proxy support multi port and multi urls on one execution command `mix proxy`.
 - Support VCR
 
+# architecture
+
+```
+           http_proxy
+Client  (server  client)  proxied_server
+  |            |            |
+  | 1.request  |            |
+  |  ------>   | 2.request  |
+  |            |  ------>   |
+  |            |            |
+  |            | 3.response |
+  | 4.response |  <------   |
+  |  <------   |            |
+  |            |            |
+```
+
+1. The client sends request to http_proxy, then the http_proxy works as a proxy server.
+2. When the http_proxy receives request from the client, then the http_proxy sends request to proxied server, e.g. http://google.com, as client.
+3. The http_proxy receives responses from the proxied_server, then the http_proxy sets the response into its response to the client.
+4. The Client receives responses from the http_proxy.
+
 # Quick use as http proxy
 ## requirement
 - Elixir over 1.2
