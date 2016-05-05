@@ -17,7 +17,8 @@ defmodule HttpProxy.Mixfile do
      preferred_cli_env: ["coveralls": :test, "coveralls.detail": :test, "coveralls.post": :test],
      preferred_cli_env: [
           vcr: :test, "vcr.delete": :test, "vcr.check": :test, "vcr.show": :test
-        ]
+        ],
+     docs: docs
     ]
   end
 
@@ -58,6 +59,15 @@ defmodule HttpProxy.Mixfile do
       maintainers: ["Kazuaki Matsuo"],
       licenses: ["MIT"],
       links: %{"GitHub" => "https://github.com/KazuCocoa/http_proxy"}
+    ]
+  end
+
+  defp docs do
+    [
+      extras: [
+        "CHANGELOG.md",
+        "README.md"
+      ]
     ]
   end
 end
