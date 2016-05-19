@@ -7,7 +7,7 @@ config :http_proxy,
              %{port: 8081,
                to:   "http://neko.com"}
             ],
-  timeout: 20_000, # ms
+  timeout: 2_000, # ms
   record: false,
   play: true,
   export_path: "test/example",
