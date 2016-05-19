@@ -138,6 +138,8 @@ config :http_proxy,
 - When `:record` is `true`, then the http_proxy works to record request which is proxied.
 - When `:play` is `true`, then the http_proxy works to play request between this the http_proxy and clients.
     - You should set JSON files under `mappings` in `play_path`.
+    - `config.proxies.to` must be available URL to succeed generating http client.
+        - https://github.com/KazuCocoa/http_proxy/blob/master/lib/http_proxy/handle.ex#L49
 
 ```elixir
 use Mix.Config
@@ -254,6 +256,7 @@ Response body will save in "path/to/body_file.json".
 - [x] start/stop http_proxy manually
 - [ ] use vcr <= a bit...
     - integrate https://github.com/parroty/exvcr
+- [ ] https://github.com/KazuCocoa/http_proxy/issues/25
 
 # styleguide
 

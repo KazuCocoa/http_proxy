@@ -46,6 +46,7 @@ defmodule HttpProxy.Handle do
   """
   @spec dispatch(t, param) :: t
   def dispatch(conn, _opts) do
+    # TODO: Failed to establish connection if configuration of `proxies:` is failed to establish.
     {:ok, client} = conn.method
                     |> String.downcase
                     |> String.to_atom
@@ -73,7 +74,7 @@ defmodule HttpProxy.Handle do
   ## Example
 
       iex> HttpProxy.Handle.proxies
-      [%{port: 8080, to: "http://google.com"}, %{port: 8081, to: "http://neko.com"}]
+      [%{port: 8080, to: "http://google.com"}, %{port: 8081, to: "http://example.com"}]
   """
   @spec proxies() :: []
   def proxies, do: Application.get_env :http_proxy, :proxies, nil
