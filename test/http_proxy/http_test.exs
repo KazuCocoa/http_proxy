@@ -115,7 +115,9 @@ defmodule HttpProxy.HttpTest do
                 "response" => %{"body" => "<html>hello world 3</html>", "cookies" => %{},
                   "headers" => %{"Content-Type" => "text/html; charset=UTF-8", "Server" => "GFE/2.0"}, "status_code" => 201}}]
 
-      assert Response.play_responses == expected
+      assert Response.play_responses[:"get_8080/request/path"] == expected[:"get_8080/request/path"]
+      assert Response.play_responses[:"get_8080\\A/request.*neko\\z"] == expected[:"get_8080\\A/request.*neko\\z"]
+      assert Response.play_responses[:"post_8081/request/path"] == expected[:"post_8081/request/path"]
     end
 
     should "HttpProxy.Play.Response#play_responses with record mode" do
