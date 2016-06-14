@@ -139,11 +139,12 @@ defmodule HttpProxy.Utils.File do
 
   ## Example
 
-      iex> HttpProxy.Utils.File.json_files!("test/data/mappings")
+      iex> HttpProxy.Utils.File.json_files!("test/data/mappings") |> Enum.sort
       ["test/data/mappings/sample.json", "test/data/mappings/sample2.json", "test/data/mappings/sample3.json"]
 
-      iex> HttpProxy.Utils.File.json_files("test/data/mappings")
-      {:ok, ["test/data/mappings/sample.json", "test/data/mappings/sample2.json", "test/data/mappings/sample3.json"]}
+      iex> {:ok, paths} = HttpProxy.Utils.File.json_files("test/data/mappings")
+      iex> paths |> Enum.sort
+      ["test/data/mappings/sample.json", "test/data/mappings/sample2.json", "test/data/mappings/sample3.json"]
   """
   @spec json_files(String.t) :: binary
   def json_files!(dir) do
