@@ -41,7 +41,7 @@ defmodule HttpProxy.Play.Data do
   def responses, do: response ProxyAgent.get(@responses)
   defp response(nil) do
     ProxyAgent.put @responses, HttpProxyResponse.play_responses
-    responses
+    responses()
   end
   defp response(val), do: val
 

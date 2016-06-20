@@ -32,12 +32,12 @@ defmodule HttpProxy.Handle do
   """
   @spec start_link([binary]) :: pid
   def start_link([proxy, module_name]) do
-    Logger.info "Running #{__MODULE__} on http://localhost:#{proxy.port} named #{module_name}, timeout: #{req_timeout}"
+    Logger.info "Running #{__MODULE__} on http://localhost:#{proxy.port} named #{module_name}, timeout: #{req_timeout()}"
     PlugCowboy.http(__MODULE__, [], cowboy_options(proxy.port, module_name))
   end
 
   # see https://github.com/elixir-lang/plug/blob/master/lib/plug/adapters/cowboy.ex#L5
-  defp cowboy_options(port, module_name), do: [port: port, ref: String.to_atom(module_name), timeout: req_timeout]
+  defp cowboy_options(port, module_name), do: [port: port, ref: String.to_atom(module_name), timeout: req_timeout()]
 
   defp req_timeout, do: Application.get_env(:http_proxy, :timeout) || 5_000
 
@@ -51,7 +51,7 @@ defmodule HttpProxy.Handle do
                     |> String.downcase
                     |> String.to_atom
                     |> :hackney.request(uri(conn), conn.req_headers, :stream,
-                      [connect_timeout: req_timeout, recv_timeout: req_timeout])
+                      [connect_timeout: req_timeout(), recv_timeout: req_timeout()])
     {conn, ""}
     |> write_proxy(client)
     |> read_proxy(client)
@@ -91,7 +91,7 @@ defmodule HttpProxy.Handle do
   def schemes, do: @default_schemes
 
   defp write_proxy({conn, _req_body}, client) do
-    case read_body(conn, [read_timeout: req_timeout]) do
+    case read_body(conn, [read_timeout: req_timeout()]) do
       {:ok, body, conn} ->
         :hackney.send_body client, body
         {conn, body}
@@ -183,7 +183,7 @@ defmodule HttpProxy.Handle do
   end
 
   defp target_proxy(conn) do
-    proxies
+    proxies()
     |> Enum.reduce([], fn proxy, acc ->
       cond do
         proxy.port == conn.port ->

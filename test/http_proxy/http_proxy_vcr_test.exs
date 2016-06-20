@@ -12,5 +12,4 @@ defmodule HttpProxyVerTest do
       :hackney.request :get, HttpProxyHandle.uri(con), con.req_headers, [], []
     end
   end
-
 end

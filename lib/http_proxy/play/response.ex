@@ -17,9 +17,9 @@ defmodule HttpProxy.Play.Response do
 
   @spec play_responses() :: [binary]
   def play_responses do
-    case play? do
+    case play?() do
       true ->
-        gen_response
+        gen_response()
       false ->
         []
     end

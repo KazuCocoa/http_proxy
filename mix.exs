@@ -10,15 +10,15 @@ defmodule HttpProxy.Mixfile do
      description: "Multi port HTTP Proxy and support record/play request.",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
-     deps: deps,
-     package: package,
-     aliases: aliases,
+     deps: deps(),
+     package: package(),
+     aliases: aliases(),
      test_coverage: [tool: ExCoveralls],
      preferred_cli_env: ["coveralls": :test, "coveralls.detail": :test, "coveralls.post": :test],
      preferred_cli_env: [
           vcr: :test, "vcr.delete": :test, "vcr.check": :test, "vcr.show": :test
         ],
-     docs: docs
+     docs: docs()
     ]
   end
 
