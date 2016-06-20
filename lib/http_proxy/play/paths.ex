@@ -22,7 +22,7 @@ defmodule  HttpProxy.Play.Paths do
   def paths, do: paths ProxyAgent.get(@paths)
   defp paths(nil) do
     ProxyAgent.put @paths, Response.play_paths("path")
-    paths
+    paths()
   end
   defp paths(val), do: val
 
@@ -41,7 +41,7 @@ defmodule  HttpProxy.Play.Paths do
   def path_patterns, do: path_patterns ProxyAgent.get(@patterns)
   defp path_patterns(nil) do
     ProxyAgent.put @patterns, Response.play_paths("path_pattern")
-    path_patterns
+    path_patterns()
   end
   defp path_patterns(val), do: val
 
@@ -50,7 +50,7 @@ defmodule  HttpProxy.Play.Paths do
 
   @spec path?(binary) :: binary | nil
   def path?(path) do
-    case Enum.member? paths, path do
+    case Enum.member? paths(), path do
       false ->
         nil
       true ->
@@ -60,7 +60,7 @@ defmodule  HttpProxy.Play.Paths do
 
   @spec path_pattern?(binary) :: binary | nil
   def path_pattern?(path) do
-    Enum.find path_patterns, nil, fn pattern ->
+    Enum.find path_patterns(), nil, fn pattern ->
       Regex.match?(Regex.compile!(pattern), path)
     end
   end
