@@ -248,6 +248,32 @@ Response body will save in "path/to/body_file.json".
 }
 ```
 
+## dependencies
+
+```
+$ mix xref graph
+lib/http_proxy.ex
+└── lib/http_proxy/supervisor.ex
+    ├── lib/http_proxy/agent.ex
+    │   ├── lib/http_proxy/play/data.ex
+    │   │   ├── lib/http_proxy/agent.ex
+    │   │   └── lib/http_proxy/play/response.ex
+    │   │       ├── lib/http_proxy/play/data.ex
+    │   │       └── lib/http_proxy/utils/file.ex
+    │   └── lib/http_proxy/play/paths.ex
+    │       ├── lib/http_proxy/agent.ex
+    │       └── lib/http_proxy/play/response.ex
+    └── lib/http_proxy/handle.ex
+        ├── lib/http_proxy/play/body.ex
+        ├── lib/http_proxy/play/data.ex
+        ├── lib/http_proxy/play/paths.ex
+        ├── lib/http_proxy/play/response.ex
+        └── lib/http_proxy/record/response.ex
+            ├── lib/http_proxy/format.ex
+            │   └── lib/http_proxy/data.ex (compile)
+            └── lib/http_proxy/utils/file.ex
+```
+
 # TODO
 - [x] record request
 - [x] play request
