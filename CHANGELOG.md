@@ -1,5 +1,8 @@
 # Changelogs
 
+## 1.0.3: Jul 5, 2016
+- fix https://github.com/KazuCocoa/http_proxy/issues/25
+
 ## 1.0.2: Apr 14, 2016
 - update some dependencies
 
