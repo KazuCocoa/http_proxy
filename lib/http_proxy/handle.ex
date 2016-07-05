@@ -51,7 +51,12 @@ defmodule HttpProxy.Handle do
                     |> String.downcase
                     |> String.to_atom
                     |> :hackney.request(uri(conn), conn.req_headers, :stream,
-                      [connect_timeout: req_timeout(), recv_timeout: req_timeout()])
+                      [
+                        connect_timeout: req_timeout(),
+                        recv_timeout: req_timeout(),
+                        ssl_options: [],
+                        max_redirect: 10
+                      ])
     {conn, ""}
     |> write_proxy(client)
     |> read_proxy(client)
