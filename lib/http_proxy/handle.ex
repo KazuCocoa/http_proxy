@@ -46,7 +46,6 @@ defmodule HttpProxy.Handle do
   """
   @spec dispatch(t, param) :: t
   def dispatch(conn, _opts) do
-    # TODO: Failed to establish connection if configuration of `proxies:` is failed to establish.
     {:ok, client} = conn.method
                     |> String.downcase
                     |> String.to_atom
@@ -55,7 +54,7 @@ defmodule HttpProxy.Handle do
                         connect_timeout: req_timeout(),
                         recv_timeout: req_timeout(),
                         ssl_options: [],
-                        max_redirect: 10
+                        max_redirect: 5
                       ])
     {conn, ""}
     |> write_proxy(client)
@@ -98,11 +97,14 @@ defmodule HttpProxy.Handle do
   defp write_proxy({conn, _req_body}, client) do
     case read_body(conn, [read_timeout: req_timeout()]) do
       {:ok, body, conn} ->
+        Logger.debug("#{__MODULE__}.write_proxy, :ok, body: #{IO.inspect(body)}")
         :hackney.send_body client, body
         {conn, body}
       {:more, body, conn} ->
+        Logger.debug("#{__MODULE__}.write_proxy, :more, body: #{IO.inspect(body)}")
         :hackney.send_body client, body
-        write_proxy {conn, ""}, client
+        # write_proxy {conn, ""}, client
+        {conn, body}
       {:error, term} ->
         Logger.error term
     end
