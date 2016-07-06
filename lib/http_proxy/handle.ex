@@ -22,7 +22,6 @@ defmodule HttpProxy.Handle do
   plug :dispatch
 
   # Same as Plug.Conn https://github.com/elixir-lang/plug/blob/576c04c2cba778f1ac9ca28aa71c50efa1046b50/lib/plug/conn.ex#L125
-  @type t :: %Plug.Conn{}
 
   @type param :: binary | [param]
 
@@ -44,7 +43,7 @@ defmodule HttpProxy.Handle do
   @doc """
   Dispatch connection and Play/Record http/https requests.
   """
-  @spec dispatch(t, param) :: t
+  @spec dispatch(Plug.Conn.t, param) :: Plug.Conn.t
   def dispatch(conn, _opts) do
     {:ok, client} = conn.method
                     |> String.downcase
@@ -61,7 +60,7 @@ defmodule HttpProxy.Handle do
     |> read_proxy(client)
   end
 
-  @spec uri(t) :: String.t
+  @spec uri(Plug.Conn.t) :: String.t
   def uri(conn) do
     base = gen_path conn, target_proxy(conn)
     case conn.query_string do
@@ -113,9 +112,11 @@ defmodule HttpProxy.Handle do
   defp read_proxy({conn, req_body}, client) do
     case :hackney.start_response client do
       {:ok, status, headers, client} ->
+        Logger.debug("#{__MODULE__}.read_proxy, :ok, status: #{status}")
         {:ok, res_body} = :hackney.body client
         read_request(%{conn | resp_headers: headers}, req_body, res_body, status)
       {:error, message} ->
+        Logger.debug("#{__MODULE__}.read_proxy, :error, message: #{message}")
         read_request(%{conn | resp_headers: conn.resp_headers}, req_body, Atom.to_string(message), 408)
     end
   end
