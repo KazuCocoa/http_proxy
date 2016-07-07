@@ -16,6 +16,8 @@ defmodule HttpProxy.Handle do
   alias HttpProxy.Play.Paths, as: PlayPaths
   alias HttpProxy.Play.Body, as: PlayBody
 
+  alias JSX
+
   @default_schemes [:http, :https]
 
   plug Plug.Logger
@@ -96,10 +98,12 @@ defmodule HttpProxy.Handle do
   defp write_proxy({conn, _req_body}, client) do
     case read_body(conn, [read_timeout: req_timeout()]) do
       {:ok, body, conn} ->
-        Logger.debug("#{__MODULE__}.write_proxy, :ok, body: #{IO.inspect(body)}")
+        Logger.debug("request path: #{gen_path(conn, target_proxy(conn))}")
+        Logger.debug("#{__MODULE__}.write_proxy, :ok, headers: #{conn.req_headers |> JSX.encode!}, body: #{IO.inspect(body)}")
         :hackney.send_body client, body
         {conn, body}
       {:more, body, conn} ->
+        Logger.debug("request path: #{gen_path(conn, target_proxy(conn))}")
         Logger.debug("#{__MODULE__}.write_proxy, :more, body: #{IO.inspect(body)}")
         :hackney.send_body client, body
         # write_proxy {conn, ""}, client
@@ -112,10 +116,12 @@ defmodule HttpProxy.Handle do
   defp read_proxy({conn, req_body}, client) do
     case :hackney.start_response client do
       {:ok, status, headers, client} ->
-        Logger.debug("#{__MODULE__}.read_proxy, :ok, status: #{status}")
+        Logger.debug("request path: #{gen_path(conn, target_proxy(conn))}")
+        Logger.debug("#{__MODULE__}.read_proxy, :ok, headers: #{headers |> JSX.encode!}, status: #{status}")
         {:ok, res_body} = :hackney.body client
         read_request(%{conn | resp_headers: headers}, req_body, res_body, status)
       {:error, message} ->
+        Logger.debug("request path: #{gen_path(conn, target_proxy(conn))}")
         Logger.debug("#{__MODULE__}.read_proxy, :error, message: #{message}")
         read_request(%{conn | resp_headers: conn.resp_headers}, req_body, Atom.to_string(message), 408)
     end

@@ -4,6 +4,7 @@ defmodule HttpProxy.Format do
   """
 
   alias HttpProxy.Data
+  alias JSX
 
   @type t :: %Plug.Conn{}
 
