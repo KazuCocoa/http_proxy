@@ -45,6 +45,9 @@ defmodule HttpProxy.Play.Data do
   end
   defp response(val), do: val
 
+  @doc """
+  Put nil value to stored :play_responses key
+  """
   @spec clear_responses() :: :ok
   def clear_responses, do: ProxyAgent.put @responses, nil
 end

@@ -99,14 +99,14 @@ defmodule HttpProxy.Handle do
     case read_body(conn, [read_timeout: req_timeout()]) do
       {:ok, body, conn} ->
         Logger.debug("request path: #{gen_path(conn, target_proxy(conn))}")
-        Logger.debug("#{__MODULE__}.write_proxy, :ok, headers: #{conn.req_headers |> JSX.encode!}, body: #{IO.inspect(body)}")
+        Logger.debug("#{__MODULE__}.write_proxy, :ok, headers: #{conn.req_headers |> JSX.encode!}, body: #{body}")
         :hackney.send_body client, body
         {conn, body}
       {:more, body, conn} ->
         Logger.debug("request path: #{gen_path(conn, target_proxy(conn))}")
-        Logger.debug("#{__MODULE__}.write_proxy, :more, body: #{IO.inspect(body)}")
+        Logger.debug("#{__MODULE__}.write_proxy, :more, body: #{body}")
         :hackney.send_body client, body
-        # write_proxy {conn, ""}, client
+        write_proxy {conn, ""}, client
         {conn, body}
       {:error, term} ->
         Logger.error term

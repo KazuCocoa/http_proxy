@@ -91,7 +91,6 @@ defmodule HttpProxy.Play.Response do
               |> Enum.reduce("", fn item, acc ->
                 "#{item} #{acc}"
               end)
-              |> IO.inspect
 
     "Response jsons must include arrtibute: #{message}"
   end

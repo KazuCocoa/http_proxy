@@ -7,6 +7,9 @@ defmodule  HttpProxy.Play.Paths do
   alias HttpProxy.Play.Response
   alias HttpProxy.Agent, as: ProxyAgent
 
+  @type path :: binary
+  @type paths :: [path]
+
   @paths :play_paths
   @patterns :play_path_patterns
 
@@ -18,7 +21,7 @@ defmodule  HttpProxy.Play.Paths do
       iex> HttpProxy.Play.Paths.paths
       ["/request/path", "/request/path"]
   """
-  @spec paths() :: binary
+  @spec paths() :: paths
   def paths, do: paths ProxyAgent.get(@paths)
   defp paths(nil) do
     ProxyAgent.put @paths, Response.play_paths("path")
@@ -37,7 +40,7 @@ defmodule  HttpProxy.Play.Paths do
       iex> HttpProxy.Play.Paths.path_patterns
       ["\\A/request.*neko\\z"]
   """
-  @spec path_patterns() :: binary
+  @spec path_patterns() :: paths
   def path_patterns, do: path_patterns ProxyAgent.get(@patterns)
   defp path_patterns(nil) do
     ProxyAgent.put @patterns, Response.play_paths("path_pattern")
@@ -48,7 +51,7 @@ defmodule  HttpProxy.Play.Paths do
   @spec clear_path_patterns() :: :ok
   def clear_path_patterns, do: ProxyAgent.put @patterns, nil
 
-  @spec path?(binary) :: binary | nil
+  @spec path?(path) :: path | nil
   def path?(path) do
     case Enum.member? paths(), path do
       false ->
@@ -58,7 +61,7 @@ defmodule  HttpProxy.Play.Paths do
     end
   end
 
-  @spec path_pattern?(binary) :: binary | nil
+  @spec path_pattern?(path) :: path | nil
   def path_pattern?(path) do
     Enum.find path_patterns(), nil, fn pattern ->
       Regex.match?(Regex.compile!(pattern), path)
