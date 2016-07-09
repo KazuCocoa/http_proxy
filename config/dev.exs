@@ -3,7 +3,7 @@ use Mix.Config
 config :http_proxy,
   proxies: [
              %{port: 8080,
-               to:   "https://www.google.com"},
+               to:   "https://pantry.cookpad.com"},
              %{port: 8081,
                to:   "http://yahoo.com"}
             ],

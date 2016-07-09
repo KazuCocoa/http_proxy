@@ -16,4 +16,4 @@ config :http_proxy,
 config :logger, :console,
   format: "\n$date $time [$level] $metadata$message",
   metadata: [:user_id],
-  level: :warn
+  level: :debug
