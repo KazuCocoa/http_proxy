@@ -42,14 +42,14 @@ defmodule HttpProxy.Mixfile do
       {:plug, "~> 1.0"},
       {:hackney, "~> 1.6"},
       {:exjsx, "~> 3.2"},
-      {:earmark, "~> 0.1", only: :dev},
-      {:ex_doc, "~> 0.10", only: :dev},
+      {:earmark, "~> 0.2", only: :dev},
+      {:ex_doc, "~> 0.12", only: :dev},
       {:exvcr, "~> 0.7", only: :test},
       {:ex_parameterized, "~> 1.0", only: :test},
       {:excoveralls, "~> 0.5", only: :test},
       {:credo, "~> 0.3", only: [:dev, :test]},
       {:dialyxir, "~> 0.3", only: :dev},
-      {:shouldi, github: "batate/shouldi", only: :test}
+      {:shouldi, "~> 0.3", only: :test}
     ]
   end
 
