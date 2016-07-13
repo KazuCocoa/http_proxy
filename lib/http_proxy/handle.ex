@@ -7,6 +7,10 @@ defmodule HttpProxy.Handle do
   import Plug.Conn
   require Logger
 
+  if Mix.env == :dev do
+    use Plug.Debugger, otp_app: :http_proxy
+  end
+
   alias Plug.Conn
   alias Plug.Adapters.Cowboy, as: PlugCowboy
 
