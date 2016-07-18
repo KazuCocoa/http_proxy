@@ -4,12 +4,13 @@ defmodule HttpProxy.Record.Response do
   alias HttpProxy.Format
   alias HttpProxy.Utils.File, as: HttpProxyFile
 
-  @type t :: %Plug.Conn{}
+  @type request_body :: binary
+  @type response_body :: binary
 
   @spec record?() :: boolean
-  def record?, do: Application.get_env :http_proxy, :record, false
+  def record?(), do: Application.get_env :http_proxy, :record, false
 
-  @spec record(t, binary, binary) :: t
+  @spec record(Plug.Conn.t, request_body, response_body) :: Plug.Conn.t
   def record(conn, req_body, res_body) do
     export_mapping = HttpProxyFile.get_export_path(conn.port)
     export_body = HttpProxyFile.get_export_binary_path(conn.port)

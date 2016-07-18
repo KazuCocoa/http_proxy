@@ -49,27 +49,27 @@ defmodule HttpProxy.Utils.File do
       "test/data/mappings"
   """
   @spec get_export_path(integer | binary) :: String.t
-  def get_export_path, do: export_path() <> "/" <> mapping_files()
+  def get_export_path(), do: export_path() <> "/" <> mapping_files()
   def get_export_path(port) when is_integer(port), do: export_path() <> "/" <> Integer.to_string(port) <> "/" <> mapping_files()
   def get_export_path(port) when is_binary(port), do: export_path() <> "/" <> port <> "/" <> mapping_files()
 
   @spec get_export_binary_path(integer | binary) :: String.t
-  def get_export_binary_path, do: export_path() <> "/" <> response_files()
+  def get_export_binary_path(), do: export_path() <> "/" <> response_files()
   def get_export_binary_path(port) when is_integer(port) do
     export_path() <> "/" <> Integer.to_string(port) <> "/" <> response_files()
   end
   def get_export_binary_path(port) when is_binary(port), do: export_path() <> "/" <> port <> "/" <> response_files()
 
   @spec get_response_path() :: String.t
-  def get_response_path, do: play_path() <> "/" <> response_files()
+  def get_response_path(), do: play_path() <> "/" <> response_files()
 
   @spec get_mapping_path() :: String.t
-  def get_mapping_path, do: play_path() <> "/" <> mapping_files()
+  def get_mapping_path(), do: play_path() <> "/" <> mapping_files()
 
-  defp export_path, do: %HttpProxyFile{}.export_path
-  defp play_path, do: %HttpProxyFile{}.play_path
-  defp response_files, do: %HttpProxyFile{}.response_files
-  defp mapping_files, do: %HttpProxyFile{}.mapping_files
+  defp export_path(), do: %HttpProxyFile{}.export_path
+  defp play_path(), do: %HttpProxyFile{}.play_path
+  defp response_files(), do: %HttpProxyFile{}.response_files
+  defp mapping_files(), do: %HttpProxyFile{}.mapping_files
 
   @doc ~S"""
   Generate json file name with `:rand.uniform`

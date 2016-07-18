@@ -6,6 +6,12 @@ defmodule HttpProxy.Play.Response do
   @body "body"
   @body_file "body_file"
 
+  @type response_body :: binary
+  @type path :: String.t
+  @type path_pattern :: String.t
+  @type paths :: [binary]
+  @type path_patterns :: [binary]
+
   @request_key_map Enum.into(["method", @path, "port", @path_pattern], MapSet.new)
   @response_key_map Enum.into([@body, @body_file, "cookies", "headers", "status_code"], MapSet.new)
 
@@ -13,10 +19,10 @@ defmodule HttpProxy.Play.Response do
   alias HttpProxy.Play.Data
 
   @spec play?() :: boolean
-  def play?, do: Application.get_env :http_proxy, :play, false
+  def play?(), do: Application.get_env :http_proxy, :play, false
 
-  @spec play_responses() :: [binary]
-  def play_responses do
+  @spec play_responses() :: [response_body] | []
+  def play_responses() do
     case play?() do
       true ->
         gen_response()
@@ -25,13 +31,12 @@ defmodule HttpProxy.Play.Response do
     end
   end
 
-  defp gen_response do
+  defp gen_response() do
     HttpProxyFile.get_mapping_path
     |> HttpProxyFile.json_files!
     |> Enum.reduce([], fn path, acc ->
-      json = HttpProxyFile.read_json_file!(path)
-             |> validate
-      key = json |> gen_key
+      json = validate(HttpProxyFile.read_json_file!(path))
+      key = gen_key(json)
       List.keystore(acc, String.to_atom(key), 0, {String.to_atom(key), json})
     end)
   end
@@ -109,8 +114,10 @@ defmodule HttpProxy.Play.Response do
       iex> HttpProxy.Play.Response.play_paths("no_pattern")
       []
   """
-  @spec play_paths(binary) :: [binary]
-  def play_paths(key), do: play_data_responses Data.responses, key
+  @spec play_paths(path | path_pattern) :: paths | path_patterns
+  def play_paths(@path), do: play_data_responses Data.responses, @path
+  def play_paths(@path_pattern), do: play_data_responses Data.responses, @path_pattern
+  def play_paths(_), do: play_data_responses Data.responses, ""
 
   defp play_data_responses(nil, _), do: []
   defp play_data_responses(res, key) do

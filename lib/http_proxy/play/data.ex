@@ -38,7 +38,7 @@ defmodule HttpProxy.Play.Data do
 
   """
   @spec responses() :: binary
-  def responses, do: response ProxyAgent.get(@responses)
+  def responses(), do: response ProxyAgent.get(@responses)
   defp response(nil) do
     ProxyAgent.put @responses, HttpProxyResponse.play_responses
     responses()
