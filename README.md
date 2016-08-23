@@ -282,7 +282,6 @@ lib/http_proxy.ex
 - [x] start/stop http_proxy manually
 - [ ] use vcr <= a bit...
     - integrate https://github.com/parroty/exvcr
-- [ ] https://github.com/KazuCocoa/http_proxy/issues/25
 
 # styleguide
 
