@@ -1,4 +1,6 @@
 # Changelogs
+## 1.1.0: Aug 31, 2016
+- Require Elixir ~> 1.3 due to update Plug from 1.1 to 1.2
 
 ## 1.0.3: Jul 5, 2016
 - fix https://github.com/KazuCocoa/http_proxy/issues/25
