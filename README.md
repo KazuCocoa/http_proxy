@@ -33,7 +33,7 @@ Client  (server  client)  proxied_server
 
 # Quick use as http proxy
 ## requirement
-- Elixir over 1.2
+- Elixir over 1.3
 
 ## set application and deps
 
@@ -50,7 +50,7 @@ end
 
 defp deps do
   [
-    {:http_proxy, "~> 1.0.3"}
+    {:http_proxy, "~> 1.1"}
   ]
 end
 ```
@@ -282,7 +282,6 @@ lib/http_proxy.ex
 - [x] start/stop http_proxy manually
 - [ ] use vcr <= a bit...
     - integrate https://github.com/parroty/exvcr
-- [ ] https://github.com/KazuCocoa/http_proxy/issues/25
 
 # styleguide
 
