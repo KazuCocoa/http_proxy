@@ -150,7 +150,6 @@ defmodule HttpProxy.Handle do
 
   defp play_conn(conn) do
     conn = matched_path? conn, PlayPaths.path?(conn.request_path) || PlayPaths.path_pattern?(conn.request_path)
-    # TODO: conn.resp_body
     send_resp conn, conn.status, conn.resp_body
   end
 

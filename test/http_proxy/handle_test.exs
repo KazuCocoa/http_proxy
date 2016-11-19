@@ -14,11 +14,11 @@ defmodule HttpProxy.HandleTest do
       assert HttpProxyHandle.uri(conn) == proxied_url
     end do
       [
-        "root":  {"http://localhost:8080/", "http://google.com/" },
+        "root":  {"http://localhost:8080/", "http://google.com/"},
         "path":  {"https://localhost:8081/neko", "http://example.com/neko"},
         "query": {"http://localhost:8081/neko?hoge=1", "http://example.com/neko?hoge=1"},
-        "no proxy with http":  {"http://localhost:8082/", "http://localhost/" },
-        "no proxy with https":  {"https://localhost:8082/", "https://localhost/" },
+        "no proxy with http":  {"http://localhost:8082/", "http://localhost/"},
+        "no proxy with https":  {"https://localhost:8082/", "https://localhost/"},
       ]
   end
 end

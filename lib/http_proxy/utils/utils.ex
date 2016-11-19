@@ -25,6 +25,6 @@ defmodule HttpProxy.Utils do
                  |> String.codepoints
                  |> Enum.random
     string = string <> additional
-    rand_s(string, n-1)
+    rand_s(string, n - 1)
   end
 end

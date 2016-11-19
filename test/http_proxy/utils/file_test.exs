@@ -14,7 +14,7 @@ defmodule HttpProxy.Utils.FileTest do
               "response" => %{"body" => "<html>hello world</html>", "cookies" => %{},
                 "headers" => %{"Content-Type" => "text/html; charset=UTF-8", "Server" => "GFE/2.0"}, "status_code" => 200}}
 
-    assert json_file_path == HttpProxyFile.json_files!(json_test_dir) |> Enum.sort
+    assert json_file_path == json_test_dir |> HttpProxyFile.json_files! |> Enum.sort
     assert {:ok, expected_json} == HttpProxyFile.read_json_file("test/data/mappings/sample.json")
   end
 

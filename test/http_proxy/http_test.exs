@@ -97,7 +97,6 @@ defmodule HttpProxy.HttpTest do
     assert HttpProxy.start == :ok
   end
 
-
   having "HttpProxy.Play.Response" do
     alias HttpProxy.Play.Response
 
@@ -128,7 +127,4 @@ defmodule HttpProxy.HttpTest do
       assert Response.play_responses == expected
     end
   end
-
-
-
 end
