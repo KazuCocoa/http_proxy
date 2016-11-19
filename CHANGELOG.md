@@ -1,4 +1,7 @@
 # Changelogs
+## 1.1.1: Nov 19, 2016
+- update some dependencies
+
 ## 1.1.0: Aug 31, 2016
 - Require Elixir ~> 1.3 due to update Plug from 1.1 to 1.2
 
