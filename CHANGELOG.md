@@ -1,4 +1,8 @@
 # Changelogs
+## 1.1.2: Nov 21, 2016
+- remove `export_path` and `play_path` from `%HttpProxy.Utils.File{}`
+  - read them directly from `config/config.exs`
+
 ## 1.1.1: Nov 19, 2016
 - update some dependencies
 
