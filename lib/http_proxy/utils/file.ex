@@ -4,18 +4,15 @@ defmodule HttpProxy.Utils.File do
   """
 
   @doc ~S"""
-  Structure associated with file paths.
+  Structure associated with file paths. Top path is set in `config/config.exs`.
+  `mapping_files` and `response_files` are created in the top path.
 
   ## Example
 
       iex> HttpProxy.Utils.File.__struct__
-      %HttpProxy.Utils.File{export_path: "test/example", mapping_files: "mappings",
-        play_path: "test/data", response_files: "__files"}
+      %HttpProxy.Utils.File{mapping_files: "mappings", response_files: "__files"}
   """
-  defstruct export_path: Application.get_env(:http_proxy, :export_path) || "default",
-            play_path: Application.get_env(:http_proxy, :play_path) || "default",
-            response_files: "__files",
-            mapping_files: "mappings"
+  defstruct response_files: "__files", mapping_files: "mappings"
 
   alias HttpProxy.Utils.File, as: HttpProxyFile
 
@@ -66,8 +63,8 @@ defmodule HttpProxy.Utils.File do
   @spec get_mapping_path() :: String.t
   def get_mapping_path(), do: play_path() <> "/" <> mapping_files()
 
-  defp export_path(), do: %HttpProxyFile{}.export_path
-  defp play_path(), do: %HttpProxyFile{}.play_path
+  defp export_path(), do: Application.get_env(:http_proxy, :export_path, "default")
+  defp play_path(), do: Application.get_env(:http_proxy, :play_path, "default")
   defp response_files(), do: %HttpProxyFile{}.response_files
   defp mapping_files(), do: %HttpProxyFile{}.mapping_files
 

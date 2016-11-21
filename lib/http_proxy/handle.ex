@@ -44,7 +44,7 @@ defmodule HttpProxy.Handle do
   # see https://github.com/elixir-lang/plug/blob/master/lib/plug/adapters/cowboy.ex#L5
   defp cowboy_options(port, module_name), do: [port: port, ref: String.to_atom(module_name), timeout: req_timeout()]
 
-  defp req_timeout, do: Application.get_env(:http_proxy, :timeout) || 5_000
+  defp req_timeout, do: Application.get_env :http_proxy, :timeout, 5_000
 
   @doc """
   Dispatch connection and Play/Record http/https requests.
