@@ -1,4 +1,7 @@
 # Changelogs
+## 1.1.3: Dec 1, 2016
+- Update Plug to 1.3.0
+
 ## 1.1.2: Nov 21, 2016
 - remove `export_path` and `play_path` from `%HttpProxy.Utils.File{}`
   - read them directly from `config/config.exs`
