@@ -9,7 +9,8 @@ defmodule HttpProxy.Play.Body do
   Return response body
   """
   @spec get_body(response) :: binary
-  def get_body(%{"response" => %{"body" => body}}), do: body
+  def get_body(%{"response" => %{"body" => body}}),
+    do: body
   def get_body(%{"response" => %{"body_file" => body_file}}) do
     case get_binay_from body_file do
       {:ok, result} ->
@@ -19,5 +20,6 @@ defmodule HttpProxy.Play.Body do
     end
   end
 
-  defp get_binay_from(file_path), do: File.read(file_path)
+  defp get_binay_from(file_path),
+    do: File.read(file_path)
 end

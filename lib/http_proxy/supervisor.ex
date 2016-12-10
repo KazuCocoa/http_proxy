@@ -7,7 +7,8 @@ defmodule HttpProxy.Supervisor do
   alias HttpProxy.Handle
   alias HttpProxy.Agent, as: ProxyAgent
 
-  def start_link, do: Supervisor.start_link __MODULE__, :ok, [name: __MODULE__]
+  def start_link,
+    do: Supervisor.start_link __MODULE__, :ok, [name: __MODULE__]
 
   ## Callbacks
 
@@ -44,5 +45,6 @@ defmodule HttpProxy.Supervisor do
     """
     raise ArgumentError, msg
   end
-  defp proxies?(proxies), do: proxies
+  defp proxies?(proxies),
+    do: proxies
 end

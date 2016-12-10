@@ -22,15 +22,18 @@ defmodule  HttpProxy.Play.Paths do
       ["/request/path", "/request/path"]
   """
   @spec paths() :: paths
-  def paths, do: paths ProxyAgent.get(@paths)
+  def paths,
+    do: paths ProxyAgent.get(@paths)
   defp paths(nil) do
     ProxyAgent.put @paths, Response.play_paths("path")
     paths()
   end
-  defp paths(val), do: val
+  defp paths(val),
+    do: val
 
   @spec clear_paths() :: :ok
-  def clear_paths, do: ProxyAgent.put @paths, nil
+  def clear_paths,
+    do: ProxyAgent.put @paths, nil
 
   @doc ~S"""
   Return `path_patterns` stored in Agent.
@@ -41,15 +44,18 @@ defmodule  HttpProxy.Play.Paths do
       ["\\A/request.*neko\\z"]
   """
   @spec path_patterns() :: paths
-  def path_patterns, do: path_patterns ProxyAgent.get(@patterns)
+  def path_patterns,
+    do: path_patterns ProxyAgent.get(@patterns)
   defp path_patterns(nil) do
     ProxyAgent.put @patterns, Response.play_paths("path_pattern")
     path_patterns()
   end
-  defp path_patterns(val), do: val
+  defp path_patterns(val),
+    do: val
 
   @spec clear_path_patterns() :: :ok
-  def clear_path_patterns, do: ProxyAgent.put @patterns, nil
+  def clear_path_patterns,
+    do: ProxyAgent.put @patterns, nil
 
   @spec path?(path) :: path | nil
   def path?(path) do

@@ -43,8 +43,10 @@ defmodule HttpProxy.Format do
     |> URI.to_string
   end
 
-  defp query(""), do: nil
-  defp query(query_string), do: query_string
+  defp query(""),
+    do: nil
+  defp query(query_string),
+    do: query_string
 
   defp resp_headers(conn) do
     conn.resp_headers

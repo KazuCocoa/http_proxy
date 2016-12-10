@@ -19,7 +19,8 @@ defmodule HttpProxy.Play.Response do
   alias HttpProxy.Play.Data
 
   @spec play?() :: boolean
-  def play?(), do: Application.get_env :http_proxy, :play, false
+  def play?(),
+    do: Application.get_env :http_proxy, :play, false
 
   @spec play_responses() :: [response_body] | []
   def play_responses() do
@@ -82,13 +83,11 @@ defmodule HttpProxy.Play.Response do
     json
   end
 
-  defp member_path?(request_diff, request_diff) do
-    {MapSet.member?(request_diff, @path_pattern), MapSet.member?(request_diff, @path)}
-  end
+  defp member_path?(request_diff, request_diff),
+    do: {MapSet.member?(request_diff, @path_pattern), MapSet.member?(request_diff, @path)}
 
-  defp member_body?(response_diff, response_diff) do
-    {MapSet.member?(response_diff, @body), MapSet.member?(response_diff, @body_file)}
-  end
+  defp member_body?(response_diff, response_diff),
+    do: {MapSet.member?(response_diff, @body), MapSet.member?(response_diff, @body_file)}
 
   defp format_error_message(mapset) do
     message = mapset
@@ -115,11 +114,15 @@ defmodule HttpProxy.Play.Response do
       []
   """
   @spec play_paths(path | path_pattern) :: paths | path_patterns
-  def play_paths(@path), do: play_data_responses Data.responses, @path
-  def play_paths(@path_pattern), do: play_data_responses Data.responses, @path_pattern
-  def play_paths(_), do: play_data_responses Data.responses, ""
+  def play_paths(@path),
+    do: play_data_responses Data.responses, @path
+  def play_paths(@path_pattern),
+    do: play_data_responses Data.responses, @path_pattern
+  def play_paths(_),
+    do: play_data_responses Data.responses, ""
 
-  defp play_data_responses(nil, _), do: []
+  defp play_data_responses(nil, _),
+    do: []
   defp play_data_responses(res, key) do
     res
     |> Enum.reduce([], fn res_tuple, acc ->
