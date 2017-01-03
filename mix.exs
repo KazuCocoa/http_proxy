@@ -40,7 +40,7 @@ defmodule HttpProxy.Mixfile do
     [
       {:cowboy, "~> 1.0.0" },
       {:plug, "~> 1.0"},
-      {:hackney, "~> 1.6"},
+      {:hackney, "1.6.3"},
       {:exjsx, "~> 3.2"},
       {:earmark, "~> 1.0", only: :dev},
       {:ex_doc, "~> 0.13", only: :dev},
