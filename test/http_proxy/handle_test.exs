@@ -15,8 +15,8 @@ defmodule HttpProxy.HandleTest do
     end do
       [
         "root":  {"http://localhost:8080/", "http://google.com/"},
-        "path":  {"https://localhost:8081/neko", "http://example.com/neko"},
-        "query": {"http://localhost:8081/neko?hoge=1", "http://example.com/neko?hoge=1"},
+        "path":  {"https://localhost:8081/neko", "http://www.google.co.jp/neko"},
+        "query": {"http://localhost:8081/neko?hoge=1", "http://www.google.co.jp/neko?hoge=1"},
         "no proxy with http":  {"http://localhost:8082/", "http://localhost/"},
         "no proxy with https":  {"https://localhost:8082/", "https://localhost/"},
       ]

@@ -85,7 +85,7 @@ defmodule HttpProxy.Handle do
   ## Example
 
       iex> HttpProxy.Handle.proxies
-      [%{port: 8080, to: "http://google.com"}, %{port: 8081, to: "http://example.com"}]
+      [%{port: 8080, to: "http://google.com"}, %{port: 8081, to: "http://www.google.co.jp"}]
   """
   @spec proxies() :: []
   def proxies,

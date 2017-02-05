@@ -5,7 +5,7 @@ config :http_proxy,
              %{port: 8080,
                to:   "http://google.com"},
              %{port: 8081,
-               to:   "http://example.com"}
+               to:   "http://www.google.co.jp"}
             ],
   timeout: 2_000, # ms
   record: false,
