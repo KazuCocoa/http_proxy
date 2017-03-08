@@ -1,4 +1,8 @@
 # Changelogs
+## 1.1.4: Mar 9, 2017
+- Update some dependencies
+- Remove ExVCR since this library isn't used in this project
+
 ## 1.1.3: Dec 1, 2016
 - Update Plug to 1.3.0
 
