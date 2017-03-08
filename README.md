@@ -50,7 +50,7 @@ end
 
 defp deps do
   [
-    {:http_proxy, "~> 1.1"}
+    {:http_proxy, "~> 1.1.4"}
   ]
 end
 ```
