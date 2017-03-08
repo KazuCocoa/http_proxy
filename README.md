@@ -280,7 +280,7 @@ lib/http_proxy.ex
 - [x] refactor
 - [x] support Regex request path.
 - [x] start/stop http_proxy manually
-- [ ] use vcr <= a bit...
+- [ ] ~~use vcr~~
     - integrate https://github.com/parroty/exvcr
 
 # styleguide

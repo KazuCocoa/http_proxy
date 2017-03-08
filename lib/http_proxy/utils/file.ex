@@ -15,6 +15,7 @@ defmodule HttpProxy.Utils.File do
   defstruct response_files: "__files", mapping_files: "mappings"
 
   alias HttpProxy.Utils.File, as: HttpProxyFile
+  alias JSX
 
   @doc ~S"""
 
