@@ -1,4 +1,7 @@
 # Changelogs
+## 1.1.5: Apr 6, 2017
+- Update some dependencies
+
 ## 1.1.4: Mar 9, 2017
 - Update some dependencies
 - Remove ExVCR since this library isn't used in this project
