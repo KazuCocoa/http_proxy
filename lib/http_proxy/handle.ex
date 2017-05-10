@@ -37,7 +37,7 @@ defmodule HttpProxy.Handle do
   """
   @spec start_link([binary]) :: pid
   def start_link([proxy, module_name]) do
-    Logger.info "Running #{__MODULE__} on http://localhost:#{proxy.port} named #{module_name}, timeout: #{req_timeout()}"
+    Logger.info fn -> "Running #{__MODULE__} on http://localhost:#{proxy.port} named #{module_name}, timeout: #{req_timeout()}" end
     PlugCowboy.http(__MODULE__, [], cowboy_options(proxy.port, module_name))
   end
 
@@ -106,13 +106,13 @@ defmodule HttpProxy.Handle do
   defp write_proxy({conn, _req_body}, client) do
     case read_body(conn, [read_timeout: req_timeout()]) do
       {:ok, body, conn} ->
-        Logger.debug("request path: #{gen_path(conn, target_proxy(conn))}")
-        Logger.debug("#{__MODULE__}.write_proxy, :ok, headers: #{conn.req_headers |> JSX.encode!}, body: #{body}")
+        Logger.debug fn -> "request path: #{gen_path(conn, target_proxy(conn))}" end
+        Logger.debug fn -> "#{__MODULE__}.write_proxy, :ok, headers: #{conn.req_headers |> JSX.encode!}, body: #{body}" end
         :hackney.send_body client, body
         {conn, body}
       {:more, body, conn} ->
-        Logger.debug("request path: #{gen_path(conn, target_proxy(conn))}")
-        Logger.debug("#{__MODULE__}.write_proxy, :more, body: #{body}")
+        Logger.debug fn -> "request path: #{gen_path(conn, target_proxy(conn))}" end
+        Logger.debug fn -> "#{__MODULE__}.write_proxy, :more, body: #{body}" end
         :hackney.send_body client, body
         write_proxy {conn, ""}, client
         {conn, body}
@@ -124,13 +124,13 @@ defmodule HttpProxy.Handle do
   defp read_proxy({conn, req_body}, client) do
     case :hackney.start_response client do
       {:ok, status, headers, client} ->
-        Logger.debug("request path: #{gen_path(conn, target_proxy(conn))}")
-        Logger.debug("#{__MODULE__}.read_proxy, :ok, headers: #{headers |> JSX.encode!}, status: #{status}")
+        Logger.debug fn -> "request path: #{gen_path(conn, target_proxy(conn))}" end
+        Logger.debug fn -> "#{__MODULE__}.read_proxy, :ok, headers: #{headers |> JSX.encode!}, status: #{status}" end
         {:ok, res_body} = :hackney.body client
         read_request(%{conn | resp_headers: headers}, req_body, res_body, status)
       {:error, message} ->
-        Logger.debug("request path: #{gen_path(conn, target_proxy(conn))}")
-        Logger.debug("#{__MODULE__}.read_proxy, :error, message: #{message}")
+        Logger.debug fn -> "request path: #{gen_path(conn, target_proxy(conn))}" end
+        Logger.debug fn -> "#{__MODULE__}.read_proxy, :error, message: #{message}" end
         read_request(%{conn | resp_headers: conn.resp_headers}, req_body, Atom.to_string(message), 408)
     end
   end
