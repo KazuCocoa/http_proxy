@@ -3,6 +3,8 @@
 [![Build Status](https://travis-ci.org/KazuCocoa/http_proxy.svg?branch=master)](https://travis-ci.org/KazuCocoa/http_proxy)
 [![](https://img.shields.io/hexpm/v/http_proxy.svg?style=flat)](https://hex.pm/packages/http_proxy)
 
+[![codecov](https://codecov.io/gh/KazuCocoa/http_proxy/branch/master/graph/badge.svg)](https://codecov.io/gh/KazuCocoa/http_proxy)
+
 Simple multi HTTP Proxy using Plug. And support record/play requests.
 
 # MY GOAL

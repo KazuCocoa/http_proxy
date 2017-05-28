@@ -48,7 +48,8 @@ defmodule HttpProxy.Mixfile do
       {:excoveralls, "~> 0.5", only: :test},
       {:credo, "~> 0.3", only: [:dev, :test]},
       {:dialyxir, "~> 0.3", only: :dev},
-      {:shouldi, "~> 0.3", only: :test}
+      {:shouldi, "~> 0.3", only: :test},
+      {:excoveralls, "~> 0.6.3"}
     ]
   end
 
