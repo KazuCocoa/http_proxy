@@ -41,14 +41,14 @@ defmodule HttpProxy.Mixfile do
       {:cowboy, "~> 1.1.2" },
       {:plug, "~> 1.0"},
       {:hackney, "1.6.5"},
-      {:exjsx, "~> 3.0"},
+      {:exjsx, "~> 4.0.0"},
       {:earmark, "~> 1.0", only: :dev},
       {:ex_doc, "~> 0.13", only: :dev},
       {:ex_parameterized, "~> 1.0", only: :test},
       {:credo, "~> 0.3", only: [:dev, :test]},
       {:dialyxir, "~> 0.3", only: :dev},
       {:shouldi, "~> 0.3", only: :test},
-      {:excoveralls, "~> 0.6.3", only: :test}
+      {:excoveralls, "~> 0.7.0", only: :test}
     ]
   end
 
