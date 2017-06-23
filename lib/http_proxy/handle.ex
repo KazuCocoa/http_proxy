@@ -127,11 +127,15 @@ defmodule HttpProxy.Handle do
         Logger.debug fn -> "request path: #{gen_path(conn, target_proxy(conn))}" end
         Logger.debug fn -> "#{__MODULE__}.read_proxy, :ok, headers: #{headers |> JSX.encode!}, status: #{status}" end
         {:ok, res_body} = :hackney.body client
-        read_request(%{conn | resp_headers: headers}, req_body, res_body, status)
+
+        headers = List.keydelete(headers, "Transfer-Encoding", 0)
+        %{conn | resp_headers: headers}
+        |> read_request(req_body, res_body, status)
       {:error, message} ->
         Logger.debug fn -> "request path: #{gen_path(conn, target_proxy(conn))}" end
         Logger.debug fn -> "#{__MODULE__}.read_proxy, :error, message: #{message}" end
-        read_request(%{conn | resp_headers: conn.resp_headers}, req_body, Atom.to_string(message), 408)
+        %{conn | resp_headers: conn.resp_headers}
+        |> read_request(req_body, Atom.to_string(message), 408)
     end
   end
 
