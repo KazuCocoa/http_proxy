@@ -1,5 +1,6 @@
 defmodule HttpProxy.HttpTest do
-  use ShouldI, async: false
+  use ExUnit.Case, async: false
+
   use ExUnit.Parameterized
   use Plug.Test
 
@@ -97,10 +98,10 @@ defmodule HttpProxy.HttpTest do
     assert HttpProxy.start == :ok
   end
 
-  having "HttpProxy.Play.Response" do
+  describe "HttpProxy.Play.Response" do
     alias HttpProxy.Play.Response
 
-    should "#play_responses with play mode" do
+    test "#play_responses with play mode" do
       TestHelper.set_play_mode
 
       expected = ["get_8080/request/path": %{"request" => %{"method" => "GET", "path" => "/request/path", "port" => 8080},
@@ -119,7 +120,7 @@ defmodule HttpProxy.HttpTest do
       assert Response.play_responses[:"post_8081/request/path"] == expected[:"post_8081/request/path"]
     end
 
-    should "HttpProxy.Play.Response#play_responses with record mode" do
+    test "HttpProxy.Play.Response#play_responses with record mode" do
       TestHelper.set_record_mode
 
       expected = []

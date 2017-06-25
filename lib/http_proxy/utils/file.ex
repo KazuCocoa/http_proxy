@@ -172,9 +172,10 @@ defmodule HttpProxy.Utils.File do
     case File.ls(dir) do
       {:ok, files} ->
         files = files
-                |> Enum.filter_map(fn file ->
+                |> Enum.filter(fn file ->
                   Path.extname(file) == ".json"
-                end, &(dir <> "/" <> &1))
+                end)
+                |> Enum.map(&(dir <> "/" <> &1))
         {:ok, files}
       {:error, message} ->
         {:error, message}
