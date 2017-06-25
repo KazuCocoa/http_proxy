@@ -4,7 +4,7 @@ defmodule HttpProxy.Mixfile do
   def project do
     [app: :http_proxy,
      version: "1.1.5",
-     elixir: "~> 1.3",
+     elixir: "~> 1.4",
      name: "ExHttpProxy",
      source_url: "https://github.com/KazuCocoa/http_proxy",
      description: "Multi port HTTP Proxy and support record/play request.",
