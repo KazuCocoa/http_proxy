@@ -1,4 +1,7 @@
 # Changelogs
+## 1.2.0: Jun 26, 2017
+- Suppoer Elixir1.4.0+ and fix some warnings [here](https://github.com/KazuCocoa/http_proxy/pull/41)
+
 ## 1.1.5: Apr 6, 2017
 - Update some dependencies
 
