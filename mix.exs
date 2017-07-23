@@ -3,7 +3,7 @@ defmodule HttpProxy.Mixfile do
 
   def project do
     [app: :http_proxy,
-     version: "1.2.1",
+     version: "1.2.2",
      elixir: "~> 1.4",
      name: "ExHttpProxy",
      source_url: "https://github.com/KazuCocoa/http_proxy",
@@ -24,7 +24,7 @@ defmodule HttpProxy.Mixfile do
 
   def application do
     [
-      applications: [:logger, :cowboy, :plug, :hackney],
+      extra_applications: [:logger],
       mod: {HttpProxy, []}
     ]
   end
@@ -38,16 +38,16 @@ defmodule HttpProxy.Mixfile do
 
   defp deps do
     [
-      {:cowboy, "~> 1.1.2" },
+      {:cowboy, "~> 1.1.2"},
       {:plug, "~> 1.3.0"},
       {:hackney, "1.6.5"},
-      {:exjsx, "~> 4.0.0"},
-      {:earmark, "~> 1.0", only: :dev},
-      {:ex_doc, "~> 0.13", only: :dev},
-      {:ex_parameterized, "~> 1.0", only: :test},
-      {:credo, "~> 0.3", only: [:dev, :test]},
-      {:dialyxir, "~> 0.3", only: :dev},
-      {:excoveralls, "~> 0.7.0", only: :test}
+      {:exjsx, "~> 4.0.0", runtime: false},
+      {:earmark, "~> 1.0", only: :dev, runtime: false},
+      {:ex_doc, "~> 0.13", only: :dev, runtime: false},
+      {:ex_parameterized, "~> 1.0", only: :test, runtime: false},
+      {:credo, "~> 0.3", only: [:dev, :test], runtime: false},
+      {:dialyxir, "~> 0.3", only: :dev, runtime: false},
+      {:excoveralls, "~> 0.7.0", only: :test, runtime: false}
     ]
   end
 
