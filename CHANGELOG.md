@@ -1,4 +1,7 @@
 # Changelogs
+## 1.2.2: Jul 23, 2017
+- Set extra_applications and runtime: false
+
 ## 1.2.1: Jul 23, 2017
 - Update some dependencies
     - Set a limitation for Plug ~> 1.3.0
