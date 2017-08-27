@@ -1,4 +1,7 @@
 # Changelogs
+## 1.2.3: Aug 28, 2017
+- Update some dependencies
+
 ## 1.2.2: Jul 23, 2017
 - Set extra_applications and runtime: false
 
