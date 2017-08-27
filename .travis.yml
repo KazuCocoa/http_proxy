@@ -6,7 +6,7 @@ otp_release:
 
 elixir:
   - 1.4.5
-  - 1.5.0-rc.0
+  - 1.5.1
 
 sudo: false
 
