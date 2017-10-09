@@ -237,7 +237,10 @@ defmodule HttpProxy.Handle do
     case conn.scheme do
       s when s in @default_schemes ->
         %URI{
-          %URI{} | scheme: Atom.to_string(conn.scheme), host: conn.host, path: conn.request_path
+          %URI{}
+          | scheme: Atom.to_string(conn.scheme),
+            host: conn.host,
+            path: conn.request_path
         }
         |> URI.to_string()
 
