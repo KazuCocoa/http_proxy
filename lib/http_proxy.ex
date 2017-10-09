@@ -57,7 +57,7 @@ defmodule HttpProxy do
 
   @spec start(:normal, []) :: {:ok, pid}
   def start(_type, _args) do
-    HttpProxySup.start_link
+    HttpProxySup.start_link()
   end
 
   @doc """
@@ -65,15 +65,15 @@ defmodule HttpProxy do
   """
   @spec stop :: :ok | {:error, term}
   def stop do
-    Application.stop :ranch
-    Application.stop :cowlib
-    Application.stop :cowboy
-    Application.stop :idna
-    Application.stop :mimerl
-    Application.stop :certifi
-    Application.stop :hackney
-    Application.stop :plug
-    Application.stop :http_proxy
+    Application.stop(:ranch)
+    Application.stop(:cowlib)
+    Application.stop(:cowboy)
+    Application.stop(:idna)
+    Application.stop(:mimerl)
+    Application.stop(:certifi)
+    Application.stop(:hackney)
+    Application.stop(:plug)
+    Application.stop(:http_proxy)
   end
 
   @doc """
@@ -82,14 +82,14 @@ defmodule HttpProxy do
   """
   @spec start() :: :ok | {:error, term}
   def start do
-    Application.start :ranch
-    Application.start :cowlib
-    Application.start :cowboy
-    Application.start :idna
-    Application.start :mimerl
-    Application.start :certifi
-    Application.start :hackney
-    Application.start :plug
-    Application.start :http_proxy
+    Application.start(:ranch)
+    Application.start(:cowlib)
+    Application.start(:cowboy)
+    Application.start(:idna)
+    Application.start(:mimerl)
+    Application.start(:certifi)
+    Application.start(:hackney)
+    Application.start(:plug)
+    Application.start(:http_proxy)
   end
 end

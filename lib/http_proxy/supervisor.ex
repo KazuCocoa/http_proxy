@@ -7,18 +7,17 @@ defmodule HttpProxy.Supervisor do
   alias HttpProxy.Handle
   alias HttpProxy.Agent, as: ProxyAgent
 
-  def start_link,
-    do: Supervisor.start_link __MODULE__, :ok, [name: __MODULE__]
+  def start_link, do: Supervisor.start_link(__MODULE__, :ok, name: __MODULE__)
 
   ## Callbacks
 
   def init(:ok) do
-    Handle.proxies
+    Handle.proxies()
     |> proxies?
     |> Enum.reduce([], fn proxy, acc ->
-      module_name = "HttpProxy.Handle#{proxy.port}"
-      [worker(Handle, [[proxy, module_name]], [id: String.to_atom(module_name)]) | acc]
-    end)
+         module_name = "HttpProxy.Handle#{proxy.port}"
+         [worker(Handle, [[proxy, module_name]], id: String.to_atom(module_name)) | acc]
+       end)
     |> Enum.into([worker(ProxyAgent, [])])
     |> supervise(strategy: :one_for_one)
   end
@@ -43,8 +42,9 @@ defmodule HttpProxy.Supervisor do
       play_path: "test/data"
     ---
     """
+
     raise ArgumentError, msg
   end
-  defp proxies?(proxies),
-    do: proxies
+
+  defp proxies?(proxies), do: proxies
 end

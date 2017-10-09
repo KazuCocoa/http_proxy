@@ -12,8 +12,9 @@ defmodule HttpProxy.Format do
   def pretty_json!(conn, req_body, res_body_file, true) do
     conn
     |> pretty_json!(req_body, res_body_file, false)
-    |> JSX.prettify!
+    |> JSX.prettify!()
   end
+
   def pretty_json!(conn, req_body, res_body_file, _) do
     {a, b, c, d} = conn.remote_ip
 
@@ -22,7 +23,8 @@ defmodule HttpProxy.Format do
         url: url(conn),
         remote: "#{a}.#{b}.#{c}.#{d}",
         method: conn.method,
-        headers: conn.req_headers, # Maybe failed to convert
+        # Maybe failed to convert
+        headers: conn.req_headers,
         request_body: req_body,
         options: conn.query_params
       },
@@ -33,25 +35,30 @@ defmodule HttpProxy.Format do
         headers: resp_headers(conn)
       }
     }
-    |> JSX.encode!
+    |> JSX.encode!()
   end
 
   defp url(conn) do
     uri = %URI{}
-    %URI{uri | scheme: Atom.to_string(conn.scheme), host: conn.host, port: conn.port,
-                 path: conn.request_path, query: query(conn.query_string)}
-    |> URI.to_string
+
+    %URI{
+      uri
+      | scheme: Atom.to_string(conn.scheme),
+        host: conn.host,
+        port: conn.port,
+        path: conn.request_path,
+        query: query(conn.query_string)
+    }
+    |> URI.to_string()
   end
 
-  defp query(""),
-    do: nil
-  defp query(query_string),
-    do: query_string
+  defp query(""), do: nil
+  defp query(query_string), do: query_string
 
   defp resp_headers(conn) do
     conn.resp_headers
-    |> Enum.reduce(Map.new, fn {key, value}, acc ->
-      Map.put acc, key, value
-    end)
+    |> Enum.reduce(Map.new(), fn {key, value}, acc ->
+         Map.put(acc, key, value)
+       end)
   end
 end
