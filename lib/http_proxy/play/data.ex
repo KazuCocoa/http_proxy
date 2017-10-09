@@ -35,22 +35,21 @@ defmodule HttpProxy.Play.Data do
            "headers" => %{"Content-Type" => "text/html; charset=UTF-8",
              "Server" => "GFE/2.0"}, "status_code" => 201}}
 
-
+  
   """
   @spec responses() :: binary
-  def responses(),
-    do: response ProxyAgent.get(@responses)
+  def responses(), do: response(ProxyAgent.get(@responses))
+
   defp response(nil) do
-    ProxyAgent.put @responses, HttpProxyResponse.play_responses
+    ProxyAgent.put(@responses, HttpProxyResponse.play_responses())
     responses()
   end
-  defp response(val),
-    do: val
+
+  defp response(val), do: val
 
   @doc """
   Put nil value to stored :play_responses key
   """
   @spec clear_responses() :: :ok
-  def clear_responses,
-    do: ProxyAgent.put @responses, nil
+  def clear_responses, do: ProxyAgent.put(@responses, nil)
 end

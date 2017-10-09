@@ -4,7 +4,7 @@ defmodule HttpProxy.Utils do
   @str_list "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
 
   @doc ~S"""
-
+  
   Get paths defined on `config/"#{Mix.env}.exs"`
 
   ## Exmaple
@@ -19,12 +19,14 @@ defmodule HttpProxy.Utils do
     rand_s("", n)
   end
 
-  defp rand_s(string, n) when n == 0 and is_bitstring(string),
-    do: string
+  defp rand_s(string, n) when n == 0 and is_bitstring(string), do: string
+
   defp rand_s(string, n) when is_bitstring(string) do
-    additional = @str_list
-                 |> String.codepoints
-                 |> Enum.random
+    additional =
+      @str_list
+      |> String.codepoints()
+      |> Enum.random()
+
     string = string <> additional
     rand_s(string, n - 1)
   end
