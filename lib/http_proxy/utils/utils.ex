@@ -1,10 +1,16 @@
 defmodule HttpProxy.Utils do
   @moduledoc false
 
+  if Mix.env == :test do
+    @compile :export_all
+    @compile :nowarn_export_all
+  end
+
+
   @str_list "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
 
   @doc ~S"""
-  
+
   Get paths defined on `config/"#{Mix.env}.exs"`
 
   ## Exmaple
