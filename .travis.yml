@@ -1,6 +1,7 @@
 language: elixir
 
 otp_release:
+  - 19.1
   - 20.0
 
 elixir:
