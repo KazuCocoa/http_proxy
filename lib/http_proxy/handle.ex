@@ -62,14 +62,14 @@ defmodule HttpProxy.Handle do
       |> String.downcase()
       |> String.to_atom()
       |> :hackney.request(
-           uri(conn),
-           conn.req_headers,
-           :stream,
-           connect_timeout: req_timeout(),
-           recv_timeout: req_timeout(),
-           ssl_options: [],
-           max_redirect: 5
-         )
+        uri(conn),
+        conn.req_headers,
+        :stream,
+        connect_timeout: req_timeout(),
+        recv_timeout: req_timeout(),
+        ssl_options: [],
+        max_redirect: 5
+      )
 
     {conn, ""}
     |> write_proxy(client)
@@ -225,10 +225,11 @@ defmodule HttpProxy.Handle do
     [
       body: PlayBody.get_body(resp),
       cookies: Map.to_list(Map.fetch!(res_json, "cookies")),
-      headers: res_json
-      |> Map.fetch!("headers")
-      |> Map.to_list()
-      |> List.insert_at(0, {"Date", hd(Conn.get_resp_header(conn, "Date"))}),
+      headers:
+        res_json
+        |> Map.fetch!("headers")
+        |> Map.to_list()
+        |> List.insert_at(0, {"Date", hd(Conn.get_resp_header(conn, "Date"))}),
       status_code: Map.fetch!(res_json, "status_code")
     ]
   end
@@ -259,8 +260,8 @@ defmodule HttpProxy.Handle do
   defp target_proxy(conn) do
     proxies()
     |> Enum.reduce([], fn proxy, acc ->
-         if proxy.port == conn.port, do: [proxy | acc], else: acc
-       end)
+      if proxy.port == conn.port, do: [proxy | acc], else: acc
+    end)
     |> Enum.at(0)
   end
 end

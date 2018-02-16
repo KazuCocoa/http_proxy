@@ -1,11 +1,10 @@
 defmodule HttpProxy.Utils do
   @moduledoc false
 
-  if Mix.env == :test do
+  if Mix.env() == :test do
     @compile :export_all
     @compile :nowarn_export_all
   end
-
 
   @str_list "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
 
