@@ -39,10 +39,10 @@ defmodule HttpProxy.Play.Response do
     HttpProxyFile.get_mapping_path()
     |> HttpProxyFile.json_files!()
     |> Enum.reduce([], fn path, acc ->
-         json = validate(HttpProxyFile.read_json_file!(path))
-         key = gen_key(json)
-         List.keystore(acc, String.to_atom(key), 0, {String.to_atom(key), json})
-       end)
+      json = validate(HttpProxyFile.read_json_file!(path))
+      key = gen_key(json)
+      List.keystore(acc, String.to_atom(key), 0, {String.to_atom(key), json})
+    end)
   end
 
   defp gen_key(map) when is_map(map) do
@@ -107,8 +107,8 @@ defmodule HttpProxy.Play.Response do
       mapset
       |> MapSet.to_list()
       |> Enum.reduce("", fn item, acc ->
-           "#{item} #{acc}"
-         end)
+        "#{item} #{acc}"
+      end)
 
     "Response jsons must include arrtibute: #{message}"
   end
@@ -137,13 +137,13 @@ defmodule HttpProxy.Play.Response do
   defp play_data_responses(res, key) do
     res
     |> Enum.reduce([], fn res_tuple, acc ->
-         case elem(res_tuple, 1)["request"][key] do
-           nil ->
-             acc
+      case elem(res_tuple, 1)["request"][key] do
+        nil ->
+          acc
 
-           elem ->
-             Enum.into(acc, [elem])
-         end
-       end)
+        elem ->
+          Enum.into(acc, [elem])
+      end
+    end)
   end
 end

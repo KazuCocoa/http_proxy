@@ -3,8 +3,8 @@ defmodule HttpProxy.Mixfile do
 
   def project do
     [app: :http_proxy,
-     version: "1.2.3",
-     elixir: "~> 1.4",
+     version: "1.3.0",
+     elixir: "~> 1.6",
      name: "ExHttpProxy",
      source_url: "https://github.com/KazuCocoa/http_proxy",
      description: "Multi port HTTP Proxy and support record/play request.",
@@ -47,7 +47,7 @@ defmodule HttpProxy.Mixfile do
       {:ex_parameterized, "~> 1.0", only: :test, runtime: false},
       {:credo, "~> 0.3", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 0.3", only: :dev, runtime: false},
-      {:excoveralls, "~> 0.7.0", only: :test, runtime: false}
+      {:excoveralls, "~> 0.8.0", only: :test, runtime: false}
     ]
   end
 

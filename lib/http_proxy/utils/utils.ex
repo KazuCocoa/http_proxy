@@ -1,11 +1,10 @@
 defmodule HttpProxy.Utils do
   @moduledoc false
 
-  if Mix.env == :test do
+  if Mix.env() == :test do
     @compile :export_all
     @compile :nowarn_export_all
   end
-
 
   @str_list "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
 
@@ -25,7 +24,8 @@ defmodule HttpProxy.Utils do
     rand_s("", n)
   end
 
-  defp rand_s(string, n) when n == 0 and is_bitstring(string), do: string
+  defguardp is_length_zero(string, n) when n == 0 and is_bitstring(string)
+  defp rand_s(string, n) when is_length_zero(string, n), do: string
 
   defp rand_s(string, n) when is_bitstring(string) do
     additional =

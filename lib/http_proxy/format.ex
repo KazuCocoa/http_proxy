@@ -58,7 +58,7 @@ defmodule HttpProxy.Format do
   defp resp_headers(conn) do
     conn.resp_headers
     |> Enum.reduce(Map.new(), fn {key, value}, acc ->
-         Map.put(acc, key, value)
-       end)
+      Map.put(acc, key, value)
+    end)
   end
 end

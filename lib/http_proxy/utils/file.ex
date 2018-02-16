@@ -18,7 +18,7 @@ defmodule HttpProxy.Utils.File do
   alias JSX
 
   @doc ~S"""
-  
+
   Get paths defined on `config/"#{Mix.env}.exs"`
 
   ## Exmaple
@@ -104,7 +104,7 @@ defmodule HttpProxy.Utils.File do
   end
 
   @doc ~S"""
-  
+
   Get decoded map data by `JSX.decode/2`
 
   ## Example
@@ -143,7 +143,7 @@ defmodule HttpProxy.Utils.File do
   end
 
   @doc ~S"""
-  
+
   Get paths in particular directory as list.
 
   ## Example
@@ -173,8 +173,8 @@ defmodule HttpProxy.Utils.File do
         files =
           files
           |> Enum.filter(fn file ->
-               Path.extname(file) == ".json"
-             end)
+            Path.extname(file) == ".json"
+          end)
           |> Enum.map(&(dir <> "/" <> &1))
 
         {:ok, files}

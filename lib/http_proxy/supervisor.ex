@@ -15,11 +15,18 @@ defmodule HttpProxy.Supervisor do
     Handle.proxies()
     |> proxies?
     |> Enum.reduce([], fn proxy, acc ->
-         module_name = "HttpProxy.Handle#{proxy.port}"
-         [worker(Handle, [[proxy, module_name]], id: String.to_atom(module_name)) | acc]
-       end)
-    |> Enum.into([worker(ProxyAgent, [])])
-    |> supervise(strategy: :one_for_one)
+      module_name = "HttpProxy.Handle#{proxy.port}"
+
+      [
+        %{
+          id: String.to_atom(module_name),
+          start: {Handle, :start_link, [[proxy, module_name]]}
+        }
+        | acc
+      ]
+    end)
+    |> Enum.into([%{id: ProxyAgent, start: {ProxyAgent, :start_link, []}}])
+    |> Supervisor.init(strategy: :one_for_one)
   end
 
   defp proxies?(nil) do

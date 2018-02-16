@@ -35,7 +35,7 @@ defmodule HttpProxy.Play.Data do
            "headers" => %{"Content-Type" => "text/html; charset=UTF-8",
              "Server" => "GFE/2.0"}, "status_code" => 201}}
 
-  
+
   """
   @spec responses() :: binary
   def responses(), do: response(ProxyAgent.get(@responses))
