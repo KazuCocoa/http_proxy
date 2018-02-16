@@ -1,4 +1,8 @@
 # Changelogs
+## 1.3.0: Feb 17, 2018
+- Support Elixir 1.6 and drop 1.5 and 1.4
+    - Since supervisor stuff
+
 ## 1.2.3: Aug 28, 2017
 - Update some dependencies
 
