@@ -24,7 +24,8 @@ defmodule HttpProxy.Utils do
     rand_s("", n)
   end
 
-  defp rand_s(string, n) when n == 0 and is_bitstring(string), do: string
+  defguardp is_length_zero(string, n) when n == 0 and is_bitstring(string)
+  defp rand_s(string, n) when is_length_zero(string, n), do: string
 
   defp rand_s(string, n) when is_bitstring(string) do
     additional =
