@@ -124,7 +124,7 @@ defmodule HttpProxy.HttpTest do
             "status_code" => 200
           }
         },
-        "get_8080\\\\A/request.*neko\\\\z": %{
+        "get_8080\\A/request.*neko\\z": %{
           "request" => %{
             "method" => "GET",
             "path_pattern" => "\\A/request.*neko\\z",
