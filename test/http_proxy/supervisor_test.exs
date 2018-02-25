@@ -2,10 +2,10 @@ defmodule HttpProxy.SupervisorTest do
   use ExUnit.Case, async: true
 
   test "check subversion tree" do
-    pid = Process.whereis HttpProxy.Supervisor
+    pid = Process.whereis(HttpProxy.Supervisor)
     assert pid != nil
 
-    children = Supervisor.which_children HttpProxy.Supervisor
+    children = Supervisor.which_children(HttpProxy.Supervisor)
     assert Enum.count(children) == 3
 
     {id, _, _, modules} = hd(children)

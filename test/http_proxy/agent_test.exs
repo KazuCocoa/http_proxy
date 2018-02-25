@@ -6,12 +6,12 @@ defmodule HttpProxy.AgentTest do
   test "get and put value" do
     assert ProxyAgent.get(:example) == nil
 
-    ProxyAgent.put :example, "sample data"
+    ProxyAgent.put(:example, "sample data")
     assert ProxyAgent.get(:example) == "sample data"
   end
 
   test "clear data" do
-    ProxyAgent.clear
+    ProxyAgent.clear()
     assert ProxyAgent.get(:play_responses) == nil
     assert ProxyAgent.get(:play_paths) == nil
     assert ProxyAgent.get(:play_path_patterns) == nil
