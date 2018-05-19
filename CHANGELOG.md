@@ -1,4 +1,7 @@
 # Changelogs
+## 1.3.1: May 20, 2018
+- Update to Cowboy2 and Plug 1.5
+
 ## 1.3.0: Feb 17, 2018
 - Support Elixir 1.6 and drop 1.5 and 1.4
     - Since supervisor stuff
