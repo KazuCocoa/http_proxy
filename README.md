@@ -52,7 +52,7 @@ end
 
 defp deps do
   [
-    {:http_proxy, "~> 1.3.0"}
+    {:http_proxy, "~> 1.3.1"}
   ]
 end
 ```
