@@ -12,7 +12,7 @@ defmodule HttpProxy.Handle do
   end
 
   alias Plug.Conn
-  alias Plug.Adapters.Cowboy, as: PlugCowboy
+  alias Plug.Adapters.Cowboy2, as: PlugCowboy
 
   alias HttpProxy.Play.Data
   alias HttpProxy.Record.Response, as: Record
