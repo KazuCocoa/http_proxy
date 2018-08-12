@@ -16,4 +16,15 @@ defmodule HttpProxy.SupervisorTest do
     assert id == HttpProxy.Agent
     assert modules == [HttpProxy.Agent]
   end
+
+  test "proxies is nil when launch supervisor" do
+    proxy = Application.get_env(:http_proxy, :proxies, nil)
+    Application.delete_env :http_proxy, :proxies
+
+    assert_raise ArgumentError, fn ->
+      HttpProxy.Supervisor.init(:ok)
+    end
+
+    Application.put_env(:http_proxy, :proxies, proxy)
+  end
 end

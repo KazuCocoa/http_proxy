@@ -13,11 +13,6 @@ defmodule HttpProxy.Mixfile do
      deps: deps(),
      package: package(),
      aliases: aliases(),
-     test_coverage: [tool: ExCoveralls],
-     preferred_cli_env: ["coveralls": :test, "coveralls.detail": :test, "coveralls.post": :test, "coveralls.html": :test],
-     preferred_cli_env: [
-          vcr: :test, "vcr.delete": :test, "vcr.check": :test, "vcr.show": :test
-        ],
      docs: docs()
     ]
   end
@@ -31,8 +26,7 @@ defmodule HttpProxy.Mixfile do
 
   defp aliases do
     [
-      proxy: ["run --no-halt"],
-      test: ["coveralls"]
+      proxy: ["run --no-halt"]
     ]
   end
 
@@ -47,7 +41,6 @@ defmodule HttpProxy.Mixfile do
       {:ex_parameterized, "~> 1.0", only: :test, runtime: false},
       {:credo, "~> 0.3", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 0.3", only: :dev, runtime: false},
-      {:excoveralls, "~> 0.8.0", only: :test, runtime: false},
       {:stream_data, "~> 0.1", only: :test}
     ]
   end
