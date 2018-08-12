@@ -62,7 +62,11 @@ defmodule HttpProxy.Play.Response do
     base <> uri
   end
 
-  defp validate(json) do
+  @doc """
+  Validate JSX decoded json
+  """
+  @spec validate(JSX) :: :ok
+  def validate(json) do
     unless Map.has_key?(json, "request"), do: raise(ArgumentError, "Should have request")
 
     request_key = json["request"] |> Map.keys() |> Enum.into(MapSet.new())
