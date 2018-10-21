@@ -99,7 +99,7 @@ defmodule HttpProxy.HttpTest do
   test "set play and record false" do
     TestHelper.set_proxy_mode()
     conn = HttpProxyHandle.dispatch(conn(:get, "http://localhost:8081/"), [])
-    assert conn.status == 200
+    assert conn.status == 502 # bad gateway
     TestHelper.set_play_mode()
   end
 
