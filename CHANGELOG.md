@@ -1,4 +1,8 @@
 # Changelogs
+## 1.4.0: Oct 21, 2018
+- Update to Plug 1.7
+    - `{:plug_cowboy, "~> 2.0"}`
+
 ## 1.3.1: May 20, 2018
 - Update to Cowboy2 and Plug 1.5
 
