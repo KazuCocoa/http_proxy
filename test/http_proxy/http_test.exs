@@ -4,8 +4,8 @@ defmodule HttpProxy.HttpTest do
   use ExUnit.Parameterized
   use Plug.Test
 
-  alias HttpProxy.TestHelper, as: TestHelper
   alias HttpProxy.Handle, as: HttpProxyHandle
+  alias HttpProxy.TestHelper, as: TestHelper
 
   test "files are created in record mode" do
     File.rm_rf!(Application.get_env(:http_proxy, :export_path))
@@ -45,7 +45,7 @@ defmodule HttpProxy.HttpTest do
         {:error, _} -> []
       end
 
-    assert Enum.count(exported_files) == 0
+    assert exported_files == []
 
     exported_body_files =
       case File.ls("test/example/8080/__files") do
@@ -53,7 +53,7 @@ defmodule HttpProxy.HttpTest do
         {:error, _} -> []
       end
 
-    assert Enum.count(exported_body_files) == 0
+    assert exported_body_files == []
   end
 
   test_with_params "play responses agains particular request", fn method, uri, expected_body ->

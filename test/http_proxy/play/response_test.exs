@@ -2,9 +2,10 @@ defmodule HttpProxy.Play.ResponseTest do
   use ExUnit.Case, async: true
   use ExUnit.Parameterized
 
+  alias HttpProxy.Play.Response, as: Response
   alias JSX
 
-  doctest HttpProxy.Play.Response
+  doctest Response
 
   test "tewrong diff in request" do
     json = ~s"""
@@ -25,7 +26,7 @@ defmodule HttpProxy.Play.ResponseTest do
     """
 
     assert_raise ArgumentError, "Response jsons must include arrtibute: path_pattern path method ", fn ->
-      json |> JSX.decode! |> HttpProxy.Play.Response.validate
+      json |> JSX.decode! |> Response.validate
     end
   end
 
@@ -49,7 +50,7 @@ defmodule HttpProxy.Play.ResponseTest do
     """
 
     assert_raise ArgumentError, "Response jsons must include arrtibute: body_file body ", fn ->
-      json |> JSX.decode! |> HttpProxy.Play.Response.validate
+      json |> JSX.decode! |> Response.validate
     end
   end
 
@@ -74,7 +75,7 @@ defmodule HttpProxy.Play.ResponseTest do
     """
 
     assert_raise ArgumentError, "Response jsons must include arrtibute: path_pattern path ", fn ->
-      json |> JSX.decode! |> HttpProxy.Play.Response.validate
+      json |> JSX.decode! |> Response.validate
     end
   end
 
@@ -100,7 +101,7 @@ defmodule HttpProxy.Play.ResponseTest do
     """
 
     assert_raise ArgumentError, "Response jsons must include arrtibute: body_file body ", fn ->
-      json |> JSX.decode! |> HttpProxy.Play.Response.validate
+      json |> JSX.decode! |> Response.validate
     end
   end
 end

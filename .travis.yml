@@ -11,4 +11,5 @@ sudo: false
 
 script:
   - MIX_ENV=test mix do compile --warnings-as-errors
+  - mix credo --strict
   - mix test --cover

@@ -4,8 +4,8 @@ defmodule HttpProxy.Play.Paths do
   The structure gets paths as list via HttpProxy.Play.Response.play_paths.
   """
 
-  alias HttpProxy.Play.Response
   alias HttpProxy.Agent, as: ProxyAgent
+  alias HttpProxy.Play.Response
 
   @type path :: binary
   @type paths :: [path]

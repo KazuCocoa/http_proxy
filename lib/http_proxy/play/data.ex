@@ -4,8 +4,8 @@ defmodule HttpProxy.Play.Data do
   The structure gets data via HttpProxy.Play.Response.play_responses.
   """
 
-  alias HttpProxy.Play.Response, as: HttpProxyResponse
   alias HttpProxy.Agent, as: ProxyAgent
+  alias HttpProxy.Play.Response, as: HttpProxyResponse
 
   @responses :play_responses
 
@@ -34,11 +34,9 @@ defmodule HttpProxy.Play.Data do
          "response" => %{"body" => "<html>hello world 3</html>", "cookies" => %{},
            "headers" => %{"Content-Type" => "text/html; charset=UTF-8",
              "Server" => "GFE/2.0"}, "status_code" => 201}}
-
-
   """
   @spec responses() :: binary
-  def responses(), do: response(ProxyAgent.get(@responses))
+  def responses, do: response(ProxyAgent.get(@responses))
 
   defp response(nil) do
     ProxyAgent.put(@responses, HttpProxyResponse.play_responses())

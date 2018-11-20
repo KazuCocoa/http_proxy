@@ -18,14 +18,14 @@ defmodule HttpProxy.Play.Response do
                       MapSet.new()
                     )
 
-  alias HttpProxy.Utils.File, as: HttpProxyFile
   alias HttpProxy.Play.Data
+  alias HttpProxy.Utils.File, as: HttpProxyFile
 
   @spec play?() :: boolean
   def play?(), do: Application.get_env(:http_proxy, :play, false)
 
   @spec play_responses() :: [response_body] | []
-  def play_responses() do
+  def play_responses do
     case play?() do
       true ->
         gen_response()
@@ -35,7 +35,7 @@ defmodule HttpProxy.Play.Response do
     end
   end
 
-  defp gen_response() do
+  defp gen_response do
     HttpProxyFile.get_mapping_path()
     |> HttpProxyFile.json_files!()
     |> Enum.reduce([], fn path, acc ->

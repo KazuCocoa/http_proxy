@@ -4,8 +4,8 @@ defmodule HttpProxy.Supervisor do
   """
 
   use Supervisor
-  alias HttpProxy.Handle
   alias HttpProxy.Agent, as: ProxyAgent
+  alias HttpProxy.Handle
 
   def start_link, do: Supervisor.start_link(__MODULE__, :ok, name: __MODULE__)
 
