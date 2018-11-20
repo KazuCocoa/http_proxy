@@ -14,11 +14,11 @@ defmodule HttpProxy.Handle do
   alias Plug.Conn
   alias Plug.Cowboy, as: PlugCowboy
 
-  alias HttpProxy.Play.Data
-  alias HttpProxy.Record.Response, as: Record
-  alias HttpProxy.Play.Response, as: Play
-  alias HttpProxy.Play.Paths, as: PlayPaths
   alias HttpProxy.Play.Body, as: PlayBody
+  alias HttpProxy.Play.Data
+  alias HttpProxy.Play.Paths, as: PlayPaths
+  alias HttpProxy.Play.Response, as: Play
+  alias HttpProxy.Record.Response, as: Record
 
   alias JSX
 
