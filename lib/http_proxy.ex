@@ -57,7 +57,6 @@ defmodule HttpProxy do
 
   @spec start(:normal, []) :: {:ok, pid}
   def start(_type, _args) do
-
     HttpProxySup.start_link()
   end
 
