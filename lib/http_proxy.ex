@@ -5,10 +5,10 @@ defmodule HttpProxy do
   If you access to particular URL like `http://localhost:8080`, then the http_proxy forward the request to other URL
   based on configuration.
 
-  HttpProcy support two features.
+  HttpProxy supports two features.
 
-  1. HttpProxy support multiport proxy fearue.
-  2. HttpProxy support play/record proxied request.
+  1. HttpProxy supports a multi-port proxy.
+  2. HttpProxy supports play/record proxied requests.
 
   Multiport proxy means that the proxy receives request with particular port and the proxy send request to other address.
   And you can set the feature against several mulatiple port.
@@ -57,6 +57,7 @@ defmodule HttpProxy do
 
   @spec start(:normal, []) :: {:ok, pid}
   def start(_type, _args) do
+
     HttpProxySup.start_link()
   end
 
