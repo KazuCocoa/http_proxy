@@ -6,6 +6,8 @@ matrix:
       opt_release: '20.0'
     - elixir: '1.7'
       opt_release: '21.0'
+    - elixir: '1.8'
+      opt_release: '21.0'
 
 sudo: false
 
