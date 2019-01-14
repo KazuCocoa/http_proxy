@@ -28,14 +28,14 @@ Client  (server  client)  proxied_server
   |            |            |
 ```
 
-1. The client sends request to http_proxy, then the http_proxy works as a proxy server.
-2. When the http_proxy receives request from the client, then the http_proxy sends request to proxied server, e.g. http://google.com, as client.
+1. The client sends a request to http_proxy, then the http_proxy works as a proxy server.
+2. When the http_proxy receives the request from the client, then the http_proxy sends the request to a proxied server, e.g. http://google.com, as a client.
 3. The http_proxy receives responses from the proxied_server, then the http_proxy sets the response into its response to the client.
 4. The Client receives responses from the http_proxy.
 
 # Quick use as http proxy
 ## requirement
-- Elixir over 1.3
+- Elixir over 1.6
 
 ## set application and deps
 
@@ -80,7 +80,7 @@ config :logger, :console,
   level: :info
 ```
 
-## solve deps and run server
+## solve deps and run a server
 
 ```
 $ mix deps.get
@@ -99,10 +99,14 @@ $ MIX_ENV=prod mix run --no-halt
 Launch browser and open `http://localhost:8080` or `http://localhost:8081`.
 Then, `http://localhost:8080` redirect to `http://google.com` and `http://localhost:8081` do to `http://yahoo.com`.
 
+# Development
+- Copy `pre-commit` hook
+    - `cp hooks/pre-commit ./git/hooks/pre-commit`
+
 # Configuration
 ## Customize proxy port
 
-- You can customize proxy port. For example, if you change waiting port from `8080` to `4000`, then you can access to `http://google.com` via `http://localhost:4000`.
+- You can customize a proxy port. For example, if you change a waiting port from `8080` to `4000`, then you can access to `http://google.com` via `http://localhost:4000`.
 
 ```
 use Mix.Config
@@ -118,7 +122,7 @@ config :http_proxy,
 
 ## Add proxy
 
-- You can increase waiting port to add configuration. You can add them up to much resources. For example, the following setting allow you to access to `http://apple.com` via `http://localhost:8082` in addition.
+- You can add a waiting ports in configuration file. For example, the following setting allow you to access to `http://apple.com` via `http://localhost:8082` in addition.
 
 ```
 use Mix.Config
