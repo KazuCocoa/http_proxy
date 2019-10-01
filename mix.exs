@@ -33,7 +33,7 @@ defmodule HttpProxy.Mixfile do
   defp deps do
     [
       {:plug_cowboy, "~> 2.0"},
-      {:hackney, "1.15.1"},
+      {:hackney, "1.15.2"},
       {:exjsx, "~> 4.0.0", runtime: false},
       {:earmark, "~> 1.0", only: :dev, runtime: false},
       {:ex_doc, "~> 0.13", only: :dev, runtime: false},
