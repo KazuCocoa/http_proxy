@@ -39,7 +39,7 @@ defmodule HttpProxy.Mixfile do
       {:ex_doc, "~> 0.13", only: :dev, runtime: false},
       {:ex_parameterized, "~> 1.0", only: :test, runtime: false},
       {:credo, "~> 1.0", only: [:dev, :test], runtime: false},
-      {:dialyxir, "~> 0.3", only: :dev, runtime: false},
+      {:dialyxir, "~> 1.0", only: :dev, runtime: false},
       {:stream_data, "~> 0.1", only: :test}
     ]
   end
