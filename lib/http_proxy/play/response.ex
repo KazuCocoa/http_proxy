@@ -22,7 +22,7 @@ defmodule HttpProxy.Play.Response do
   alias HttpProxy.Utils.File, as: HttpProxyFile
 
   @spec play?() :: boolean
-  def play?(), do: Application.get_env(:http_proxy, :play, false)
+  def play?, do: Application.get_env(:http_proxy, :play, false)
 
   @spec play_responses() :: [response_body] | []
   def play_responses do
