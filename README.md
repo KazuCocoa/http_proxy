@@ -35,7 +35,7 @@ Client  (server  client)  proxied_server
 
 # Quick use as http proxy
 ## requirement
-- Elixir over 1.6
+- Elixir over 1.7
 
 ## set application and deps
 
