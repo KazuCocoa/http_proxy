@@ -1,5 +1,5 @@
 # Changelogs
-## 1.5.0
+## 1.5.0: Apr 21, 2020
 - Drop Elixir 1.7
 
 ## 1.4.0: Oct 21, 2018
