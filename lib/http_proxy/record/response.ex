@@ -8,7 +8,7 @@ defmodule HttpProxy.Record.Response do
   @type response_body :: binary
 
   @spec record?() :: boolean
-  def record?(), do: Application.get_env(:http_proxy, :record, false)
+  def record?, do: Application.get_env(:http_proxy, :record, false)
 
   @spec record(Plug.Conn.t(), request_body, response_body) :: Plug.Conn.t()
   def record(conn, req_body, res_body) do
