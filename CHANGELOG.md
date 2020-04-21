@@ -1,4 +1,7 @@
 # Changelogs
+## 1.5.0
+- Drop Elixir 1.7
+
 ## 1.4.0: Oct 21, 2018
 - Update to Plug 1.7
     - `{:plug_cowboy, "~> 2.0"}`
