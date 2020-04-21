@@ -7,3 +7,6 @@ erl_crash.dump
 /test/example/
 /doc/
 /fixture/
+
+mix.lock
+
