@@ -1,6 +1,6 @@
 # HttpProxy
 
-[![Build Status](https://travis-ci.org/KazuCocoa/http_proxy.svg?branch=master)](https://travis-ci.org/KazuCocoa/http_proxy)
+![Elixir CI](https://github.com/KazuCocoa/http_proxy/workflows/Elixir%20CI/badge.svg?branch=master)
 [![](https://img.shields.io/hexpm/v/http_proxy.svg?style=flat)](https://hex.pm/packages/http_proxy)
 
 [![codecov](https://codecov.io/gh/KazuCocoa/http_proxy/branch/master/graph/badge.svg)](https://codecov.io/gh/KazuCocoa/http_proxy)
