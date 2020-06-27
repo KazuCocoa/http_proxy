@@ -15,12 +15,6 @@ jobs:
       fail-fast: false
       matrix:
         pair:
-          - otp-version: '19'
-            elixir-version: '1.4'
-          - otp-version: '20'
-            elixir-version: '1.5'
-          - otp-version: '20'
-            elixir-version: '1.6'
           - otp-version: '21'
             elixir-version: '1.7'
           - otp-version: '21'
