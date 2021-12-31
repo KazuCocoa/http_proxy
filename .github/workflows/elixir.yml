@@ -25,6 +25,10 @@ jobs:
             elixir-version: '1.10'
           - otp-version: '23'
             elixir-version: '1.11'
+          - otp-version: '23'
+            elixir-version: '1.12'
+          - otp-version: '24'
+            elixir-version: '1.13'
 
     steps:
     - uses: actions/checkout@v2
