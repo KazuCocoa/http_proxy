@@ -1,9 +1,9 @@
 # HttpProxy
 
-![Elixir CI](https://github.com/KazuCocoa/http_proxy/workflows/Elixir%20CI/badge.svg?branch=master)
+![Elixir CI](https://github.com/KazuCocoa/http_proxy/workflows/Elixir%20CI/badge.svg?branch=main)
 [![](https://img.shields.io/hexpm/v/http_proxy.svg?style=flat)](https://hex.pm/packages/http_proxy)
 
-[![codecov](https://codecov.io/gh/KazuCocoa/http_proxy/branch/master/graph/badge.svg)](https://codecov.io/gh/KazuCocoa/http_proxy)
+[![codecov](https://codecov.io/gh/KazuCocoa/http_proxy/branch/main/graph/badge.svg)](https://codecov.io/gh/KazuCocoa/http_proxy)
 
 Simple multi HTTP Proxy using Plug. And support record/play requests.
 
@@ -145,7 +145,7 @@ config :http_proxy,
 - When `:play` is `true`, then the http_proxy works to play request between this the http_proxy and clients.
     - You should set JSON files under `mappings` in `play_path`.
     - `config.proxies.to` must be available URL to succeed generating http client.
-        - https://github.com/KazuCocoa/http_proxy/blob/master/lib/http_proxy/handle.ex#L49
+        - https://github.com/KazuCocoa/http_proxy/blob/main/lib/http_proxy/handle.ex#L49
 
 ```elixir
 use Mix.Config
