@@ -38,9 +38,7 @@ defmodule HttpProxy.Handle do
   @spec start_link([binary]) :: pid
   def start_link([proxy, module_name]) do
     Logger.info(fn ->
-      "Running #{__MODULE__} on http://localhost:#{proxy.port} named #{module_name}, timeout: #{
-        req_timeout()
-      }"
+      "Running #{__MODULE__} on http://localhost:#{proxy.port} named #{module_name}, timeout: #{req_timeout()}"
     end)
 
     PlugCowboy.http(__MODULE__, [], cowboy_options(proxy.port, module_name))
@@ -117,9 +115,7 @@ defmodule HttpProxy.Handle do
         Logger.debug(fn -> "request path: #{gen_path(conn, target_proxy(conn))}" end)
 
         Logger.debug(fn ->
-          "#{__MODULE__}.write_proxy, :ok, headers: #{conn.req_headers |> JSX.encode!()}, body: #{
-            body
-          }"
+          "#{__MODULE__}.write_proxy, :ok, headers: #{conn.req_headers |> JSX.encode!()}, body: #{body}"
         end)
 
         :hackney.send_body(client, body)
