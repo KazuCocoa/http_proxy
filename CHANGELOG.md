@@ -1,4 +1,7 @@
 # Changelogs
+## 1.6.0: Nov 30, 2022
+- Drop Elixir 1.11 and below
+
 ## 1.5.0: Apr 21, 2020
 - Drop Elixir 1.7
 
