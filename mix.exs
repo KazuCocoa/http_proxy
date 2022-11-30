@@ -36,7 +36,7 @@ defmodule HttpProxy.Mixfile do
       {:hackney, "1.6.5"},
       {:exjsx, "~> 4.0.0", runtime: false},
       {:earmark, "~> 1.0", only: :dev, runtime: false},
-      {:ex_doc, "~> 0.13", only: :dev, runtime: false},
+      {:ex_doc, "~> 0.29", only: :dev, runtime: false},
       {:ex_parameterized, "~> 1.0", only: :test, runtime: false},
       {:credo, "~> 1.0", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.0", only: :dev, runtime: false},
@@ -55,6 +55,7 @@ defmodule HttpProxy.Mixfile do
 
   defp docs do
     [
+      main: "readme",
       extras: [
         "CHANGELOG.md",
         "README.md"
