@@ -2,9 +2,9 @@ name: Elixir CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
 
 jobs:
   test:
@@ -25,11 +25,17 @@ jobs:
             elixir-version: '1.10'
           - otp-version: '23'
             elixir-version: '1.11'
+          - otp-version: '23'
+            elixir-version: '1.12'
+          - otp-version: '24'
+            elixir-version: '1.13'
+          - otp-version: '24'
+            elixir-version: '1.13'
 
     steps:
     - uses: actions/checkout@v2
     - name: Setup elixir
-      uses: actions/setup-elixir@v1
+      uses: erlef/setup-beam@v1
       with:
         elixir-version: ${{ matrix.pair.elixir-version }}
         otp-version: ${{ matrix.pair.otp-version }}
